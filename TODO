@@ -1,0 +1,4 @@
+- Get a list of courses the student is enrolled in:
+  - accept student credentials
+  - perform a GET HTTP request
+    - parse JSON

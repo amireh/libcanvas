@@ -1,0 +1,11 @@
+# All unit test executables will be in test/unit/bin
+SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+
+INCLUDE_DIRECTORIES(.) # for test.hpp
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/canvas)
+
+FILE(GLOB_RECURSE SPECS "./*_test.cpp")
+
+ADD_EXECUTABLE(${PROJECT_NAME}_unit_tests ${SPECS} main.cpp)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME}_unit_tests ${GTEST_LIBRARIES} ${PROJECT_NAME})
