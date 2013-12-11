@@ -2,7 +2,8 @@
 SET(CANVAS_SRC
   ../include/canvas/canvas.hpp
   logger.cpp
-  identity.cpp
+  settings.cpp
+  session.cpp
 )
 
 # the executable

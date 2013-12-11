@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
-#include "canvas/identity.hpp"
+#include "canvas/settings.hpp"
 #include "test_helper.hpp"
 
 namespace cnvs {
 
-  class identity_test : public ::testing::Test {
+  class settings_test : public ::testing::Test {
   protected:
     virtual void SetUp() {
     }
@@ -17,11 +17,10 @@ namespace cnvs {
 
     static void TearDownTestCase() {
     }
-
-    identity identity_;
   };
 
-  TEST_F(identity_test, signature_generation) {
-    ASSERT_TRUE(true) << "test failed";
+  TEST_F(settings_test, set) {
+    settings::set("spec_option", "yes");
+    ASSERT_TRUE(settings::get("spec_option") == "yes");
   }
 } // namespace cnvs

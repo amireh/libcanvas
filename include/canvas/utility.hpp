@@ -74,6 +74,24 @@ namespace utility {
     std::replace(out.begin(),   out.end(), ' ', '_');
     return out;
   }
+
+  inline static
+  void ijoin(const std::vector<string_t>& tokens, string_t &out, char delim) {
+    for (std::vector<string_t>::const_iterator token = tokens.begin();
+    token != tokens.end();
+    ++token)
+    {
+      out += *token;
+      out.push_back(delim);
+    }
+  }
+
+  inline static
+  string_t join(const std::vector<string_t>& tokens, char delim) {
+    string_t out;
+    ijoin(tokens, out, delim);
+    return out;
+  }
 } // namespace utility
 } // namespace cnvs
 

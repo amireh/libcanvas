@@ -21,26 +21,25 @@
  *
  */
 
-#ifndef H_CANVAS_IDENTITY_H
-#define H_CANVAS_IDENTITY_H
+#ifndef H_CANVAS_HTTP_RESPONSE_H
+#define H_CANVAS_HTTP_RESPONSE_H
 
 #include "canvas/canvas.hpp"
-#include "canvas/logger.hpp"
 
 namespace cnvs {
+namespace http {
 
   /**
-   * @class identity
+   * @class response
    * @brief
-   * Representative of a student session.
+   * HTTP response.
    */
-  class identity : public logger
-  {
-  public:
-    identity();
-    virtual ~identity();
+  struct response {
+    uint8_t status;
+    string_t body;
   };
 
+} // namespace http
 } // namespace cnvs
 
 #endif

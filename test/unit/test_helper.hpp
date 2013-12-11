@@ -4,9 +4,8 @@
 #include <gtest/internal/gtest-internal.h>
 
 namespace cnvs {
-  static const string_t fixture_path("../../fixture");
-  static const string_t CNVS_FIXTURE_PATH("../../fixture");
-  static const string_t CNVS_HOST("http://localhost:3000");
+  static const string_t CANVAS_SPEC_FIXTURE_PATH("../../fixture");
+  static const string_t CANVAS_SPEC_API_TOKEN("Ko4dCE6sX9CaYSknvpAHbmSVulsNx9TUtSK1EbT34fOBur8lNAm7L8AG2OjMNfPQ");
 
   namespace utility {
     inline static

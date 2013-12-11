@@ -21,17 +21,45 @@
  *
  */
 
-#ifndef H_CANVAS_H
-#define H_CANVAS_H
-
-#include <string>
-#include <cassert>
-#include <functional>
+#include "canvas/settings.hpp"
 
 namespace cnvs {
-  typedef std::string string_t;
-  typedef string_t uri_t;
-  typedef unsigned long uint64_t;
-}
+  settings::flag_settings_t     settings::flag_settings_;
+  settings::literal_settings_t  settings::literal_settings_;
 
-#endif
+  const static string_t nil_setting("");
+
+  void settings::enable(string_t const& id) {
+    flag_settings_.insert(std::make_pair(id, true));
+  }
+
+  void settings::disable(string_t const& id) {
+    flag_settings_.erase(id);
+  }
+
+  bool settings::is_enabled(string_t const& id) {
+    return flag_settings_.find(id) != flag_settings_.end();
+  }
+
+  void settings::set(string_t const& k, string_t const& v) {
+    if (literal_settings_.find(k) != literal_settings_.end()) {
+      literal_settings_[k] = v;
+      return;
+    }
+
+    literal_settings_.insert(std::make_pair(k,v));
+  }
+
+  string_t const& settings::get(string_t const& k) {
+    if (literal_settings_.find(k) == literal_settings_.end())
+      return nil_setting;
+
+    return literal_settings_.find(k)->second;
+  }
+
+  void settings::set_defaults() {
+    set("canvas_host", "http://localhost");
+    set("canvas_port", "3000");
+    set("canvas_api_prefix", "/api/v1");
+  }
+}

@@ -1,5 +1,6 @@
 #include "canvas/canvas.hpp"
 #include "canvas/logger.hpp"
+#include "canvas/settings.hpp"
 #include "test_helper.hpp"
 #include <gtest/gtest.h>
 
@@ -12,7 +13,9 @@ namespace cnvs {
     virtual ~unit_test_env() {}
 
     virtual void SetUp() {
-      logger::mute();
+      // logger::mute();
+      settings::set_defaults();
+      settings::enable("-v");
     }
 
     virtual void TearDown() {
