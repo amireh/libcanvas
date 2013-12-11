@@ -97,7 +97,7 @@ cmake_file.read.each_line { |line|
   old_content = File.read(cmake_file.path)
   cmake_file.close
   new_content = old_content.gsub(line, new_line)
-  File.open("test/CMakeLists.txt", "w") { |f| f.write(new_content) }
+  File.open("CMakeLists.txt", "w") { |f| f.write(new_content) }
 
   log "CMakeLists.txt has been modified.", Status::OK
 
