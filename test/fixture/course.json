@@ -1,0 +1,26 @@
+[
+    {
+        "account_id": 3,
+        "course_code": "Linear",
+        "default_view": "feed",
+        "id": 1,
+        "name": "Linear Algebra",
+        "start_at": "2013-12-02T10:16:08Z",
+        "end_at": null,
+        "public_syllabus": false,
+        "storage_quota_mb": 500,
+        "apply_assignment_group_weights": false,
+        "calendar": {
+            "ics": "http://localhost:3000/feeds/calendars/course_Q7xxOhV7GrAMBZuI1aXbR0iy5WDbLgL8TrRbCIfq.ics"
+        },
+        "sis_course_id": null,
+        "enrollments": [
+            {
+                "type": "teacher",
+                "role": "TeacherEnrollment"
+            }
+        ],
+        "hide_final_grades": false,
+        "workflow_state": "available"
+    }
+]

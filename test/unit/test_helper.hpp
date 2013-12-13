@@ -1,11 +1,18 @@
+#ifndef H_CANVAS_TEST_HELPER_H
+#define H_CANVAS_TEST_HELPER_H
+
 #include "canvas/canvas.hpp"
 #include "canvas/utility.hpp"
 #include <regex.h>
 #include <gtest/internal/gtest-internal.h>
 
 namespace cnvs {
-  static const string_t CANVAS_SPEC_FIXTURE_PATH("../../fixture");
+  static const string_t CANVAS_SPEC_FIXTURE_PATH("../test/fixture");
   static const string_t CANVAS_SPEC_API_TOKEN("Ko4dCE6sX9CaYSknvpAHbmSVulsNx9TUtSK1EbT34fOBur8lNAm7L8AG2OjMNfPQ");
+
+  static string_t fixture(string_t const& path) {
+    return CANVAS_SPEC_FIXTURE_PATH + "/" + path;
+  }
 
   namespace utility {
     inline static
@@ -106,3 +113,5 @@ namespace cnvs {
 #endif
 
 #define ASSERT_THROW CNVS_ASSERT_THROW
+
+#endif

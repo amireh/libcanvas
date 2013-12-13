@@ -1,0 +1,18 @@
+{
+	"folders":
+	[
+		{
+			"path": "/home/kandie/Workspace/Projects/libcanvas",
+      "folder_exclude_patterns": [
+        "build",
+        "CMakeFiles",
+        "doc/api"
+      ]
+		}
+	],
+	"settings":
+	{
+		"trim_automatic_white_space": true,
+		"trim_trailing_white_space_on_save": true
+	}
+}

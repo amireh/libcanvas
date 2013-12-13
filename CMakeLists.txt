@@ -15,11 +15,12 @@ LIST(APPEND CMAKE_MODULE_PATH
             ${CMAKE_SOURCE_DIR}/cmake/scripts
             ${CMAKE_SOURCE_DIR}/cmake/modules )
 
-ADD_DEFINITIONS("-Wno-deprecated -Wall -Wextra -Wno-reorder -std=c++0x")
+# ADD_DEFINITIONS("-Wno-deprecated -Wall -Wextra -Wno-reorder -std=c++0x")
+ADD_DEFINITIONS(" -std=c++0x")
 
 OPTION(CANVAS_TESTS "Build C++ tests" OFF)
 
-FIND_PACKAGE(YAJL REQUIRED)
+FIND_PACKAGE(JSONCPP REQUIRED)
 FIND_PACKAGE(CURL REQUIRED)
 
 # project version
@@ -36,15 +37,15 @@ INCLUDE_DIRECTORIES(
   .
   include
   ${CURL_INCLUDE_DIR}
-  ${YAJL_INCLUDE_DIR})
+  ${JSONCPP_INCLUDE_DIR})
 
 # The linking is done for tests
 LINK_DIRECTORIES(
-  ${YAJL_LIBRARY_DIRS}
+  ${JSONCPP_LIBRARY_DIRS}
   ${CURL_LIBRARY_DIRS}
 )
 LINK_LIBRARIES(
-  ${YAJL_LIBRARIES}
+  ${JSONCPP_LIBRARIES}
   ${CURL_LIBRARIES}
 )
 

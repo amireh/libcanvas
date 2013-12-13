@@ -1,9 +1,25 @@
-# add sources
+SET(CANVAS_INCLUDE_DIR "../include/canvas")
 SET(CANVAS_SRC
-  ../include/canvas/canvas.hpp
+  ${CANVAS_INCLUDE_DIR}/http/response.hpp
+  ${CANVAS_INCLUDE_DIR}/parsers/course_parser.hpp
+  ${CANVAS_INCLUDE_DIR}/resources/course.hpp
+  ${CANVAS_INCLUDE_DIR}/canvas.hpp
+  ${CANVAS_INCLUDE_DIR}/exception.hpp
+  ${CANVAS_INCLUDE_DIR}/file_manager.hpp
+  ${CANVAS_INCLUDE_DIR}/logger.hpp
+  ${CANVAS_INCLUDE_DIR}/parser.hpp
+  ${CANVAS_INCLUDE_DIR}/resource.hpp
+  ${CANVAS_INCLUDE_DIR}/session.hpp
+  ${CANVAS_INCLUDE_DIR}/settings.hpp
+  ${CANVAS_INCLUDE_DIR}/utility.hpp
+
+  parsers/course_parser.cpp
+  resources/course.cpp
+  file_manager.cpp
   logger.cpp
-  settings.cpp
+  parser.cpp
   session.cpp
+  settings.cpp
 )
 
 # the executable

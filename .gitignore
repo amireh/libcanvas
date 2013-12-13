@@ -1,6 +1,7 @@
 /bin
 /test/unit/bin
 /build
+/deps/*/build
 /lib
 /doc/api
 /include/canvas/canvas_config.hpp
