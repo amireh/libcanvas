@@ -27,11 +27,13 @@
 #include <string>
 #include <cassert>
 #include <functional>
+#include "canvas/exception.hpp"
 
 namespace cnvs {
   typedef std::string string_t;
   typedef string_t uri_t;
   typedef unsigned long uint64_t;
+  typedef std::function<void(bool)> async_callback_t;
 }
 
 #endif

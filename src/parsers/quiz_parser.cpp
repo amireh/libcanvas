@@ -21,41 +21,37 @@
  *
  */
 
-#include "canvas/parser.hpp"
+#include "canvas/parsers/quiz_parser.hpp"
+#include <cstdio>
+#include <cstring>
 
 namespace cnvs {
-  typedef parser::json_documents_t json_documents_t;
-
-  parser::parser() {
+  quiz_parser::quiz_parser()
+  : logger("quiz_parser") {
   }
 
-  parser::~parser() {
+  quiz_parser::~quiz_parser() {
   }
 
-  json_documents_t parser::json_documents(string_t const& root_json) const {
+  quiz* quiz_parser::from_json(string_t const& raw_json) const {
+    quiz* new_quiz;
     Json::Value root;
     Json::Reader reader;
     bool parser_success;
 
-    parser_success = reader.parse( root_json, root );
+    parser_success = reader.parse( raw_json, root );
 
     if (!parser_success) {
       throw json_parser_error(reader.getFormattedErrorMessages());
     }
 
-    return json_documents(root);
-  }
-
-  json_documents_t parser::json_documents(Json::Value& root) const {
-    json_documents_t documents;
-
     if (root.isArray()) {
-      for (auto element : root) {
-        documents.push_back(root.toStyledString());
-      }
+      return this->from_json(root[0].toStyledString());
     }
 
-    return documents;
-  }
+    new_quiz = new quiz( root.get("id", 0).asUInt(), nullptr );
+    new_quiz->set_title(root.get("title", "Course").asString());
 
+    return new_quiz;
+  }
 } // namespace cnvs

@@ -32,9 +32,9 @@
 namespace cnvs {
 
   /**
-   * @class course
+   * @class course_parser
    * @brief
-   * Courses have student enrollments and quizzes.
+   * JSON Course (de)serializer.
    */
   class course_parser : public parser, public logger {
   public:
@@ -42,9 +42,6 @@ namespace cnvs {
     virtual ~course_parser();
 
     virtual course* from_json(const string_t& json) const;
-
-  protected:
-    int id_;
   };
 }
 

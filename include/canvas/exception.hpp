@@ -50,6 +50,12 @@ namespace cnvs {
     inline bool is_internal() { return true; }
   };
 
+  class json_parser_error : public std::runtime_error {
+  public:
+    inline json_parser_error(const std::string& s)
+    : std::runtime_error(s)
+    { }
+  };
 
 } // end of namespace cnvs
 

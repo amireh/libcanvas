@@ -106,7 +106,7 @@ namespace cnvs {
 
     info() << "Downloading " << dl->uri;
 
-    // curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, curlerr);
+    curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, curlerr);
     curl_easy_setopt(curl, CURLOPT_URL, dl->uri.c_str());
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, json_headers_);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &on_curl_data);
@@ -147,6 +147,10 @@ namespace cnvs {
 
     callback(true, resp);
 
+    return true;
+  }
+
+  bool session::post(uri_t const& endpoint, session::RC_POST callback) {
     return true;
   }
 

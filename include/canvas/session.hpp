@@ -39,6 +39,7 @@ namespace cnvs {
   class session : public logger {
   public:
     typedef std::function<void(bool success, http::response const&)> RC_GET;
+    typedef std::function<void(bool success, http::response const&)> RC_POST;
 
     session();
     virtual ~session();
@@ -47,6 +48,7 @@ namespace cnvs {
     virtual void authenticate(string_t const& token);
 
     virtual bool get(uri_t const&, RC_GET);
+    virtual bool post(uri_t const&, RC_POST);
 
   protected:
     /**

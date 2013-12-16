@@ -27,9 +27,27 @@
 #include "canvas/canvas.hpp"
 #include "canvas/exception.hpp"
 #include <algorithm>
+#include <sstream>
+#include <iostream>
+#include <string>
 
 namespace cnvs {
 namespace utility {
+
+  inline static string_t stringify(bool x)
+  {
+    return x ? "true" : "false";
+  }
+
+  template<typename T>
+  inline static string_t stringify(const T& x)
+  {
+    std::ostringstream o;
+    if (!(o << x))
+      throw bad_conversion(string_t("stringify(")
+                + typeid(x).name() + ")");
+    return o.str();
+  }
 
   // helper; converts an integer-based type to a string
   template<typename T>
@@ -43,15 +61,15 @@ namespace utility {
   }
 
   template<typename T>
-  inline static T convert_to(const std::string& s, bool fail_if_leftovers = true)
+  inline static T convertTo(const std::string& s, bool fail_if_leftovers = true)
   {
     T _value;
     convert(s, _value, fail_if_leftovers);
     return _value;
   }
 
-  inline static uint64_t tonumber(string_t const& s) {
-    return convert_to<uint64_t>(s);
+  inline static uint64_t toNumber(string_t const& s) {
+    return convertTo<uint64_t>(s);
   }
 
   /* splits a string s using the delimiter delim */

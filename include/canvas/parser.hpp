@@ -26,7 +26,7 @@
 
 #include "canvas/canvas.hpp"
 #include "canvas/resource.hpp"
-#include "json/json.h"
+#include <json/json.h>
 #include <list>
 
 namespace cnvs {
@@ -38,10 +38,13 @@ namespace cnvs {
    */
   class parser {
   public:
+    typedef std::list<string_t> json_documents_t;
     parser();
     virtual ~parser();
 
     virtual resource* from_json(const string_t& json) const = 0;
+    virtual json_documents_t json_documents(string_t const& root) const;
+    virtual json_documents_t json_documents(Json::Value& root) const;
   };
 }
 

@@ -43,12 +43,19 @@ namespace cnvs {
     inline
     virtual ~resource() {};
 
-    inline virtual id_t id() const {
+    inline
+    virtual id_t id() const {
       return id_;
+    }
+
+    inline
+    virtual string_t const& get_url() const {
+      return url_;
     }
 
   protected:
     id_t id_;
+    string_t url_;
   };
 }
 

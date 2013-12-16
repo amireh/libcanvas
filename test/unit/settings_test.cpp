@@ -5,18 +5,6 @@
 namespace cnvs {
 
   class settings_test : public ::testing::Test {
-  protected:
-    virtual void SetUp() {
-    }
-
-    virtual void TearDown() {
-    }
-
-    static void SetUpTestCase() {
-    }
-
-    static void TearDownTestCase() {
-    }
   };
 
   TEST_F(settings_test, set) {

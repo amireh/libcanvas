@@ -26,16 +26,23 @@
 
 #include "canvas/canvas.hpp"
 #include "canvas/resource.hpp"
+#include <vector>
 
 namespace cnvs {
 
+  class quiz;
+  class session;
+
   /**
+   * \addtogroup Resources
+   * @{
    * @class course
-   * @brief
    * Courses have student enrollments and quizzes.
    */
   class course : public resource {
   public:
+    typedef std::vector<quiz*> quizzes_t;
+
     course(id_t id);
     virtual ~course();
 
@@ -43,15 +50,19 @@ namespace cnvs {
     virtual void set_code(string_t const&);
     virtual void set_workflow_state(string_t const&);
 
-    virtual string_t const& name() const;
-    virtual string_t const& code() const;
-    virtual string_t const& workflow_state() const;
+    virtual string_t const& get_name() const;
+    virtual string_t const& get_code() const;
+    virtual string_t const& get_workflow_state() const;
+    virtual quizzes_t const& get_quizzes() const;
 
+    virtual void load_quizzes(session&, async_callback_t = nullptr);
   protected:
     string_t name_;
     string_t code_;
     string_t workflow_state_;
+    quizzes_t quizzes_;
   };
+  /** @} */
 }
 
 #endif

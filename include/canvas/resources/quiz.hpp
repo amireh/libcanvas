@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2013 Algol Labs <ahmad@algollabs.com>
+ *  Copyright (c) 2013 Algol Labs <ahmad@algollabs.com>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a
  *  copy of this software and associated documentation files (the "Software"),
@@ -21,41 +21,45 @@
  *
  */
 
-#include "canvas/parser.hpp"
+#ifndef H_CANVAS_QUIZ_H
+#define H_CANVAS_QUIZ_H
+
+#include "canvas/canvas.hpp"
+#include "canvas/resource.hpp"
 
 namespace cnvs {
-  typedef parser::json_documents_t json_documents_t;
 
-  parser::parser() {
-  }
+  class course;
+  class session;
+  /**
+   * @class quiz
+   * @brief
+   * A course quiz.
+   */
+  class quiz : public resource {
+  public:
+    quiz(id_t id, course*);
+    virtual ~quiz();
 
-  parser::~parser() {
-  }
+    virtual void set_course(course*);
+    virtual void set_title(string_t const&);
+    virtual void set_access_code(string_t const&);
+    virtual void set_published(bool);
 
-  json_documents_t parser::json_documents(string_t const& root_json) const {
-    Json::Value root;
-    Json::Reader reader;
-    bool parser_success;
+    virtual course const* get_course() const;
+    virtual string_t const& get_title() const;
+    virtual string_t const& get_access_code() const;
 
-    parser_success = reader.parse( root_json, root );
+    virtual bool is_published() const;
 
-    if (!parser_success) {
-      throw json_parser_error(reader.getFormattedErrorMessages());
-    }
+    virtual bool take(session&, async_callback_t&);
 
-    return json_documents(root);
-  }
+  protected:
+    course* course_;
+    string_t title_;
+    string_t access_code_;
+    bool published_;
+  };
+}
 
-  json_documents_t parser::json_documents(Json::Value& root) const {
-    json_documents_t documents;
-
-    if (root.isArray()) {
-      for (auto element : root) {
-        documents.push_back(root.toStyledString());
-      }
-    }
-
-    return documents;
-  }
-
-} // namespace cnvs
+#endif

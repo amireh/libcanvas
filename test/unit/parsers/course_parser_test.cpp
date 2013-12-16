@@ -8,36 +8,37 @@ namespace cnvs {
 
   class course_parser_test : public ::testing::Test {
   protected:
-    virtual void SetUp() {
-    }
-
-    virtual void TearDown() {
-    }
-
-    static void SetUpTestCase() {
-    }
-
-    static void TearDownTestCase() {
-    }
-
     session session_;
     course_parser parser_;
     course* course_;
   };
 
   TEST_F(course_parser_test, from_json) {
-    session_.authenticate(CANVAS_SPEC_API_TOKEN);
-
-    string_t json;
-    ASSERT_TRUE(file_manager::singleton().load_file(fixture("course.json"), json));
+    string_t json = load_fixture("course.json");
 
     ASSERT_NO_THROW(course_ = parser_.from_json(json););
-
     ASSERT_TRUE(course_);
-    ASSERT_TRUE(course_->id() == 1);
-    ASSERT_TRUE(course_->name() == "Linear Algebra");
-    ASSERT_TRUE(course_->code() == "Linear");
-    ASSERT_TRUE(course_->workflow_state() == "available");
+    ASSERT_EQ(course_->id(), 1);
+    ASSERT_EQ(course_->get_name(), "Linear Algebra");
+    ASSERT_EQ(course_->get_code(), "Linear");
+    ASSERT_EQ(course_->get_workflow_state(), "available");
+
+    delete course_;
+  }
+
+  TEST_F(course_parser_test, from_json_collection) {
+    string_t json = load_fixture("courses.json");
+    parser::json_documents_t json_courses;
+
+    ASSERT_NO_THROW(json_courses = parser_.json_documents(json));
+    ASSERT_EQ(json_courses.size(), 1);
+    ASSERT_NO_THROW(course_ = parser_.from_json(json_courses.front()););
+    ASSERT_TRUE(course_);
+    ASSERT_EQ(course_->id(), 1);
+    ASSERT_EQ(course_->get_name(), "Linear Algebra");
+    ASSERT_EQ(course_->get_code(), "Linear");
+    ASSERT_EQ(course_->get_workflow_state(), "available");
+
     delete course_;
   }
 } // namespace cnvs

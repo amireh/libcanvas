@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2013 Algol Labs <ahmad@algollabs.com>
+ *  Copyright (c) 2013 Algol Labs <ahmad@algollabs.com>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a
  *  copy of this software and associated documentation files (the "Software"),
@@ -21,41 +21,28 @@
  *
  */
 
+#ifndef H_CANVAS_PARSERS_QUIZ_PARSER_H
+#define H_CANVAS_PARSERS_QUIZ_PARSER_H
+
+#include "canvas/canvas.hpp"
+#include "canvas/logger.hpp"
 #include "canvas/parser.hpp"
+#include "canvas/resources/quiz.hpp"
 
 namespace cnvs {
-  typedef parser::json_documents_t json_documents_t;
 
-  parser::parser() {
-  }
+  /**
+   * @class quiz_parser
+   * @brief
+   * JSON factory for Quiz resources.
+   */
+  class quiz_parser : public parser, public logger {
+  public:
+    quiz_parser();
+    virtual ~quiz_parser();
 
-  parser::~parser() {
-  }
+    virtual quiz* from_json(const string_t& json) const;
+  };
+}
 
-  json_documents_t parser::json_documents(string_t const& root_json) const {
-    Json::Value root;
-    Json::Reader reader;
-    bool parser_success;
-
-    parser_success = reader.parse( root_json, root );
-
-    if (!parser_success) {
-      throw json_parser_error(reader.getFormattedErrorMessages());
-    }
-
-    return json_documents(root);
-  }
-
-  json_documents_t parser::json_documents(Json::Value& root) const {
-    json_documents_t documents;
-
-    if (root.isArray()) {
-      for (auto element : root) {
-        documents.push_back(root.toStyledString());
-      }
-    }
-
-    return documents;
-  }
-
-} // namespace cnvs
+#endif

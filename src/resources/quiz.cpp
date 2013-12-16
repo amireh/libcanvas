@@ -21,41 +21,54 @@
  *
  */
 
-#include "canvas/parser.hpp"
+#include "canvas/resources/quiz.hpp"
+#include "canvas/resources/course.hpp"
+#include "canvas/session.hpp"
+#include "canvas/utility.hpp"
+#include <cstdio>
+#include <cstring>
 
 namespace cnvs {
-  typedef parser::json_documents_t json_documents_t;
-
-  parser::parser() {
+  quiz::quiz(id_t id, course* course)
+  : resource(id),
+    course_(course) {
   }
 
-  parser::~parser() {
+  quiz::~quiz() {
   }
 
-  json_documents_t parser::json_documents(string_t const& root_json) const {
-    Json::Value root;
-    Json::Reader reader;
-    bool parser_success;
-
-    parser_success = reader.parse( root_json, root );
-
-    if (!parser_success) {
-      throw json_parser_error(reader.getFormattedErrorMessages());
-    }
-
-    return json_documents(root);
+  void quiz::set_course(course* course) {
+    course_ = course;
+    url_ = course->get_url() + "/quizzes/" + utility::stringify(id_);
+  }
+  void quiz::set_title(string_t const& title) {
+    title_ = title;
+  }
+  void quiz::set_published(bool flag) {
+    published_ = flag;
+  }
+  void quiz::set_access_code(string_t const& access_code) {
+    access_code_ = access_code;
   }
 
-  json_documents_t parser::json_documents(Json::Value& root) const {
-    json_documents_t documents;
+  course const* quiz::get_course() const {
+    return course_;
+  }
+  string_t const& quiz::get_title() const {
+    return title_;
+  }
+  bool quiz::is_published() const {
+    return published_;
+  }
+  string_t const& quiz::get_access_code() const {
+    return access_code_;
+  }
 
-    if (root.isArray()) {
-      for (auto element : root) {
-        documents.push_back(root.toStyledString());
-      }
-    }
+  bool quiz::take(session &in_session, async_callback_t &callback) {
+    in_session.post(get_url() + "/", [&](bool success, http::response response) -> void {
+    });
 
-    return documents;
+    return true;
   }
 
 } // namespace cnvs

@@ -3,6 +3,7 @@
 
 #include "canvas/canvas.hpp"
 #include "canvas/utility.hpp"
+#include "canvas/file_manager.hpp"
 #include <regex.h>
 #include <gtest/internal/gtest-internal.h>
 
@@ -12,6 +13,12 @@ namespace cnvs {
 
   static string_t fixture(string_t const& path) {
     return CANVAS_SPEC_FIXTURE_PATH + "/" + path;
+  }
+
+  static string_t load_fixture(string_t const& path) {
+    string_t out;
+    file_manager::singleton().load_file(fixture(path), out);
+    return out;
   }
 
   namespace utility {

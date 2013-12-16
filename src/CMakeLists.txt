@@ -2,7 +2,9 @@ SET(CANVAS_INCLUDE_DIR "../include/canvas")
 SET(CANVAS_SRC
   ${CANVAS_INCLUDE_DIR}/http/response.hpp
   ${CANVAS_INCLUDE_DIR}/parsers/course_parser.hpp
+  ${CANVAS_INCLUDE_DIR}/parsers/quiz_parser.hpp
   ${CANVAS_INCLUDE_DIR}/resources/course.hpp
+  ${CANVAS_INCLUDE_DIR}/resources/quiz.hpp
   ${CANVAS_INCLUDE_DIR}/canvas.hpp
   ${CANVAS_INCLUDE_DIR}/exception.hpp
   ${CANVAS_INCLUDE_DIR}/file_manager.hpp
@@ -14,7 +16,9 @@ SET(CANVAS_SRC
   ${CANVAS_INCLUDE_DIR}/utility.hpp
 
   parsers/course_parser.cpp
+  parsers/quiz_parser.cpp
   resources/course.cpp
+  resources/quiz.cpp
   file_manager.cpp
   logger.cpp
   parser.cpp
