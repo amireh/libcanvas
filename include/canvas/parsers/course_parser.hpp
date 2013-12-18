@@ -38,10 +38,12 @@ namespace cnvs {
    */
   class course_parser : public parser, public logger {
   public:
+    typedef std::vector<course*> courses_t;
+
     course_parser();
     virtual ~course_parser();
 
-    virtual course* from_json(const string_t& json) const;
+    virtual course* from_json(const string_t&) const;
   };
 }
 

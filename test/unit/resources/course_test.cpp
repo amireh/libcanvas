@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "canvas/resources/course.hpp"
+#include "canvas/resources/quiz.hpp"
 #include "canvas/parsers/course_parser.hpp"
 #include "canvas/session.hpp"
 #include "test_helper.hpp"
@@ -20,7 +21,6 @@ namespace cnvs {
     ASSERT_NO_THROW(
       course_->load_quizzes(session_, [&](bool success) {
         ASSERT_TRUE(success);
-        ASSERT_TRUE(course_->get_quizzes().size() > 0);
       });
     );
 

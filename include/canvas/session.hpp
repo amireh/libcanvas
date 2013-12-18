@@ -82,9 +82,9 @@ namespace cnvs {
 
     string_t      uri;
     bool          status;
-    std::ostream  &stream;
     uint64_t      size;
     int           retry_no;
+    std::ostream  &stream;
   };
 
 } // namespace cnvs

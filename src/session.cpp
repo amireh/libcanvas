@@ -30,7 +30,6 @@ namespace cnvs {
   json_headers_(NULL) {
     json_headers_ = curl_slist_append(json_headers_, "Content-Type: application/json;charset=UTF-8");
     json_headers_ = curl_slist_append(json_headers_, "Accept: application/json;charset=UTF-8");
-    json_headers_ = curl_slist_append(json_headers_, "Accept: application/json;charset=UTF-8");
   }
 
   session::~session() {

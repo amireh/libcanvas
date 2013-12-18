@@ -23,4 +23,17 @@ namespace cnvs {
 
     delete quiz_;
   }
+
+  TEST_F(quiz_parser_test, bulk_parsing) {
+    string_t json = load_fixture("quizzes.json");
+    std::vector<quiz*> quizzes = parser_.parse_resources<quiz>(json);
+
+    ASSERT_EQ(quizzes.size(), 3);
+    ASSERT_EQ(quizzes.at(0)->id(), 3);
+    ASSERT_EQ(quizzes.at(1)->id(), 1);
+    ASSERT_EQ(quizzes.at(2)->id(), 2);
+
+    std::for_each(quizzes.begin(), quizzes.end(), [](quiz* c) { delete c; });
+    quizzes.clear();
+  }
 } // namespace cnvs

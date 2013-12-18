@@ -4,14 +4,32 @@
 
 namespace cnvs {
 
+  class spec_resource : public resource {
+  public:
+    inline spec_resource(int id) : resource(id) {}
+    inline virtual ~spec_resource() {}
+  };
   class spec_parser : public parser {
   public:
     inline spec_parser() {
     }
+
     inline virtual ~spec_parser() {
     }
-    inline virtual resource* from_json(const string_t&) const {
-      return nullptr;
+
+    inline virtual resource* from_json(const string_t& json) const {
+      spec_resource* resource;
+      Json::Value root;
+      Json::Reader reader;
+      bool parsingSuccessful = reader.parse( json, root );
+
+      if ( !parsingSuccessful ) {
+        throw reader.getFormattedErrorMessages();
+      }
+
+      resource = new spec_resource(root.get("id", 0).asUInt());
+
+      return resource;
     }
   };
 
@@ -29,5 +47,25 @@ namespace cnvs {
     });
 
     ASSERT_EQ(json_documents.size(), 2);
+    ASSERT_EQ(json_documents.front(), "{}\n");
+  }
+
+  TEST_F(parser_test, parse_resources) {
+    string_t json = load_fixture("random_documents.json");
+    std::vector<spec_resource*> resources;
+
+    ASSERT_NO_THROW({
+      resources = parser_.parse_resources<spec_resource>(json);
+    });
+
+    ASSERT_EQ(resources.size(), 2);
+    ASSERT_EQ(resources.at(0)->id(), 1);
+    ASSERT_EQ(resources.at(1)->id(), 2);
+
+    std::for_each(resources.begin(), resources.end(), [](resource* r) {
+      delete r;
+    });
+
+    resources.clear();
   }
 } // namespace cnvs

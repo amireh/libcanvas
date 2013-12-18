@@ -39,12 +39,36 @@ namespace cnvs {
   class parser {
   public:
     typedef std::list<string_t> json_documents_t;
+
     parser();
     virtual ~parser();
 
     virtual resource* from_json(const string_t& json) const = 0;
     virtual json_documents_t json_documents(string_t const& root) const;
     virtual json_documents_t json_documents(Json::Value& root) const;
+
+    /**
+     * Bulk parse of resources from a JSON collection.
+     */
+    template<typename T>
+    std::vector<T*> parse_resources(
+      const string_t& json,
+      std::function<void(T*)> callback = nullptr) const {
+      T* resource;
+      std::vector<T*> resources;
+      json_documents_t documents(json_documents(json));
+
+      for (auto document : documents) {
+        resource = (T*)from_json(document);
+        resources.push_back(resource);
+
+        if (callback) {
+          callback(resource);
+        }
+      }
+
+      return resources;
+    }
   };
 }
 

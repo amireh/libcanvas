@@ -22,11 +22,10 @@
  */
 
 #include "canvas/resources/course.hpp"
+#include "canvas/resources/quiz.hpp"
 #include "canvas/utility.hpp"
 #include "canvas/parsers/quiz_parser.hpp"
 #include "canvas/session.hpp"
-#include <cstdio>
-#include <cstring>
 
 namespace cnvs {
   course::course(id_t id)
@@ -34,10 +33,11 @@ namespace cnvs {
     url_ = "/courses/" + utility::stringify(id);
   }
   course::~course() {
-    while (!quizzes_.empty()) {
-      delete quizzes_.back();
-      quizzes_.pop_back();
-    }
+    std::for_each(quizzes_.begin(), quizzes_.end(), [](quiz* quiz) {
+      delete quiz;
+    });
+
+    quizzes_.clear();
   }
 
   void course::set_name(string_t const& name) {
@@ -66,21 +66,20 @@ namespace cnvs {
   void course::load_quizzes(session& in_session, async_callback_t callback) {
     in_session.get(get_url() + "/quizzes",
       [&](bool success, http::response const &response) -> void {
-        quiz_parser lparser;
+        quiz_parser parser;
 
         if (!success) {
           callback(false);
           return;
         }
 
-        parser::json_documents_t quiz_documents =
-          lparser.json_documents(response.body);
+        quizzes_ = parser.parse_resources<quiz>(response.body, [&](quiz* quiz) {
+          quiz->set_course(this);
+        });
 
-        for (auto quiz_document : quiz_documents) {
-          quizzes_.push_back(lparser.from_json(quiz_document));
-        }
 
         callback(true);
       });
   }
+
 } // namespace cnvs

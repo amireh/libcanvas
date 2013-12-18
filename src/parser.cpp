@@ -22,6 +22,7 @@
  */
 
 #include "canvas/parser.hpp"
+#include <iostream>
 
 namespace cnvs {
   typedef parser::json_documents_t json_documents_t;
@@ -51,11 +52,22 @@ namespace cnvs {
 
     if (root.isArray()) {
       for (auto element : root) {
-        documents.push_back(root.toStyledString());
+        documents.push_back(element.toStyledString());
       }
     }
 
     return documents;
   }
 
+  // template<typename T>
+  // std::vector<T*> parser::parse_resources(string_t const& json) const {
+  //   std::vector<T*> resources;
+  //   json_documents_t documents(json_documents(json));
+
+  //   for (auto document : documents) {
+  //     resources.push_back(from_json(document));
+  //   }
+
+  //   return resources;
+  // }
 } // namespace cnvs

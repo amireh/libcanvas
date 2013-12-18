@@ -26,19 +26,15 @@ namespace cnvs {
     delete course_;
   }
 
-  TEST_F(course_parser_test, from_json_collection) {
+  TEST_F(course_parser_test, bulk_parsing) {
     string_t json = load_fixture("courses.json");
-    parser::json_documents_t json_courses;
+    std::vector<course*> courses = parser_.parse_resources<course>(json);
 
-    ASSERT_NO_THROW(json_courses = parser_.json_documents(json));
-    ASSERT_EQ(json_courses.size(), 1);
-    ASSERT_NO_THROW(course_ = parser_.from_json(json_courses.front()););
-    ASSERT_TRUE(course_);
-    ASSERT_EQ(course_->id(), 1);
-    ASSERT_EQ(course_->get_name(), "Linear Algebra");
-    ASSERT_EQ(course_->get_code(), "Linear");
-    ASSERT_EQ(course_->get_workflow_state(), "available");
+    ASSERT_EQ(courses.size(), 2);
+    ASSERT_EQ(courses.at(0)->id(), 1);
+    ASSERT_EQ(courses.at(1)->id(), 2);
 
-    delete course_;
+    std::for_each(courses.begin(), courses.end(), [](course* c) { delete c; });
+    courses.clear();
   }
 } // namespace cnvs
