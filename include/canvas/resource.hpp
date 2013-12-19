@@ -25,6 +25,7 @@
 #define H_CANVAS_RESOURCE_H
 
 #include "canvas/canvas.hpp"
+#include <json/json.h>
 
 namespace cnvs {
 
@@ -36,9 +37,13 @@ namespace cnvs {
   class resource {
   public:
     inline
+    resource() : id_(0) {
+    }
+
+    inline
     resource(id_t id)
     : id_(id) {
-    };
+    }
 
     inline
     virtual ~resource() {};
@@ -52,6 +57,11 @@ namespace cnvs {
     virtual string_t const& get_url() const {
       return url_;
     }
+
+    /**
+     * Populate the resource from a JSON document.
+     */
+    virtual void deserialize(string_t const&) = 0;
 
   protected:
     id_t id_;

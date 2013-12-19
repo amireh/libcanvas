@@ -21,8 +21,8 @@
  *
  */
 
-#ifndef H_CANVAS_PARSER_H
-#define H_CANVAS_PARSER_H
+#ifndef H_CANVAS_RESOURCE_PARSER_H
+#define H_CANVAS_RESOURCE_PARSER_H
 
 #include "canvas/canvas.hpp"
 #include "canvas/resource.hpp"
@@ -32,23 +32,46 @@
 namespace cnvs {
 
   /**
-   * @class course
+   * @class resource_parser
    * @brief
-   * Courses have student enrollments and quizzes.
+   * Builds resources from JSON documents.
    */
-  class parser {
+  class resource_parser {
   public:
-    typedef std::list<string_t> json_documents_t;
-
-    parser();
-    virtual ~parser();
-
-    virtual resource* from_json(const string_t& json) const = 0;
-    virtual json_documents_t json_documents(string_t const& root) const;
-    virtual json_documents_t json_documents(Json::Value& root) const;
+    resource_parser();
+    virtual ~resource_parser();
 
     /**
-     * Bulk parse of resources from a JSON collection.
+     * Build a single resource from a JSON document.
+     *
+     * @see resource::serialize()
+     * @return nullptr if the resource fails to deserialize.
+     */
+    template<typename T>
+    T* parse_resource(const string_t& document) {
+      T* resource = new T();
+
+      try {
+        resource->deserialize(document);
+      }
+      catch (...) {
+        delete resource;
+        return nullptr;
+      }
+
+      return resource;
+    }
+
+    /**
+     * Create multiple resources from a JSON collection.
+     *
+     * @param[in] json
+     *   A valid, conformant JSON collection of documents.
+     * @param[in] callback
+     *   A handler that will be called everytime a resource has been created so
+     *   you can do any post-processing on the resource, if needed.
+     *
+     * @see resource::deserialize()
      */
     template<typename T>
     std::vector<T*> parse_resources(
@@ -59,7 +82,15 @@ namespace cnvs {
       json_documents_t documents(json_documents(json));
 
       for (auto document : documents) {
-        resource = (T*)from_json(document);
+        resource = new T();
+
+        try {
+          resource->deserialize(document);
+        } catch(...) {
+          delete resource;
+          continue;
+        }
+
         resources.push_back(resource);
 
         if (callback) {
@@ -69,6 +100,12 @@ namespace cnvs {
 
       return resources;
     }
+
+  protected:
+    typedef std::list<string_t> json_documents_t;
+
+    virtual json_documents_t json_documents(string_t const& root) const;
+    virtual json_documents_t json_documents(Json::Value& root) const;
   };
 }
 

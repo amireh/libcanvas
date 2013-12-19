@@ -1,27 +1,25 @@
 SET(CANVAS_INCLUDE_DIR "../include/canvas")
 SET(CANVAS_SRC
   ${CANVAS_INCLUDE_DIR}/http/response.hpp
-  ${CANVAS_INCLUDE_DIR}/parsers/course_parser.hpp
-  ${CANVAS_INCLUDE_DIR}/parsers/quiz_parser.hpp
   ${CANVAS_INCLUDE_DIR}/resources/course.hpp
   ${CANVAS_INCLUDE_DIR}/resources/quiz.hpp
+  ${CANVAS_INCLUDE_DIR}/resources/quiz_submission.hpp
   ${CANVAS_INCLUDE_DIR}/canvas.hpp
   ${CANVAS_INCLUDE_DIR}/exception.hpp
   ${CANVAS_INCLUDE_DIR}/file_manager.hpp
   ${CANVAS_INCLUDE_DIR}/logger.hpp
-  ${CANVAS_INCLUDE_DIR}/parser.hpp
+  ${CANVAS_INCLUDE_DIR}/resource_parser.hpp
   ${CANVAS_INCLUDE_DIR}/resource.hpp
   ${CANVAS_INCLUDE_DIR}/session.hpp
   ${CANVAS_INCLUDE_DIR}/settings.hpp
   ${CANVAS_INCLUDE_DIR}/utility.hpp
 
-  parsers/course_parser.cpp
-  parsers/quiz_parser.cpp
   resources/course.cpp
   resources/quiz.cpp
+  resources/quiz_submission.cpp
   file_manager.cpp
   logger.cpp
-  parser.cpp
+  resource_parser.cpp
   session.cpp
   settings.cpp
 )

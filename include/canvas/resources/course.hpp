@@ -43,6 +43,7 @@ namespace cnvs {
   public:
     typedef std::vector<quiz*> quizzes_t;
 
+    course();
     course(id_t id);
     virtual ~course();
 
@@ -56,11 +57,19 @@ namespace cnvs {
     virtual quizzes_t const& get_quizzes() const;
 
     virtual void load_quizzes(session&, async_callback_t = nullptr);
+
+    /**
+     * Populate the Course from a JSON document.
+     */
+    virtual void deserialize(string_t const&);
+
   protected:
     string_t name_;
     string_t code_;
     string_t workflow_state_;
     quizzes_t quizzes_;
+
+    void build_url();
   };
   /** @} */
 }

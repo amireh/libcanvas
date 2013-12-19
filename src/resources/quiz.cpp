@@ -29,6 +29,11 @@
 #include <cstring>
 
 namespace cnvs {
+  quiz::quiz()
+  : resource(),
+    course_(nullptr) {
+  }
+
   quiz::quiz(id_t id, course* course)
   : resource(id),
     course_(course) {
@@ -71,4 +76,16 @@ namespace cnvs {
     return true;
   }
 
+  void quiz::deserialize(string_t const& json) {
+    Json::Value root;
+    Json::Reader reader;
+    bool parser_success;
+
+    if (!reader.parse( json, root )) {
+      throw json_parser_error(reader.getFormattedErrorMessages());
+    }
+
+    id_ = root.get("id", 0).asUInt();
+    title_ = root.get("title", "Unnamed Quiz").asString();
+  }
 } // namespace cnvs

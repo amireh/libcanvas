@@ -38,6 +38,7 @@ namespace cnvs {
    */
   class quiz : public resource {
   public:
+    quiz();
     quiz(id_t id, course*);
     virtual ~quiz();
 
@@ -53,6 +54,11 @@ namespace cnvs {
     virtual bool is_published() const;
 
     virtual bool take(session&, async_callback_t&);
+
+    /**
+     * Populate the Quiz from a JSON document.
+     */
+    virtual void deserialize(string_t const&);
 
   protected:
     course* course_;

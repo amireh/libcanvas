@@ -24,20 +24,29 @@
 #include "canvas/resources/course.hpp"
 #include "canvas/resources/quiz.hpp"
 #include "canvas/utility.hpp"
-#include "canvas/parsers/quiz_parser.hpp"
+#include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 
 namespace cnvs {
+  course::course()
+  : resource() {
+  }
+
   course::course(id_t id)
   : resource(id) {
-    url_ = "/courses/" + utility::stringify(id);
+    build_url();
   }
+
   course::~course() {
     std::for_each(quizzes_.begin(), quizzes_.end(), [](quiz* quiz) {
       delete quiz;
     });
 
     quizzes_.clear();
+  }
+
+  void course::build_url() {
+    url_ = "/courses/" + utility::stringify(id_);
   }
 
   void course::set_name(string_t const& name) {
@@ -66,7 +75,7 @@ namespace cnvs {
   void course::load_quizzes(session& in_session, async_callback_t callback) {
     in_session.get(get_url() + "/quizzes",
       [&](bool success, http::response const &response) -> void {
-        quiz_parser parser;
+        resource_parser parser;
 
         if (!success) {
           callback(false);
@@ -82,4 +91,20 @@ namespace cnvs {
       });
   }
 
+  void course::deserialize(string_t const& json) {
+    Json::Value root;
+    Json::Reader reader;
+    bool parser_success;
+
+    if (!reader.parse( json, root )) {
+      throw json_parser_error(reader.getFormattedErrorMessages());
+    }
+
+    id_ = root.get("id", 0).asUInt();
+    name_ = root.get("name", "Course").asString();
+    code_ = root.get("course_code", "course").asString();
+    workflow_state_ = root.get("workflow_state", "available").asString();
+
+    build_url();
+  }
 } // namespace cnvs

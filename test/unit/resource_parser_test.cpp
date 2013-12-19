@@ -1,23 +1,16 @@
 #include <gtest/gtest.h>
-#include "canvas/parser.hpp"
+#include "canvas/resource_parser.hpp"
 #include "test_helper.hpp"
 
 namespace cnvs {
 
   class spec_resource : public resource {
   public:
+    inline spec_resource() : resource() {}
     inline spec_resource(int id) : resource(id) {}
     inline virtual ~spec_resource() {}
-  };
-  class spec_parser : public parser {
-  public:
-    inline spec_parser() {
-    }
 
-    inline virtual ~spec_parser() {
-    }
-
-    inline virtual resource* from_json(const string_t& json) const {
+    inline virtual void deserialize(const string_t& json) {
       spec_resource* resource;
       Json::Value root;
       Json::Reader reader;
@@ -27,20 +20,33 @@ namespace cnvs {
         throw reader.getFormattedErrorMessages();
       }
 
-      resource = new spec_resource(root.get("id", 0).asUInt());
-
-      return resource;
+      id_ = root.get("id", 0).asUInt();
     }
   };
 
-  class parser_test : public ::testing::Test {
+  class spec_parser : public resource_parser {
+  public:
+    typedef json_documents_t json_documents_t;
+
+    inline spec_parser() : resource_parser() {}
+    inline virtual ~spec_parser() {}
+
+    /**
+     * Expose this to the spec, since it's protected in the base class.
+     */
+    virtual json_documents_t json_documents(string_t const& root) const {
+      return resource_parser::json_documents(root);
+    }
+  };
+
+  class resource_parser_test : public ::testing::Test {
   protected:
     spec_parser parser_;
   };
 
-  TEST_F(parser_test, json_documents) {
+  TEST_F(resource_parser_test, json_documents) {
     string_t json("[ {}, {} ]");
-    parser::json_documents_t json_documents;
+    spec_parser::json_documents_t json_documents;
 
     ASSERT_NO_THROW({
       json_documents = parser_.json_documents(json);
@@ -50,7 +56,20 @@ namespace cnvs {
     ASSERT_EQ(json_documents.front(), "{}\n");
   }
 
-  TEST_F(parser_test, parse_resources) {
+  TEST_F(resource_parser_test, parse_resource) {
+    string_t json = load_fixture("random_document.json");
+    spec_resource* resource;
+
+    ASSERT_NO_THROW({
+      resource = parser_.parse_resource<spec_resource>(json);
+    });
+
+    ASSERT_EQ(resource->id(), 5);
+
+    delete resource;
+  }
+
+  TEST_F(resource_parser_test, parse_resources) {
     string_t json = load_fixture("random_documents.json");
     std::vector<spec_resource*> resources;
 

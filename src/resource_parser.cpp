@@ -21,37 +21,38 @@
  *
  */
 
-#include "canvas/parsers/quiz_parser.hpp"
-#include <cstdio>
-#include <cstring>
+#include "canvas/resource_parser.hpp"
+#include <iostream>
 
 namespace cnvs {
-  quiz_parser::quiz_parser()
-  : logger("quiz_parser") {
+  resource_parser::resource_parser() {
   }
 
-  quiz_parser::~quiz_parser() {
+  resource_parser::~resource_parser() {
   }
 
-  quiz* quiz_parser::from_json(string_t const& raw_json) const {
-    quiz* new_quiz;
+  resource_parser::json_documents_t
+  resource_parser::json_documents(string_t const& root_json) const {
     Json::Value root;
     Json::Reader reader;
-    bool parser_success;
 
-    parser_success = reader.parse( raw_json, root );
-
-    if (!parser_success) {
+    if (!reader.parse( root_json, root )) {
       throw json_parser_error(reader.getFormattedErrorMessages());
     }
 
+    return json_documents(root);
+  }
+
+  resource_parser::json_documents_t
+  resource_parser::json_documents(Json::Value& root) const {
+    json_documents_t documents;
+
     if (root.isArray()) {
-      return this->from_json(root[0].toStyledString());
+      for (auto element : root) {
+        documents.push_back(element.toStyledString());
+      }
     }
 
-    new_quiz = new quiz( root.get("id", 0).asUInt(), nullptr );
-    new_quiz->set_title(root.get("title", "Course").asString());
-
-    return new_quiz;
+    return documents;
   }
 } // namespace cnvs
