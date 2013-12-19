@@ -17,6 +17,7 @@ SET(CANVAS_SRC
   resources/course.cpp
   resources/quiz.cpp
   resources/quiz_submission.cpp
+  canvas.cpp
   file_manager.cpp
   logger.cpp
   resource_parser.cpp

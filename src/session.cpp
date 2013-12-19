@@ -25,21 +25,6 @@
 #include "canvas/settings.hpp"
 
 namespace cnvs {
-  session::session() :
-  logger("session"),
-  json_headers_(NULL) {
-    json_headers_ = curl_slist_append(json_headers_, "Content-Type: application/json;charset=UTF-8");
-    json_headers_ = curl_slist_append(json_headers_, "Accept: application/json;charset=UTF-8");
-  }
-
-  session::~session() {
-    if (json_headers_) {
-      curl_slist_free_all(json_headers_);
-    }
-
-    json_headers_ = nullptr;
-  }
-
   static size_t on_curl_data(char *buffer, size_t size, size_t nmemb, void *userdata)
   {
     download_t  *download;
@@ -62,6 +47,34 @@ namespace cnvs {
     return realsize;
   }
 
+  session::session() :
+  logger("session"),
+  headers_(nullptr),
+  curl_(nullptr) {
+    curl_ = curl_easy_init();
+    curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, &on_curl_data);
+  }
+
+  session::~session() {
+    free_headers();
+    curl_easy_cleanup(curl_);
+    curl_ = nullptr;
+  }
+
+  void session::free_headers() {
+    if (headers_) {
+      curl_slist_free_all(headers_);
+      headers_ = nullptr;
+    }
+  }
+
+  struct curl_slist* session::add_json_headers(struct curl_slist* headers) {
+    headers = curl_slist_append(headers, "Content-Type: application/json;charset=UTF-8");
+    headers = curl_slist_append(headers, "Accept: application/json;charset=UTF-8");
+
+    return headers;
+  }
+
   void session::authenticate(string_t const& username, string_t const& password) {
     throw "BASIC AUTH not implemented yet";
 
@@ -78,73 +91,52 @@ namespace cnvs {
   }
 
   void session::stamp_identity() {
-    json_headers_ = curl_slist_append(json_headers_, "Authorization:");
-    json_headers_ = curl_slist_append(json_headers_,
+    free_headers();
+
+    headers_ = add_json_headers();
+    headers_ = curl_slist_append(headers_,
       ("Authorization: Bearer " + identity_.token).c_str());
+
+    curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers_);
   }
 
   bool session::get(uri_t const& endpoint, session::RC_GET callback) {
-    download_t* dl;
     CURL* curl;
     CURLcode curlrc;
     char curlerr[CURL_ERROR_SIZE];
-    uint8_t http_rc;
-    std::ostringstream outbuf;
-    http::response resp;
+    http::response response;
+    uint8_t http_rc = 0;
+    download_t dl;
 
-    curl = curl_easy_init();
+    dl.uri = api_endpoint(endpoint);
 
-    if (!curl) {
-      this->error() << "unable to resolve URL " << dl->uri << ", aborting remote download request";
+    info() << "Downloading " << dl.uri;
 
-      return false;
-    }
+    curl_easy_setopt(curl_, CURLOPT_ERRORBUFFER, curlerr);
+    curl_easy_setopt(curl_, CURLOPT_URL, dl.uri.c_str());
+    curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &dl);
 
-    dl = new download_t(outbuf);
-    dl->uri = api_endpoint(endpoint);
-
-    info() << "Downloading " << dl->uri;
-
-    curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, curlerr);
-    curl_easy_setopt(curl, CURLOPT_URL, dl->uri.c_str());
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, json_headers_);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &on_curl_data);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, dl);
-
-    curlrc = curl_easy_perform(curl);
+    curlrc = curl_easy_perform(curl_);
 
     if (curlrc != 0) {
       error() << "a CURL error was encountered; " << curlrc << " => " << curlerr;
-
-      delete dl;
-
-      curl_easy_cleanup(curl);
-
-      callback(false, resp);
+      callback(false, response);
 
       return false;
     }
 
-    http_rc = 0;
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_rc);
+    curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &http_rc);
 
     if (http_rc != 200) {
       error() << "remote server error, HTTP code: " << http_rc << ", download failed";
-
-      delete dl;
-
-      callback(false, resp);
-      curl_easy_cleanup(curl);
+      callback(false, response);
 
       return false;
     }
 
-    curl_easy_cleanup(curl);
+    response.body = static_cast<std::ostringstream*>(&dl.stream)->str();
 
-    resp.body = static_cast<std::ostringstream*>(&dl->stream)->str();
-    delete dl;
-
-    callback(true, resp);
+    callback(true, response);
 
     return true;
   }

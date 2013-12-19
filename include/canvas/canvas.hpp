@@ -34,6 +34,9 @@ namespace cnvs {
   typedef string_t uri_t;
   typedef unsigned long uint64_t;
   typedef std::function<void(bool)> async_callback_t;
+
+  int  canvas_init(int argc, char** argv);
+  void canvas_free();
 }
 
 #endif

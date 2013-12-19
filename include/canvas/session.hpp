@@ -61,30 +61,33 @@ namespace cnvs {
      */
     virtual uri_t api_endpoint(uri_t const&) const;
 
+    struct curl_slist* add_json_headers(struct curl_slist* = nullptr);
+    void free_headers();
+
     struct identity_t {
       string_t username;
       string_t password;
       string_t token;
     } identity_;
 
-    struct curl_slist *json_headers_;
+    CURL *curl_;
+    struct curl_slist *headers_;
   };
 
   /** Used internally by the resource_manager to manage downloads */
   struct download_t {
     inline
-    download_t(std::ostream& s)
+    download_t()
     : status(false),
       size(0),
-      retry_no(0),
-      stream(s) {
+      retry_no(0) {
     }
 
     string_t      uri;
     bool          status;
     uint64_t      size;
     int           retry_no;
-    std::ostream  &stream;
+    std::ostringstream  stream;
   };
 
 } // namespace cnvs

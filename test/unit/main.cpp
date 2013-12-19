@@ -8,11 +8,15 @@ namespace cnvs {
   class unit_test_env : public ::testing::Environment {
   public:
     unit_test_env(int argc, char** argv) {
+      canvas_init(argc, argv);
     }
 
-    virtual ~unit_test_env() {}
+    virtual ~unit_test_env() {
+      canvas_free();
+    }
 
     virtual void SetUp() {
+
       logger::mute();
       settings::set_defaults();
       settings::enable("-v");
