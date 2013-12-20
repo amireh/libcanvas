@@ -39,6 +39,8 @@ namespace Canvas {
   public:
     QuizSubmission();
     QuizSubmission(ID, Quiz const*);
+    QuizSubmission(const QuizSubmission&) = delete;
+    QuizSubmission& operator=(QuizSubmission const&) = delete;
     virtual ~QuizSubmission();
 
     /**

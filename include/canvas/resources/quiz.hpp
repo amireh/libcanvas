@@ -40,6 +40,8 @@ namespace Canvas {
   public:
     Quiz();
     Quiz(ID id, Course*);
+    Quiz(const Quiz&) = delete;
+    Quiz& operator=(Quiz const&) = delete;
     virtual ~Quiz();
 
     virtual void setCourse(Course*);

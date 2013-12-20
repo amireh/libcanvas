@@ -161,6 +161,10 @@ namespace Canvas {
     });
   }
 
+  bool Student::canTakeQuiz(Quiz const& quiz) const {
+    return quiz.isPublished();
+  }
+
   bool Student::hasTakenQuiz(const Quiz &quiz) const {
     return quizSubmission(quiz) != nullptr;
   }

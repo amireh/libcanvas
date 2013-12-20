@@ -45,6 +45,8 @@ namespace Canvas {
 
     Course();
     Course(ID id);
+    Course(const Course&) = delete;
+    Course& operator=(Course const&) = delete;
     virtual ~Course();
 
     virtual void setName(String const&);

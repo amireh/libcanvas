@@ -50,6 +50,8 @@ namespace Canvas {
 
     Student();
     Student(ID id);
+    Student(const Student&) = delete;
+    Student& operator=(Student const&) = delete;
     virtual ~Student();
 
     virtual String const& apiToken() const;
@@ -83,8 +85,8 @@ namespace Canvas {
      */
     virtual void loadQuizSubmission(Session&, Quiz const&, AsyncCallback = nullptr);
 
+    virtual bool canTakeQuiz(Quiz const&) const;
     virtual bool hasTakenQuiz(Quiz const&) const;
-
     /**
      * Populate the Student from a JSON document.
      *
