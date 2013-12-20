@@ -16,10 +16,6 @@ namespace Canvas {
     }
 
     virtual void SetUp() {
-
-//      Logger::mute();
-      Settings::setDefaults();
-      Settings::enable("-v");
     }
 
     virtual void TearDown() {

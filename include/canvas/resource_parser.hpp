@@ -26,10 +26,15 @@
 
 #include "canvas/canvas.hpp"
 #include "canvas/resource.hpp"
+#include "canvas/logger.hpp"
 #include <json/json.h>
 #include <list>
 
 namespace Canvas {
+
+  #define abort_resource_parsing(resource) \
+    delete resource; \
+    continue;
 
   /**
    * @class resource_parser
@@ -87,9 +92,21 @@ namespace Canvas {
 
         try {
           resource->deserialize(document);
+        } catch(std::exception &e) {
+          Logger::defaultLogger().error()
+            << "Resource deserialization failed: "
+            << e.what()
+            << "\nErratic document:\n"
+            << document;
+
+          abort_resource_parsing(resource);
         } catch(...) {
-          delete resource;
-          continue;
+          Logger::defaultLogger().error()
+            << "An unknown exception was raised deserializing object. "
+            << "Erratic JSON document:\n"
+            << document;
+
+          abort_resource_parsing(resource);
         }
 
         resources.push_back(resource);

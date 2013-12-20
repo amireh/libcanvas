@@ -100,4 +100,23 @@ namespace Canvas {
 
     resources.clear();
   }
+
+  TEST_F(ResourceParserTest, parseResourcesWithCallback) {
+    String json = load_fixture("random_documents.json");
+    std::vector<SpecResource*> resources;
+    int nrCalls = 0;
+
+    resources = parser_.parseResources<SpecResource>(json,
+      [&nrCalls](SpecResource* resource) {
+        ++nrCalls;
+      });
+
+    ASSERT_EQ(nrCalls, 2);
+
+    std::for_each(resources.begin(), resources.end(), [](Resource* r) {
+      delete r;
+    });
+
+    resources.clear();
+  }
 } // namespace cnvs

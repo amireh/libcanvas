@@ -83,6 +83,8 @@ namespace Canvas {
      */
     virtual void loadQuizSubmission(Session&, Quiz const&, AsyncCallback = nullptr);
 
+    virtual bool hasTakenQuiz(Quiz const&) const;
+
     /**
      * Populate the Student from a JSON document.
      *

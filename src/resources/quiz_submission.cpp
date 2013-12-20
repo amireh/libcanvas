@@ -35,7 +35,7 @@ QuizSubmission::QuizSubmission()
     reset();
   }
 
-QuizSubmission::QuizSubmission(ID id, Quiz* quiz)
+QuizSubmission::QuizSubmission(ID id, Quiz const *quiz)
   : Resource(id),
     mQuiz(quiz)
   {
@@ -71,6 +71,11 @@ QuizSubmission::QuizSubmission(ID id, Quiz* quiz)
     mWorkflowState = root.get("workflow_state", "").asString();
     mScore = root.get("score", "").asDouble();
     mKeptScore = root.get("kept_score", "").asDouble();
+  }
+
+  void QuizSubmission::setQuiz(Quiz const *quiz)
+  {
+    mQuiz = quiz;
   }
 
   Quiz const* QuizSubmission::quiz() const {
@@ -112,5 +117,7 @@ QuizSubmission::QuizSubmission(ID id, Quiz* quiz)
   bool QuizSubmission::isPendingReview() const {
     return mWorkflowState == "pending_review";
   }
+
+
 
 } // namespace cnvs

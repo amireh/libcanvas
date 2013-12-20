@@ -47,7 +47,7 @@ namespace Canvas {
   ResourceParser::jsonDocuments(Json::Value& root, String const& ns) const {
     JSONDocuments documents;
 
-    if (ns.length() > 0) {
+    if (!ns.empty()) {
       root = root[ns];
     }
 

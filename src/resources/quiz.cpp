@@ -46,7 +46,7 @@ namespace Canvas {
 
   void Quiz::setCourse(Course* course) {
     mCourse = course;
-    mUrl = course->url() + "/quizzes/" + utility::stringify(mId);
+    buildUrl();
   }
   void Quiz::setTitle(String const& title) {
     mTitle = title;
@@ -96,7 +96,7 @@ namespace Canvas {
   void Quiz::buildUrl()
   {
     if (!mCourse) {
-      throw "can not get a URL to a Quiz without a Course";
+      return;
     }
 
     mUrl = mCourse->url() + "/quizzes/" + utility::stringify(mId);

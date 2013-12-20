@@ -82,10 +82,12 @@ namespace Canvas {
           return;
         }
 
-        mQuizzes = parser.parseResources<Quiz>(response.body, [&](Quiz* quiz) {
-          quiz->setCourse(this);
-        });
 
+        parser.parseResources<Quiz>(response.body, [&](Quiz* quiz) {
+          Logger::defaultLogger().debug() << "got a quiz:" << quiz->id();
+          quiz->setCourse(this);
+          mQuizzes.push_back(quiz);
+        });
 
         callback(true);
       });

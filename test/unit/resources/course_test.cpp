@@ -21,6 +21,7 @@ namespace Canvas {
     ASSERT_NO_THROW(
       mCourse->loadQuizzes(mSession, [&](bool success) {
         ASSERT_TRUE(success);
+        ASSERT_NE(mCourse->quizzes().size(), 0);
       });
     );
 

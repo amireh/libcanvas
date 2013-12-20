@@ -35,6 +35,11 @@ namespace Canvas {
   String      Logger::gAppName = "";
   int           Logger::gIndentLevel = 0;
   bool          Logger::gSilenced = false;
+  Logger        Logger::gDefaultLogger("canvas");
+
+  Logger const& Logger::defaultLogger() {
+    return gDefaultLogger;
+  }
 
   void Logger::mute() {
     gSilenced = true;

@@ -51,6 +51,13 @@ namespace Canvas {
     virtual ~Logger();
 
     /**
+     * A generic, global logger instance that can be used by modules that want
+     * to log once or twice, but don't necessarily want to become Logger objects
+     * themselves.
+     */
+    static Logger const& defaultLogger();
+
+    /**
      * Assigns the threshold to use for filtering messages.
      * Messages logged with a level "below" the assigned threshold
      * will not be logged.
@@ -120,6 +127,7 @@ namespace Canvas {
     static bool           gSilenced;
     static String         gAppName;
     static int            gIndentLevel;
+    static Logger         gDefaultLogger;
 
     String mUuidPrefix;
   }; // end of logger class

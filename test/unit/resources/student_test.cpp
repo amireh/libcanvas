@@ -50,4 +50,18 @@ namespace Canvas {
       });
     );
   }
+
+  TEST_F(StudentTest, hasTakenQuiz) {
+    Course course(1);
+    Quiz quiz(1, &course);
+
+    ASSERT_FALSE(student.hasTakenQuiz(quiz));
+
+    ASSERT_NO_THROW(
+      student.loadQuizSubmission(session, quiz, [&](bool success) {
+        ASSERT_TRUE(student.hasTakenQuiz(quiz));
+      });
+    );
+
+  }
 } // namespace cnvs

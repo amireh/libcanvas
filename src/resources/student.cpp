@@ -73,7 +73,13 @@ namespace Canvas {
 
   const QuizSubmission* Student::quizSubmission(const Quiz &quiz) const
   {
-    return mQuizSubmissions.find(&quiz)->second;
+    QuizSubmissions::const_iterator locator = mQuizSubmissions.find(&quiz);
+
+    if (locator == mQuizSubmissions.end()) {
+      return nullptr;
+    }
+
+    return locator->second;
   }
 
   void Student::loadIdentity(Session& session, AsyncCallback callback) {
@@ -143,7 +149,7 @@ namespace Canvas {
         .front();
 
         if (qs) {
-
+          qs->setQuiz(&quiz);
           mQuizSubmissions.insert(std::make_pair(&quiz, qs));
           callback(true);
         } else {
@@ -153,6 +159,10 @@ namespace Canvas {
         callback(false);
       }
     });
+  }
+
+  bool Student::hasTakenQuiz(const Quiz &quiz) const {
+    return quizSubmission(quiz) != nullptr;
   }
 
   void Student::deserialize(String const&) {
