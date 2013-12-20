@@ -18,8 +18,8 @@ namespace Canvas {
     virtual void SetUp() {
 
       Logger::mute();
-      settings::setDefaults();
-      settings::enable("-v");
+      Settings::setDefaults();
+      Settings::enable("-v");
     }
 
     virtual void TearDown() {

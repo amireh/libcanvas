@@ -32,6 +32,8 @@
 
 namespace Canvas {
 
+  class Student;
+  class Resource;
   /**
    * @class session
    * @brief
@@ -45,18 +47,36 @@ namespace Canvas {
     Session();
     virtual ~Session();
 
-    virtual void authenticate(String const& username, String const& password);
-    virtual void authenticate(String const& token);
+    /**
+     * Impersonate a given student. Further API calls will be made on behalf of
+     * the given Student.
+     *
+     * @note
+     * The student's API Token must be set, see Student::apiToken().
+     */
+    virtual void authenticate(Student const&);
 
+    /**
+     * Bind this session to the given API Token.
+     */
+    virtual void authenticate(String const&);
+
+    /**
+     * Perform a GET API call to retrieve a document, or a set of documents.
+     */
     virtual bool get(URI const&, RC_GET);
+
+    /**
+     * Perform a POST API call to create resources, or upload data.
+     */
     virtual bool post(URI const&, RC_POST);
 
-  protected:
     /**
-     * Update the Authorization headers with the current identity.
+     * Perform a PUT API call to update a resource.
      */
-    virtual void stampIdentity();
+    virtual bool put(Resource const&, RC_POST);
 
+  protected:
     /**
      * Generate the fully-qualified URI for an API endpoint.
      */
@@ -64,12 +84,6 @@ namespace Canvas {
 
     struct curl_slist* addJsonHeaders(struct curl_slist* = nullptr);
     void free_headers();
-
-    struct identity_t {
-      String username;
-      String password;
-      String token;
-    } identity_;
 
     CURL *mCurl;
     struct curl_slist *mHeaders;

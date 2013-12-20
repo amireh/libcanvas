@@ -34,10 +34,10 @@ namespace Canvas {
    * @brief
    * A temporary hack to store some library-wide settings
    */
-  class settings {
+  class Settings {
   public:
-    inline settings() {}
-    inline ~settings() {}
+    inline Settings() {}
+    inline ~Settings() {}
 
     static void setDefaults();
 

@@ -23,6 +23,7 @@
 
 #include "canvas/session.hpp"
 #include "canvas/settings.hpp"
+#include "canvas/resources/student.hpp"
 
 namespace Canvas {
   using HTTP::Download;
@@ -38,7 +39,7 @@ namespace Canvas {
     download->size += realsize;
     buffer_str = String(buffer, realsize);
 
-    if (settings::isEnabled("-v")) {
+    if (Settings::isEnabled("-v")) {
       Logger l("cURL");
       l.debug() << "received " << realsize << " bytes";
       l.debug() << buffer_str;
@@ -77,29 +78,21 @@ namespace Canvas {
     return headers;
   }
 
-  void Session::authenticate(String const& username, String const& password) {
-    throw "BASIC AUTH not implemented yet";
-
-    identity_.username = username;
-    identity_.password = password;
-
-    stampIdentity();
-  }
-
-  void Session::authenticate(String const& token) {
-    identity_.token = token;
-
-    stampIdentity();
-  }
-
-  void Session::stampIdentity() {
+  void Session::authenticate(Student const& student) {
     free_headers();
 
     mHeaders = addJsonHeaders();
     mHeaders = curl_slist_append(mHeaders,
-      ("Authorization: Bearer " + identity_.token).c_str());
+      ("Authorization: Bearer " + student.apiToken()).c_str());
 
     curl_easy_setopt(mCurl, CURLOPT_HTTPHEADER, mHeaders);
+  }
+
+  void Session::authenticate(String const& apiToken) {
+    Student student;
+    student.setApiToken(apiToken);
+
+    authenticate(student);
   }
 
   bool Session::get(URI const& endpoint, Session::RC_GET callback) {
@@ -143,14 +136,18 @@ namespace Canvas {
   }
 
   bool Session::post(URI const& endpoint, Session::RC_POST callback) {
-    return true;
+    throw "not implemented yet";
+  }
+
+  bool Session::put(Resource const& resource, Session::RC_POST callback) {
+    throw "not implemented yet";
   }
 
   URI Session::apiEndpoint(URI const& endpoint) const {
-    return String(settings::get("canvas_host")
+    return String(Settings::get("canvas_host")
       + ":"
-      + settings::get("canvas_port")
-      + settings::get("canvas_api_prefix")
+      + Settings::get("canvas_port")
+      + Settings::get("canvas_api_prefix")
       + endpoint);
   }
 

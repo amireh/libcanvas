@@ -27,6 +27,7 @@
 #include <string>
 #include <cassert>
 #include <functional>
+#include <algorithm>
 #include "canvas/exception.hpp"
 
 namespace Canvas {

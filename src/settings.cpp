@@ -24,24 +24,24 @@
 #include "canvas/settings.hpp"
 
 namespace Canvas {
-  settings::FlagSettings     settings::mFlagSettings;
-  settings::LiteralSettings  settings::mLiteralSettings;
+  Settings::FlagSettings     Settings::mFlagSettings;
+  Settings::LiteralSettings  Settings::mLiteralSettings;
 
   const static String nil_setting("");
 
-  void settings::enable(String const& id) {
+  void Settings::enable(String const& id) {
     mFlagSettings.insert(std::make_pair(id, true));
   }
 
-  void settings::disable(String const& id) {
+  void Settings::disable(String const& id) {
     mFlagSettings.erase(id);
   }
 
-  bool settings::isEnabled(String const& id) {
+  bool Settings::isEnabled(String const& id) {
     return mFlagSettings.find(id) != mFlagSettings.end();
   }
 
-  void settings::set(String const& k, String const& v) {
+  void Settings::set(String const& k, String const& v) {
     if (mLiteralSettings.find(k) != mLiteralSettings.end()) {
       mLiteralSettings[k] = v;
       return;
@@ -50,14 +50,14 @@ namespace Canvas {
     mLiteralSettings.insert(std::make_pair(k,v));
   }
 
-  String const& settings::get(String const& k) {
+  String const& Settings::get(String const& k) {
     if (mLiteralSettings.find(k) == mLiteralSettings.end())
       return nil_setting;
 
     return mLiteralSettings.find(k)->second;
   }
 
-  void settings::setDefaults() {
+  void Settings::setDefaults() {
     set("canvas_host", "http://localhost");
     set("canvas_port", "3000");
     set("canvas_api_prefix", "/api/v1");
