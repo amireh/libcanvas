@@ -7,24 +7,24 @@
 #include <regex.h>
 #include <gtest/internal/gtest-internal.h>
 
-namespace cnvs {
-  static const string_t CANVAS_SPEC_FIXTURE_PATH("../test/fixture");
-  static const string_t CANVAS_SPEC_API_TOKEN("Ko4dCE6sX9CaYSknvpAHbmSVulsNx9TUtSK1EbT34fOBur8lNAm7L8AG2OjMNfPQ");
+namespace Canvas {
+  static const String CANVAS_SPEC_FIXTURE_PATH("../test/fixture");
+  static const String CANVAS_SPEC_API_TOKEN("Ko4dCE6sX9CaYSknvpAHbmSVulsNx9TUtSK1EbT34fOBur8lNAm7L8AG2OjMNfPQ");
 
-  static string_t fixture(string_t const& path) {
+  static String fixture(String const& path) {
     return CANVAS_SPEC_FIXTURE_PATH + "/" + path;
   }
 
-  static string_t load_fixture(string_t const& path) {
-    string_t out;
-    file_manager::singleton().load_file(fixture(path), out);
+  static String load_fixture(String const& path) {
+    String out;
+    FileManager::singleton().load_file(fixture(path), out);
     return out;
   }
 
   namespace utility {
     inline static
     std::string keywords(std::string const& s) {
-      string_t out;
+      String out;
       partitioned_string_t parts = split(s, ' ');
       for (partitioned_string_t::const_iterator i = parts.begin(); i != parts.end(); ++i) {
         out += (*i) + ".*";

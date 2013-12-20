@@ -27,80 +27,80 @@
 #include <cstdio>
 #include <cstring>
 
-namespace cnvs {
-  quiz_submission::quiz_submission(id_t id, quiz* quiz)
-  : resource(id),
-    quiz_(quiz),
-    submission_id_(0),
-    user_id_(0),
-    attempt_(0),
-    score_(0),
-    kept_score_(0) {
+namespace Canvas {
+  QuizSubmission::QuizSubmission(ID id, Quiz* quiz)
+  : Resource(id),
+    mQuiz(quiz),
+    mSubmissionId(0),
+    mUserId(0),
+    mAttempt(0),
+    mScore(0),
+    mKeptScore(0) {
   }
 
-  quiz_submission::~quiz_submission() {
+  QuizSubmission::~QuizSubmission() {
   }
 
-  void quiz_submission::deserialize(string_t const& json) {
+  void QuizSubmission::deserialize(String const& json) {
     Json::Value root;
     Json::Reader reader;
     bool parser_success;
 
     if (!reader.parse( json, root )) {
-      throw json_parser_error(reader.getFormattedErrorMessages());
+      throw JSONParserError(reader.getFormattedErrorMessages());
     }
 
-    id_ = root.get("id", 0).asUInt();
-    submission_id_ = root.get("submission_id", 0).asUInt();
-    user_id_ = root.get("user_id", 0).asUInt();
-    attempt_ = root.get("attempt", 0).asUInt();
-    started_at_ = root.get("started_at", "").asString();
-    finished_at_ = root.get("finished_at", "").asString();
-    end_at_ = root.get("end_at", "").asString();
-    validation_token_ = root.get("validation_token", "").asString();
-    workflow_state_ = root.get("workflow_state", "").asString();
-    score_ = root.get("score", "").asDouble();
-    kept_score_ = root.get("kept_score", "").asDouble();
+    mId = root.get("id", 0).asUInt();
+    mSubmissionId = root.get("submission_id", 0).asUInt();
+    mUserId = root.get("user_id", 0).asUInt();
+    mAttempt = root.get("attempt", 0).asUInt();
+    mStartedAt = root.get("started_at", "").asString();
+    mFinishedAt = root.get("finished_at", "").asString();
+    mEndAt = root.get("end_at", "").asString();
+    mValidationToken = root.get("validation_token", "").asString();
+    mWorkflowState = root.get("workflow_state", "").asString();
+    mScore = root.get("score", "").asDouble();
+    mKeptScore = root.get("kept_score", "").asDouble();
   }
 
-  quiz const* quiz_submission::get_quiz() const {
-    return quiz_;
+  Quiz const* QuizSubmission::quiz() const {
+    return mQuiz;
   }
-  string_t const& quiz_submission::started_at() const {
-    return started_at_;
+  String const& QuizSubmission::startedAt() const {
+    return mStartedAt;
   }
-  string_t const& quiz_submission::finished_at() const {
-    return finished_at_;
+  String const& QuizSubmission::finishedAt() const {
+    return mFinishedAt;
   }
-  string_t const& quiz_submission::end_at() const {
-    return end_at_;
+  String const& QuizSubmission::endAt() const {
+    return mEndAt;
   }
-  string_t const& quiz_submission::validation_token() const {
-    return validation_token_;
+  String const& QuizSubmission::validationToken() const {
+    return mValidationToken;
   }
-  double quiz_submission::score() const {
-    return score_;
+  double QuizSubmission::score() const {
+    return mScore;
   }
-  double quiz_submission::kept_score() const {
-    return kept_score_;
+  double QuizSubmission::keptScore() const {
+    return mKeptScore;
   }
-  id_t quiz_submission::submission_id() const {
-    return submission_id_;
+  ID QuizSubmission::submissionId() const {
+    return mSubmissionId;
   }
-  id_t quiz_submission::user_id() const {
-    return user_id_;
+  ID QuizSubmission::userId() const {
+    return mUserId;
   }
-  int quiz_submission::attempt() const {
-    return attempt_;
+  int QuizSubmission::attempt() const {
+    return mAttempt;
   }
-  bool quiz_submission::is_complete() const {
-    return workflow_state_ == "complete";
+  bool QuizSubmission::isComplete() const {
+    return mWorkflowState == "complete";
   }
-  bool quiz_submission::is_takeable() const {
-    return workflow_state_ == "untaken";
+  bool QuizSubmission::isTakeable() const {
+    return mWorkflowState == "untaken";
   }
-  bool quiz_submission::is_pending_review() const {
-    return workflow_state_ == "pending_review";
+  bool QuizSubmission::isPendingReview() const {
+    return mWorkflowState == "pending_review";
   }
 
 } // namespace cnvs

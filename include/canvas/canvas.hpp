@@ -29,14 +29,15 @@
 #include <functional>
 #include "canvas/exception.hpp"
 
-namespace cnvs {
-  typedef std::string string_t;
-  typedef string_t uri_t;
+namespace Canvas {
+  typedef std::string String;
+  typedef String URI;
+  typedef id_t ID;
   typedef unsigned long uint64_t;
-  typedef std::function<void(bool)> async_callback_t;
+  typedef std::function<void(bool)> AsyncCallback;
 
-  int  canvas_init(int argc, char** argv);
-  void canvas_free();
+  int  init(int argc, char** argv);
+  void free();
 }
 
 #endif

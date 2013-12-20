@@ -24,61 +24,61 @@
 #include "canvas/logger.hpp"
 #include <iomanip>
 
-namespace cnvs {
+namespace Canvas {
 
   static char levels[] = { 'D','I','N','W','E','A','C' };
   static char threshold = 'D';
 
-  ostringstream logger::sink;
-  ostream*      logger::out = &std::cout;
-  bool          logger::with_timestamps = true;
-  string_t      logger::app_name = "";
-  int           logger::indent_level = 0;
-  bool          logger::silenced = false;
+  ostringstream Logger::gSink;
+  ostream*      Logger::gOut = &std::cout;
+  bool          Logger::gWithTimestamps = true;
+  String      Logger::gAppName = "";
+  int           Logger::gIndentLevel = 0;
+  bool          Logger::gSilenced = false;
 
-  void logger::mute() {
-    silenced = true;
+  void Logger::mute() {
+    gSilenced = true;
   }
-  void logger::unmute() {
-    silenced = false;
+  void Logger::unmute() {
+    gSilenced = false;
   }
 
-  void logger::set_threshold(char level) {
+  void Logger::setThreshold(char level) {
     threshold = level;
   }
 
-  void logger::set_stream(std::ostream* s) {
-    out = s;
+  void Logger::setStream(std::ostream* s) {
+    gOut = s;
   }
 
-  void logger::enable_timestamps(bool f) {
-    with_timestamps = f;
+  void Logger::enableTimestamps(bool f) {
+    gWithTimestamps = f;
   }
 
-  void logger::set_app_name(string_t const& in_app_name) {
-    app_name = in_app_name;
+  void Logger::setAppName(String const& in_app_name) {
+    gAppName = in_app_name;
   }
 
-  void logger::indent() {
-    ++indent_level;
+  void Logger::indent() {
+    ++gIndentLevel;
   }
 
-  void logger::deindent() {
-    --indent_level;
+  void Logger::deindent() {
+    --gIndentLevel;
   }
 
-  logger::logger(string_t context)
-  : context_(context)
+  Logger::Logger(String context)
+  : mContext(context)
   {
   }
 
-  logger::~logger()
+  Logger::~Logger()
   {
   }
 
-  ostream& logger::log(char lvl) const {
-    if (silenced)
-      return sink;
+  ostream& Logger::log(char lvl) const {
+    if (gSilenced)
+      return gSink;
 
     bool enabled = false;
     for (int i = 0; i < 7; ++i)
@@ -86,9 +86,9 @@ namespace cnvs {
       else if (levels[i] == lvl) break;
 
     if (!enabled)
-      return sink;
+      return gSink;
 
-    if (with_timestamps) {
+    if (gWithTimestamps) {
       struct tm *pTime;
       time_t ctTime; time(&ctTime);
       pTime = localtime( &ctTime );
@@ -101,46 +101,46 @@ namespace cnvs {
         << ":" << std::setw(2) << std::setfill('0') << pTime->tm_min
         << ":" << std::setw(2) << std::setfill('0') << pTime->tm_sec
         << " ";
-      (*out) << timestamp.str();
+      (*gOut) << timestamp.str();
     }
 
-    if (!app_name.empty()) {
-      (*out) << app_name << " ";
+    if (!gAppName.empty()) {
+      (*gOut) << gAppName << " ";
     }
 
-    for (int i = 0; i < indent_level; ++i)
-      (*out) << "  ";
+    for (int i = 0; i < gIndentLevel; ++i)
+      (*gOut) << "  ";
 
-    (*out) << "[" << lvl << "]" << uuid_prefix_ << " "
-      << (context_.empty() ? "" : context_ + ": ");
+    (*gOut) << "[" << lvl << "]" << mUuidPrefix << " "
+      << (mContext.empty() ? "" : mContext + ": ");
 
-    return *out;
+    return *gOut;
   }
 
-  void logger::set_uuid_prefix(string_t const& uuid) {
-    uuid_prefix_ = " {" + uuid + "}";
+  void Logger::setUuidPrefix(String const& uuid) {
+    mUuidPrefix = " {" + uuid + "}";
   }
-  string_t const& logger::uuid_prefix() const {
-    return uuid_prefix_;
+  String const& Logger::uuidPrefix() const {
+    return mUuidPrefix;
   }
 
-  logstream logger::debug()  const { return logstream(log('D')); }
-  logstream logger::info()   const { return logstream(log('I')); }
-  logstream logger::notice() const { return logstream(log('N')); }
-  logstream logger::warn()   const { return logstream(log('W')); }
-  logstream logger::error()  const { return logstream(log('E')); }
-  logstream logger::alert()  const { return logstream(log('A')); }
-  logstream logger::crit()   const { return logstream(log('C')); }
-  logstream logger::plain()  const { return logstream(*out); }
+  LogStream Logger::debug()  const { return LogStream(log('D')); }
+  LogStream Logger::info()   const { return LogStream(log('I')); }
+  LogStream Logger::notice() const { return LogStream(log('N')); }
+  LogStream Logger::warn()   const { return LogStream(log('W')); }
+  LogStream Logger::error()  const { return LogStream(log('E')); }
+  LogStream Logger::alert()  const { return LogStream(log('A')); }
+  LogStream Logger::crit()   const { return LogStream(log('C')); }
+  LogStream Logger::plain()  const { return LogStream(*gOut); }
 
-  logstream::logstream(std::ostream& in_s)
+  LogStream::LogStream(std::ostream& in_s)
   : s(in_s) {}
 
-  logstream::~logstream() {
+  LogStream::~LogStream() {
     s << std::endl;
   }
 
-  void logger::rename_context(string_t const& new_ctx) {
-    context_ = new_ctx;
+  void Logger::renameContext(String const& new_ctx) {
+    mContext = new_ctx;
   }
 }

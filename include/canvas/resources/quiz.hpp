@@ -27,44 +27,44 @@
 #include "canvas/canvas.hpp"
 #include "canvas/resource.hpp"
 
-namespace cnvs {
+namespace Canvas {
 
-  class course;
-  class session;
+  class Course;
+  class Session;
   /**
    * @class quiz
    * @brief
    * A course quiz.
    */
-  class quiz : public resource {
+  class Quiz : public Resource {
   public:
-    quiz();
-    quiz(id_t id, course*);
-    virtual ~quiz();
+    Quiz();
+    Quiz(ID id, Course*);
+    virtual ~Quiz();
 
-    virtual void set_course(course*);
-    virtual void set_title(string_t const&);
-    virtual void set_access_code(string_t const&);
-    virtual void set_published(bool);
+    virtual void setCourse(Course*);
+    virtual void setTitle(String const&);
+    virtual void setAccessCode(String const&);
+    virtual void setPublished(bool);
 
-    virtual course const* get_course() const;
-    virtual string_t const& get_title() const;
-    virtual string_t const& get_access_code() const;
+    virtual Course const* course() const;
+    virtual String const& title() const;
+    virtual String const& accessCode() const;
 
-    virtual bool is_published() const;
+    virtual bool isPublished() const;
 
-    virtual bool take(session&, async_callback_t&);
+    virtual bool take(Session&, AsyncCallback&);
 
     /**
      * Populate the Quiz from a JSON document.
      */
-    virtual void deserialize(string_t const&);
+    virtual void deserialize(String const&);
 
   protected:
-    course* course_;
-    string_t title_;
-    string_t access_code_;
-    bool published_;
+    Course* mCourse;
+    String mTitle;
+    String mAccessCode;
+    bool mPublished;
   };
 }
 

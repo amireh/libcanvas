@@ -2,7 +2,7 @@
 #include "canvas/settings.hpp"
 #include "test_helper.hpp"
 
-namespace cnvs {
+namespace Canvas {
 
   class settings_test : public ::testing::Test {
   };

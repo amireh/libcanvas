@@ -5,50 +5,50 @@
 #include "canvas/session.hpp"
 #include "test_helper.hpp"
 
-namespace cnvs {
+namespace Canvas {
 
   class course_test : public ::testing::Test {
   protected:
-    course* course_;
-    resource_parser parser_;
-    session session_;
+    Course* mCourse;
+    ResourceParser parser_;
+    Session mSession;
   };
 
-  TEST_F(course_test, load_quizzes) {
-    course_ = parser_.parse_resource<course>(load_fixture("course.json"));
-    session_.authenticate(CANVAS_SPEC_API_TOKEN);
+  TEST_F(course_test, loadQuizzes) {
+    mCourse = parser_.parseResource<Course>(load_fixture("course.json"));
+    mSession.authenticate(CANVAS_SPEC_API_TOKEN);
 
     ASSERT_NO_THROW(
-      course_->load_quizzes(session_, [&](bool success) {
+      mCourse->loadQuizzes(mSession, [&](bool success) {
         ASSERT_TRUE(success);
       });
     );
 
-    delete course_;
+    delete mCourse;
   }
 
   TEST_F(course_test, deserialize) {
-    string_t json = load_fixture("course.json");
+    String json = load_fixture("course.json");
 
-    ASSERT_NO_THROW(course_ = parser_.parse_resource<course>(json););
-    ASSERT_TRUE(course_);
-    ASSERT_EQ(course_->id(), 1);
-    ASSERT_EQ(course_->get_name(), "Linear Algebra");
-    ASSERT_EQ(course_->get_code(), "Linear");
-    ASSERT_EQ(course_->get_workflow_state(), "available");
+    ASSERT_NO_THROW(mCourse = parser_.parseResource<Course>(json););
+    ASSERT_TRUE(mCourse);
+    ASSERT_EQ(mCourse->id(), 1);
+    ASSERT_EQ(mCourse->name(), "Linear Algebra");
+    ASSERT_EQ(mCourse->code(), "Linear");
+    ASSERT_EQ(mCourse->workflowState(), "available");
 
-    delete course_;
+    delete mCourse;
   }
 
   TEST_F(course_test, bulk_parsing) {
-    string_t json = load_fixture("courses.json");
-    std::vector<course*> courses = parser_.parse_resources<course>(json);
+    String json = load_fixture("courses.json");
+    std::vector<Course*> courses = parser_.parseResources<Course>(json);
 
     ASSERT_EQ(courses.size(), 2);
     ASSERT_EQ(courses.at(0)->id(), 1);
     ASSERT_EQ(courses.at(1)->id(), 2);
 
-    std::for_each(courses.begin(), courses.end(), [](course* c) { delete c; });
+    std::for_each(courses.begin(), courses.end(), [](Course* c) { delete c; });
     courses.clear();
   }
 } // namespace cnvs

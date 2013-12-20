@@ -27,63 +27,63 @@
 #include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 
-namespace cnvs {
-  course::course()
-  : resource() {
+namespace Canvas {
+  Course::Course()
+  : Resource() {
   }
 
-  course::course(id_t id)
-  : resource(id) {
-    build_url();
+  Course::Course(ID id)
+  : Resource(id) {
+    buildUrl();
   }
 
-  course::~course() {
-    std::for_each(quizzes_.begin(), quizzes_.end(), [](quiz* quiz) {
-      delete quiz;
+  Course::~Course() {
+    std::for_each(mQuizzes.begin(), mQuizzes.end(), [](Quiz* Quiz) {
+      delete Quiz;
     });
 
-    quizzes_.clear();
+    mQuizzes.clear();
   }
 
-  void course::build_url() {
-    url_ = "/courses/" + utility::stringify(id_);
+  void Course::buildUrl() {
+    mUrl = "/courses/" + utility::stringify(mId);
   }
 
-  void course::set_name(string_t const& name) {
-    name_ = name;
+  void Course::setName(String const& name) {
+    mName = name;
   }
-  void course::set_code(string_t const& code) {
-    code_ = code;
+  void Course::setCode(String const& code) {
+    mCode = code;
   }
-  void course::set_workflow_state(string_t const& workflow_state) {
-    workflow_state_ = workflow_state;
-  }
-
-  string_t const& course::get_name() const {
-    return name_;
-  }
-  string_t const& course::get_code() const {
-    return code_;
-  }
-  string_t const& course::get_workflow_state() const {
-    return workflow_state_;
-  }
-  course::quizzes_t const& course::get_quizzes() const {
-    return quizzes_;
+  void Course::setWorkflowState(String const& workflow_state) {
+    mWorkflowState = workflow_state;
   }
 
-  void course::load_quizzes(session& in_session, async_callback_t callback) {
-    in_session.get(get_url() + "/quizzes",
-      [&](bool success, http::response const &response) -> void {
-        resource_parser parser;
+  String const& Course::name() const {
+    return mName;
+  }
+  String const& Course::code() const {
+    return mCode;
+  }
+  String const& Course::workflowState() const {
+    return mWorkflowState;
+  }
+  Course::Quizzes const& Course::quizzes() const {
+    return mQuizzes;
+  }
+
+  void Course::loadQuizzes(Session& in_session, AsyncCallback callback) {
+    in_session.get(url() + "/quizzes",
+      [&](bool success, HTTP::Response const &response) -> void {
+        ResourceParser parser;
 
         if (!success) {
           callback(false);
           return;
         }
 
-        quizzes_ = parser.parse_resources<quiz>(response.body, [&](quiz* quiz) {
-          quiz->set_course(this);
+        mQuizzes = parser.parseResources<Quiz>(response.body, [&](Quiz* quiz) {
+          quiz->setCourse(this);
         });
 
 
@@ -91,20 +91,20 @@ namespace cnvs {
       });
   }
 
-  void course::deserialize(string_t const& json) {
+  void Course::deserialize(String const& json) {
     Json::Value root;
     Json::Reader reader;
     bool parser_success;
 
     if (!reader.parse( json, root )) {
-      throw json_parser_error(reader.getFormattedErrorMessages());
+      throw JSONParserError(reader.getFormattedErrorMessages());
     }
 
-    id_ = root.get("id", 0).asUInt();
-    name_ = root.get("name", "Course").asString();
-    code_ = root.get("course_code", "course").asString();
-    workflow_state_ = root.get("workflow_state", "available").asString();
+    mId = root.get("id", 0).asUInt();
+    mName = root.get("name", "Course").asString();
+    mCode = root.get("course_code", "course").asString();
+    mWorkflowState = root.get("workflow_state", "available").asString();
 
-    build_url();
+    buildUrl();
   }
 } // namespace cnvs

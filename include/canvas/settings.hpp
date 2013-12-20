@@ -27,7 +27,7 @@
 #include "canvas/canvas.hpp"
 #include <map>
 
-namespace cnvs {
+namespace Canvas {
 
   /**
    * @class settings
@@ -39,20 +39,20 @@ namespace cnvs {
     inline settings() {}
     inline ~settings() {}
 
-    static void set_defaults();
+    static void setDefaults();
 
-    static void enable(string_t const& id);
-    static void disable(string_t const& id);
-    static void set(string_t const& id, string_t const& value);
-    static bool is_enabled(string_t const& id);
-    static string_t const& get(string_t const& id);
+    static void enable(String const& id);
+    static void disable(String const& id);
+    static void set(String const& id, String const& value);
+    static bool isEnabled(String const& id);
+    static String const& get(String const& id);
 
   protected:
-    typedef std::map<string_t, bool>      flag_settings_t;
-    typedef std::map<string_t, string_t>  literal_settings_t;
+    typedef std::map<String, bool>    FlagSettings;
+    typedef std::map<String, String>  LiteralSettings;
 
-    static flag_settings_t flag_settings_;
-    static literal_settings_t literal_settings_;
+    static FlagSettings mFlagSettings;
+    static LiteralSettings mLiteralSettings;
   };
 }
 

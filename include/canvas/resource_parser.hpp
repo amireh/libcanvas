@@ -29,17 +29,17 @@
 #include <json/json.h>
 #include <list>
 
-namespace cnvs {
+namespace Canvas {
 
   /**
    * @class resource_parser
    * @brief
    * Builds resources from JSON documents.
    */
-  class resource_parser {
+  class ResourceParser {
   public:
-    resource_parser();
-    virtual ~resource_parser();
+    ResourceParser();
+    virtual ~ResourceParser();
 
     /**
      * Build a single resource from a JSON document.
@@ -48,7 +48,7 @@ namespace cnvs {
      * @return nullptr if the resource fails to deserialize.
      */
     template<typename T>
-    T* parse_resource(const string_t& document) {
+    T* parseResource(const String& document) {
       T* resource = new T();
 
       try {
@@ -74,12 +74,12 @@ namespace cnvs {
      * @see resource::deserialize()
      */
     template<typename T>
-    std::vector<T*> parse_resources(
-      const string_t& json,
+    std::vector<T*> parseResources(
+      const String& json,
       std::function<void(T*)> callback = nullptr) const {
       T* resource;
       std::vector<T*> resources;
-      json_documents_t documents(json_documents(json));
+      JSONDocuments documents(jsonDocuments(json));
 
       for (auto document : documents) {
         resource = new T();
@@ -102,10 +102,10 @@ namespace cnvs {
     }
 
   protected:
-    typedef std::list<string_t> json_documents_t;
+    typedef std::list<String> JSONDocuments;
 
-    virtual json_documents_t json_documents(string_t const& root) const;
-    virtual json_documents_t json_documents(Json::Value& root) const;
+    virtual JSONDocuments jsonDocuments(String const& root) const;
+    virtual JSONDocuments jsonDocuments(Json::Value& root) const;
   };
 }
 

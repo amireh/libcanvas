@@ -27,38 +27,38 @@
 #include "canvas/canvas.hpp"
 #include "canvas/resource.hpp"
 
-namespace cnvs {
+namespace Canvas {
 
-  class quiz;
+  class Quiz;
   /**
    * @class quiz_submission
    * @brief
    * A course quiz_submission.
    */
-  class quiz_submission : public resource {
+  class QuizSubmission : public Resource {
   public:
-    quiz_submission(id_t, quiz*);
-    virtual ~quiz_submission();
+    QuizSubmission(ID, Quiz*);
+    virtual ~QuizSubmission();
 
     /**
      * The Quiz this QS acts on.
      */
-    virtual quiz const* get_quiz() const;
+    virtual Quiz const* quiz() const;
 
     /**
      * Timestamp denoting when the latest quiz attempt has been started.
      */
-    virtual string_t const& started_at() const;
+    virtual String const& startedAt() const;
 
     /**
      * Timestamp denoting when the latest quiz attempt was submitted.
      */
-    virtual string_t const& finished_at() const;
+    virtual String const& finishedAt() const;
 
     /**
      * Timestamp denoting when the QS will become overdue.
      */
-    virtual string_t const& end_at() const;
+    virtual String const& endAt() const;
 
     /**
      * Access token required for manipulating the QS.
@@ -68,7 +68,7 @@ namespace cnvs {
      * @note
      * Keep it secret!
      */
-    virtual string_t const& validation_token() const;
+    virtual String const& validationToken() const;
 
     /**
      * The score of the latest QS attempt.
@@ -79,17 +79,17 @@ namespace cnvs {
      * The latest, or highest, or original score - depending on the Quiz
      * settings.
      */
-    virtual double kept_score() const;
+    virtual double keptScore() const;
 
     /**
      * ID of the generic submission this QS represents.
      */
-    virtual id_t submission_id() const;
+    virtual ID submissionId() const;
 
     /**
      * ID of the quiz participant.
      */
-    virtual id_t user_id() const;
+    virtual ID userId() const;
 
     /**
      * The current attempt index the quiz participant is at for this Quiz.
@@ -99,35 +99,35 @@ namespace cnvs {
     /**
      * Was this QS turned in?
      */
-    virtual bool is_complete() const;
+    virtual bool isComplete() const;
 
     /**
      * Can the quiz be taken?
      */
-    virtual bool is_takeable() const;
+    virtual bool isTakeable() const;
 
     /**
      * Is the QS complete and pending review by a teacher or grader?
      */
-    virtual bool is_pending_review() const;
+    virtual bool isPendingReview() const;
 
     /**
      * Populate QuizSubmission from a JSON document.
      */
-    virtual void deserialize(string_t const& json);
+    virtual void deserialize(String const& json);
 
   protected:
-    quiz* quiz_;
-    id_t submission_id_;
-    id_t user_id_;
-    string_t started_at_;
-    string_t end_at_;
-    string_t finished_at_;
-    string_t validation_token_;
-    string_t workflow_state_;
-    uint8_t attempt_;
-    double score_;
-    double kept_score_;
+    Quiz* mQuiz;
+    ID mSubmissionId;
+    ID mUserId;
+    String mStartedAt;
+    String mEndAt;
+    String mFinishedAt;
+    String mValidationToken;
+    String mWorkflowState;
+    uint8_t mAttempt;
+    double mScore;
+    double mKeptScore;
   };
 }
 

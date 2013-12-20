@@ -28,10 +28,10 @@
 #include "canvas/resource.hpp"
 #include <vector>
 
-namespace cnvs {
+namespace Canvas {
 
-  class quiz;
-  class session;
+  class Quiz;
+  class Session;
 
   /**
    * \addtogroup Resources
@@ -39,37 +39,37 @@ namespace cnvs {
    * @class course
    * Courses have student enrollments and quizzes.
    */
-  class course : public resource {
+  class Course : public Resource {
   public:
-    typedef std::vector<quiz*> quizzes_t;
+    typedef std::vector<Quiz*> Quizzes;
 
-    course();
-    course(id_t id);
-    virtual ~course();
+    Course();
+    Course(ID id);
+    virtual ~Course();
 
-    virtual void set_name(string_t const&);
-    virtual void set_code(string_t const&);
-    virtual void set_workflow_state(string_t const&);
+    virtual void setName(String const&);
+    virtual void setCode(String const&);
+    virtual void setWorkflowState(String const&);
 
-    virtual string_t const& get_name() const;
-    virtual string_t const& get_code() const;
-    virtual string_t const& get_workflow_state() const;
-    virtual quizzes_t const& get_quizzes() const;
+    virtual String const& name() const;
+    virtual String const& code() const;
+    virtual String const& workflowState() const;
+    virtual Quizzes const& quizzes() const;
 
-    virtual void load_quizzes(session&, async_callback_t = nullptr);
+    virtual void loadQuizzes(Session&, AsyncCallback = nullptr);
 
     /**
      * Populate the Course from a JSON document.
      */
-    virtual void deserialize(string_t const&);
+    virtual void deserialize(String const&);
 
   protected:
-    string_t name_;
-    string_t code_;
-    string_t workflow_state_;
-    quizzes_t quizzes_;
+    String mName;
+    String mCode;
+    String mWorkflowState;
+    Quizzes mQuizzes;
 
-    void build_url();
+    void buildUrl();
   };
   /** @} */
 }

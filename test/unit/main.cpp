@@ -4,21 +4,21 @@
 #include "test_helper.hpp"
 #include <gtest/gtest.h>
 
-namespace cnvs {
+namespace Canvas {
   class unit_test_env : public ::testing::Environment {
   public:
     unit_test_env(int argc, char** argv) {
-      canvas_init(argc, argv);
+      init(argc, argv);
     }
 
     virtual ~unit_test_env() {
-      canvas_free();
+      free();
     }
 
     virtual void SetUp() {
 
-      logger::mute();
-      settings::set_defaults();
+      Logger::mute();
+      settings::setDefaults();
       settings::enable("-v");
     }
 
@@ -29,6 +29,6 @@ namespace cnvs {
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
-  ::testing::AddGlobalTestEnvironment(new cnvs::unit_test_env(argc, argv));
+  ::testing::AddGlobalTestEnvironment(new Canvas::unit_test_env(argc, argv));
   return RUN_ALL_TESTS();
 }

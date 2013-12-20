@@ -24,28 +24,28 @@
 #include "canvas/resource_parser.hpp"
 #include <iostream>
 
-namespace cnvs {
-  resource_parser::resource_parser() {
+namespace Canvas {
+  ResourceParser::ResourceParser() {
   }
 
-  resource_parser::~resource_parser() {
+  ResourceParser::~ResourceParser() {
   }
 
-  resource_parser::json_documents_t
-  resource_parser::json_documents(string_t const& root_json) const {
+  ResourceParser::JSONDocuments
+  ResourceParser::jsonDocuments(String const& root_json) const {
     Json::Value root;
     Json::Reader reader;
 
     if (!reader.parse( root_json, root )) {
-      throw json_parser_error(reader.getFormattedErrorMessages());
+      throw JSONParserError(reader.getFormattedErrorMessages());
     }
 
-    return json_documents(root);
+    return jsonDocuments(root);
   }
 
-  resource_parser::json_documents_t
-  resource_parser::json_documents(Json::Value& root) const {
-    json_documents_t documents;
+  ResourceParser::JSONDocuments
+  ResourceParser::jsonDocuments(Json::Value& root) const {
+    JSONDocuments documents;
 
     if (root.isArray()) {
       for (auto element : root) {

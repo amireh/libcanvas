@@ -29,13 +29,13 @@
 #include <fstream>
 #include <iostream>
 
-namespace cnvs {
+namespace Canvas {
 
   using std::ostream;
   using std::ostringstream;
 
-  struct logstream;
-  class logger {
+  struct LogStream;
+  class Logger {
   public:
 
     /**
@@ -47,8 +47,8 @@ namespace cnvs {
      * The context identifies the module that this logger instance
      * represents, ie: GameManager, db_adapter, UIEngine, etc.
      */
-    logger(string_t context);
-    virtual ~logger();
+    Logger(String context);
+    virtual ~Logger();
 
     /**
      * Assigns the threshold to use for filtering messages.
@@ -58,21 +58,21 @@ namespace cnvs {
      * Available level thresholds (ordered):
      * => D, I, N, W, E, A, C
      */
-    static void set_threshold(char level);
+    static void setThreshold(char level);
 
     /**
      * Override the stream to append the messages to (defaults to std::cout)
      */
-    static void set_stream(std::ostream*);
+    static void setStream(std::ostream*);
 
     /**
      * Messages will be prefixed with a timestamp of the following format:
      * => dd-mm-yyyy hh:mm::ss
      */
-    static void enable_timestamps(bool on_or_off);
+    static void enableTimestamps(bool on_or_off);
 
     /** All messages will be prefixed by the specified application name */
-    static void set_app_name(string_t const& app_name);
+    static void setAppName(String const& gAppName);
 
     static void indent();
     static void deindent();
@@ -81,57 +81,57 @@ namespace cnvs {
     static void unmute();
 
     /** Message will be prefixed with [D] */
-    logstream debug() const;
+    LogStream debug() const;
     /** Message will be prefixed with [I] */
-    logstream info() const;
+    LogStream info() const;
     /** Message will be prefixed with [N] */
-    logstream notice() const;
+    LogStream notice() const;
     /** Message will be prefixed with [W] */
-    logstream warn() const;
+    LogStream warn() const;
     /** Message will be prefixed with [E] */
-    logstream error() const;
+    LogStream error() const;
     /** Message will be prefixed with [A] */
-    logstream alert() const;
+    LogStream alert() const;
     /** Message will be prefixed with [C] */
-    logstream crit() const;
+    LogStream crit() const;
 
-    logstream plain() const;
+    LogStream plain() const;
 
     /**
      * Subsequent messages will be prefixed with {IN_UUID}
      * positioned right after the [LEVEL] part.
      */
-    void set_uuid_prefix(string_t const&);
+    void setUuidPrefix(String const&);
 
     /** The assigned UUID prefix, if any */
-    string_t const& uuid_prefix() const;
+    String const& uuidPrefix() const;
 
   protected:
-    void rename_context(string_t const&);
+    void renameContext(String const&);
 
   private:
     ostream& log(char lvl) const;
-    string_t context_;
+    String mContext;
 
-    static ostringstream  sink;
-    static ostream*       out;
-    static bool           with_timestamps;
-    static bool           with_app_name;
-    static bool           silenced;
-    static string_t       app_name;
-    static int            indent_level;
+    static ostringstream  gSink;
+    static ostream*       gOut;
+    static bool           gWithTimestamps;
+    static bool           gWithAppName;
+    static bool           gSilenced;
+    static String         gAppName;
+    static int            gIndentLevel;
 
-    string_t uuid_prefix_;
+    String mUuidPrefix;
   }; // end of logger class
 
-  struct logstream {
-    logstream(std::ostream&);
-    ~logstream();
+  struct LogStream {
+    LogStream(std::ostream&);
+    ~LogStream();
 
     std::ostream &s;
 
     template<typename T>
-    inline logstream& operator<<(T const& data) {
+    inline LogStream& operator<<(T const& data) {
       s << data;
       return *this;
     }

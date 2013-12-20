@@ -26,20 +26,20 @@
 
 #include "canvas/canvas.hpp"
 
-namespace cnvs {
-namespace http {
+namespace Canvas {
+namespace HTTP {
 
   /**
    * @class response
    * @brief
    * HTTP response.
    */
-  struct response {
+  struct Response {
     uint8_t status;
-    string_t body;
+    String  body;
   };
 
-} // namespace http
-} // namespace cnvs
+} // namespace HTTP
+} // namespace Canvas
 
 #endif

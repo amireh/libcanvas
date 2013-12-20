@@ -31,33 +31,33 @@
 #include <iostream>
 #include <string>
 
-namespace cnvs {
+namespace Canvas {
 namespace utility {
 
-  inline static string_t stringify(bool x)
+  inline static String stringify(bool x)
   {
     return x ? "true" : "false";
   }
 
   template<typename T>
-  inline static string_t stringify(const T& x)
+  inline static String stringify(const T& x)
   {
     std::ostringstream o;
     if (!(o << x))
-      throw bad_conversion(string_t("stringify(")
+      throw BadConversion(String("stringify(")
                 + typeid(x).name() + ")");
     return o.str();
   }
 
   // helper; converts an integer-based type to a string
   template<typename T>
-  inline static void convert(string_t const& s, T& inValue,
+  inline static void convert(String const& s, T& inValue,
             bool fail_if_leftovers = true)
   {
     std::istringstream _buffer(s);
     char c;
     if (!(_buffer >> inValue) || (fail_if_leftovers && _buffer.get(c)))
-      throw bad_conversion(s);
+      throw BadConversion(s);
   }
 
   template<typename T>
@@ -68,17 +68,17 @@ namespace utility {
     return _value;
   }
 
-  inline static uint64_t toNumber(string_t const& s) {
+  inline static uint64_t toNumber(String const& s) {
     return convertTo<uint64_t>(s);
   }
 
   /* splits a string s using the delimiter delim */
-  typedef std::vector<string_t> partitioned_string_t;
+  typedef std::vector<String> partitioned_string_t;
   inline static
-  partitioned_string_t split(const string_t &s, char delim = '\n') {
+  partitioned_string_t split(const String &s, char delim = '\n') {
     partitioned_string_t elems;
     std::stringstream ss(s);
-    string_t item;
+    String item;
     while(std::getline(ss, item, delim)) {
       elems.push_back(item);
     }
@@ -86,16 +86,16 @@ namespace utility {
   }
 
   inline static
-  string_t sanitize(string_t const& s) {
-    string_t out(s);
+  String sanitize(String const& s) {
+    String out(s);
     std::transform(out.begin(), out.end(), out.begin(), ::tolower);
     std::replace(out.begin(),   out.end(), ' ', '_');
     return out;
   }
 
   inline static
-  void ijoin(const std::vector<string_t>& tokens, string_t &out, char delim) {
-    for (std::vector<string_t>::const_iterator token = tokens.begin();
+  void ijoin(const std::vector<String>& tokens, String &out, char delim) {
+    for (std::vector<String>::const_iterator token = tokens.begin();
     token != tokens.end();
     ++token)
     {
@@ -105,8 +105,8 @@ namespace utility {
   }
 
   inline static
-  string_t join(const std::vector<string_t>& tokens, char delim) {
-    string_t out;
+  String join(const std::vector<String>& tokens, char delim) {
+    String out;
     ijoin(tokens, out, delim);
     return out;
   }

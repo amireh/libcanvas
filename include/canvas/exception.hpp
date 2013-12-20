@@ -28,31 +28,31 @@
 #include <string>
 #include <stdexcept>
 
-namespace cnvs {
+namespace Canvas {
 
   /**
    * Thrown when an argument passed to utility::convertTo<> is not a number
    * and thus can not be converted.
    */
-  class bad_conversion : public std::runtime_error {
+  class BadConversion : public std::runtime_error {
   public:
-    inline bad_conversion(const std::string& s)
+    inline BadConversion(const std::string& s)
     : std::runtime_error(s)
     { }
   };
 
-  class internal_error : public std::runtime_error {
+  class InternalError : public std::runtime_error {
   public:
-    inline internal_error(const std::string& s)
+    inline InternalError(const std::string& s)
     : std::runtime_error(s)
     { }
 
     inline bool is_internal() { return true; }
   };
 
-  class json_parser_error : public std::runtime_error {
+  class JSONParserError : public std::runtime_error {
   public:
-    inline json_parser_error(const std::string& s)
+    inline JSONParserError(const std::string& s)
     : std::runtime_error(s)
     { }
   };

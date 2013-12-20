@@ -24,20 +24,22 @@
 #include "canvas/session.hpp"
 #include "canvas/settings.hpp"
 
-namespace cnvs {
+namespace Canvas {
+  using HTTP::Download;
+
   static size_t on_curl_data(char *buffer, size_t size, size_t nmemb, void *userdata)
   {
-    download_t  *download;
+    Download  *download;
     size_t      realsize;
-    string_t    buffer_str;
+    String    buffer_str;
 
-    download = (download_t*)userdata;
+    download = (Download*)userdata;
     realsize = size * nmemb;
     download->size += realsize;
-    buffer_str = string_t(buffer, realsize);
+    buffer_str = String(buffer, realsize);
 
-    if (settings::is_enabled("-v")) {
-      logger l("cURL");
+    if (settings::isEnabled("-v")) {
+      Logger l("cURL");
       l.debug() << "received " << realsize << " bytes";
       l.debug() << buffer_str;
     }
@@ -47,76 +49,75 @@ namespace cnvs {
     return realsize;
   }
 
-  session::session() :
-  logger("session"),
-  headers_(nullptr),
-  curl_(nullptr) {
-    curl_ = curl_easy_init();
-    curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, &on_curl_data);
+  Session::Session() :
+  Logger("session"),
+  mHeaders(nullptr),
+  mCurl(nullptr) {
+    mCurl = curl_easy_init();
+    curl_easy_setopt(mCurl, CURLOPT_WRITEFUNCTION, &on_curl_data);
   }
 
-  session::~session() {
+  Session::~Session() {
     free_headers();
-    curl_easy_cleanup(curl_);
-    curl_ = nullptr;
+    curl_easy_cleanup(mCurl);
+    mCurl = nullptr;
   }
 
-  void session::free_headers() {
-    if (headers_) {
-      curl_slist_free_all(headers_);
-      headers_ = nullptr;
+  void Session::free_headers() {
+    if (mHeaders) {
+      curl_slist_free_all(mHeaders);
+      mHeaders = nullptr;
     }
   }
 
-  struct curl_slist* session::add_json_headers(struct curl_slist* headers) {
+  struct curl_slist* Session::addJsonHeaders(struct curl_slist* headers) {
     headers = curl_slist_append(headers, "Content-Type: application/json;charset=UTF-8");
     headers = curl_slist_append(headers, "Accept: application/json;charset=UTF-8");
 
     return headers;
   }
 
-  void session::authenticate(string_t const& username, string_t const& password) {
+  void Session::authenticate(String const& username, String const& password) {
     throw "BASIC AUTH not implemented yet";
 
     identity_.username = username;
     identity_.password = password;
 
-    stamp_identity();
+    stampIdentity();
   }
 
-  void session::authenticate(string_t const& token) {
+  void Session::authenticate(String const& token) {
     identity_.token = token;
 
-    stamp_identity();
+    stampIdentity();
   }
 
-  void session::stamp_identity() {
+  void Session::stampIdentity() {
     free_headers();
 
-    headers_ = add_json_headers();
-    headers_ = curl_slist_append(headers_,
+    mHeaders = addJsonHeaders();
+    mHeaders = curl_slist_append(mHeaders,
       ("Authorization: Bearer " + identity_.token).c_str());
 
-    curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers_);
+    curl_easy_setopt(mCurl, CURLOPT_HTTPHEADER, mHeaders);
   }
 
-  bool session::get(uri_t const& endpoint, session::RC_GET callback) {
-    CURL* curl;
+  bool Session::get(URI const& endpoint, Session::RC_GET callback) {
     CURLcode curlrc;
     char curlerr[CURL_ERROR_SIZE];
-    http::response response;
+    HTTP::Response response;
     uint8_t http_rc = 0;
-    download_t dl;
+    Download dl;
 
-    dl.uri = api_endpoint(endpoint);
+    dl.uri = apiEndpoint(endpoint);
 
     info() << "Downloading " << dl.uri;
 
-    curl_easy_setopt(curl_, CURLOPT_ERRORBUFFER, curlerr);
-    curl_easy_setopt(curl_, CURLOPT_URL, dl.uri.c_str());
-    curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &dl);
+    curl_easy_setopt(mCurl, CURLOPT_ERRORBUFFER, curlerr);
+    curl_easy_setopt(mCurl, CURLOPT_URL, dl.uri.c_str());
+    curl_easy_setopt(mCurl, CURLOPT_WRITEDATA, &dl);
 
-    curlrc = curl_easy_perform(curl_);
+    curlrc = curl_easy_perform(mCurl);
 
     if (curlrc != 0) {
       error() << "a CURL error was encountered; " << curlrc << " => " << curlerr;
@@ -125,7 +126,7 @@ namespace cnvs {
       return false;
     }
 
-    curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &http_rc);
+    curl_easy_getinfo(mCurl, CURLINFO_RESPONSE_CODE, &http_rc);
 
     if (http_rc != 200) {
       error() << "remote server error, HTTP code: " << http_rc << ", download failed";
@@ -141,12 +142,12 @@ namespace cnvs {
     return true;
   }
 
-  bool session::post(uri_t const& endpoint, session::RC_POST callback) {
+  bool Session::post(URI const& endpoint, Session::RC_POST callback) {
     return true;
   }
 
-  uri_t session::api_endpoint(uri_t const& endpoint) const {
-    return string_t(settings::get("canvas_host")
+  URI Session::apiEndpoint(URI const& endpoint) const {
+    return String(settings::get("canvas_host")
       + ":"
       + settings::get("canvas_port")
       + settings::get("canvas_api_prefix")

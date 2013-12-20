@@ -25,24 +25,24 @@
 
 #include <map>
 
-namespace cnvs {
-  file_manager* file_manager::__instance = 0;
+namespace Canvas {
+  FileManager* FileManager::__instance = 0;
 
-  file_manager::file_manager()
-  : logger("file manager") {
+  FileManager::FileManager()
+  : Logger("file manager") {
   }
 
-  file_manager::~file_manager() {
+  FileManager::~FileManager() {
   }
 
-  file_manager& file_manager::singleton() {
+  FileManager& FileManager::singleton() {
     if (!__instance)
-      __instance = new file_manager();
+      __instance = new FileManager();
 
     return *__instance;
   }
 
-  bool file_manager::load_file(std::ifstream &fs, string_t& out_buf)
+  bool FileManager::load_file(std::ifstream &fs, String& out_buf)
   {
     if (!fs.is_open() || !fs.good()) {
       return false;
@@ -57,7 +57,7 @@ namespace cnvs {
     return true;
   }
 
-  bool file_manager::load_file(string_t const& path, string_t& out_buf)
+  bool FileManager::load_file(String const& path, String& out_buf)
   {
     bool rc;
     std::ifstream stream(path);

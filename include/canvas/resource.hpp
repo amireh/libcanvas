@@ -27,45 +27,45 @@
 #include "canvas/canvas.hpp"
 #include <json/json.h>
 
-namespace cnvs {
+namespace Canvas {
 
   /**
-   * @class resource
+   * @class Resource
    * @brief
    * Base resource.
    */
-  class resource {
+  class Resource {
   public:
     inline
-    resource() : id_(0) {
+    Resource() : mId(0) {
     }
 
     inline
-    resource(id_t id)
-    : id_(id) {
+    Resource(ID id)
+    : mId(id) {
     }
 
     inline
-    virtual ~resource() {};
+    virtual ~Resource() {};
 
     inline
-    virtual id_t id() const {
-      return id_;
+    virtual ID id() const {
+      return mId;
     }
 
     inline
-    virtual string_t const& get_url() const {
-      return url_;
+    virtual String const& url() const {
+      return mUrl;
     }
 
     /**
      * Populate the resource from a JSON document.
      */
-    virtual void deserialize(string_t const&) = 0;
+    virtual void deserialize(String const&) = 0;
 
   protected:
-    id_t id_;
-    string_t url_;
+    ID mId;
+    String mUrl;
   };
 }
 

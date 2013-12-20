@@ -23,41 +23,41 @@
 
 #include "canvas/settings.hpp"
 
-namespace cnvs {
-  settings::flag_settings_t     settings::flag_settings_;
-  settings::literal_settings_t  settings::literal_settings_;
+namespace Canvas {
+  settings::FlagSettings     settings::mFlagSettings;
+  settings::LiteralSettings  settings::mLiteralSettings;
 
-  const static string_t nil_setting("");
+  const static String nil_setting("");
 
-  void settings::enable(string_t const& id) {
-    flag_settings_.insert(std::make_pair(id, true));
+  void settings::enable(String const& id) {
+    mFlagSettings.insert(std::make_pair(id, true));
   }
 
-  void settings::disable(string_t const& id) {
-    flag_settings_.erase(id);
+  void settings::disable(String const& id) {
+    mFlagSettings.erase(id);
   }
 
-  bool settings::is_enabled(string_t const& id) {
-    return flag_settings_.find(id) != flag_settings_.end();
+  bool settings::isEnabled(String const& id) {
+    return mFlagSettings.find(id) != mFlagSettings.end();
   }
 
-  void settings::set(string_t const& k, string_t const& v) {
-    if (literal_settings_.find(k) != literal_settings_.end()) {
-      literal_settings_[k] = v;
+  void settings::set(String const& k, String const& v) {
+    if (mLiteralSettings.find(k) != mLiteralSettings.end()) {
+      mLiteralSettings[k] = v;
       return;
     }
 
-    literal_settings_.insert(std::make_pair(k,v));
+    mLiteralSettings.insert(std::make_pair(k,v));
   }
 
-  string_t const& settings::get(string_t const& k) {
-    if (literal_settings_.find(k) == literal_settings_.end())
+  String const& settings::get(String const& k) {
+    if (mLiteralSettings.find(k) == mLiteralSettings.end())
       return nil_setting;
 
-    return literal_settings_.find(k)->second;
+    return mLiteralSettings.find(k)->second;
   }
 
-  void settings::set_defaults() {
+  void settings::setDefaults() {
     set("canvas_host", "http://localhost");
     set("canvas_port", "3000");
     set("canvas_api_prefix", "/api/v1");

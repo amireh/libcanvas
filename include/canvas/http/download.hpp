@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2013 Algol Labs <ahmad@algollabs.com>
+ *  Copyright (C) 2013 Algol Labs <ahmad@algollabs.com>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a
  *  copy of this software and associated documentation files (the "Software"),
@@ -21,45 +21,31 @@
  *
  */
 
-#ifndef H_CANVAS_FILE_MANAGER_H
-#define H_CANVAS_FILE_MANAGER_H
+#ifndef H_CANVAS_HTTP_DOWNLOAD_H
+#define H_CANVAS_HTTP_DOWNLOAD_H
 
 #include "canvas/canvas.hpp"
-#include "canvas/logger.hpp"
-
-#include <sstream>
-#include <fstream>
 
 namespace Canvas {
+namespace HTTP {
 
-  /**
-   * \addtogroup Core
-   * @{
-   * @class file_manager
-   *
-   *
-   */
-  class FileManager : public Logger {
-  public:
+  /** Used internally by the Session to manage downloads */
+  struct Download {
+    inline
+    Download()
+    : status(false),
+      size(0),
+      retryNo(0) {
+    }
 
-    static FileManager& singleton();
-
-    virtual ~FileManager();
-    FileManager(const FileManager&) = delete;
-    FileManager& operator=(const FileManager&) = delete;
-
-    /**
-     * note: the stream must be open and this method will NOT close it
-     */
-    bool load_file(std::ifstream &file, String& out);
-    bool load_file(String const& path, String& out);
-
-  private:
-    explicit FileManager();
-    static FileManager* __instance;
+    String      uri;
+    bool          status;
+    uint64_t      size;
+    int           retryNo;
+    std::ostringstream  stream;
   };
-  /** @} */
 
-} // namespace cnvs
+}
+}
 
 #endif

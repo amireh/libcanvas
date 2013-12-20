@@ -28,64 +28,64 @@
 #include <cstdio>
 #include <cstring>
 
-namespace cnvs {
-  quiz::quiz()
-  : resource(),
-    course_(nullptr) {
+namespace Canvas {
+  Quiz::Quiz()
+  : Resource(),
+    mCourse(nullptr) {
   }
 
-  quiz::quiz(id_t id, course* course)
-  : resource(id),
-    course_(course) {
+  Quiz::Quiz(ID id, Course* course)
+  : Resource(id),
+    mCourse(course) {
   }
 
-  quiz::~quiz() {
+  Quiz::~Quiz() {
   }
 
-  void quiz::set_course(course* course) {
-    course_ = course;
-    url_ = course->get_url() + "/quizzes/" + utility::stringify(id_);
+  void Quiz::setCourse(Course* course) {
+    mCourse = course;
+    mUrl = course->url() + "/quizzes/" + utility::stringify(mId);
   }
-  void quiz::set_title(string_t const& title) {
-    title_ = title;
+  void Quiz::setTitle(String const& title) {
+    mTitle = title;
   }
-  void quiz::set_published(bool flag) {
-    published_ = flag;
+  void Quiz::setPublished(bool flag) {
+    mPublished = flag;
   }
-  void quiz::set_access_code(string_t const& access_code) {
-    access_code_ = access_code;
-  }
-
-  course const* quiz::get_course() const {
-    return course_;
-  }
-  string_t const& quiz::get_title() const {
-    return title_;
-  }
-  bool quiz::is_published() const {
-    return published_;
-  }
-  string_t const& quiz::get_access_code() const {
-    return access_code_;
+  void Quiz::setAccessCode(String const& access_code) {
+    mAccessCode = access_code;
   }
 
-  bool quiz::take(session &in_session, async_callback_t &callback) {
-    in_session.post(get_url() + "/", [&](bool success, http::response response) -> void {
+  Course const* Quiz::course() const {
+    return mCourse;
+  }
+  String const& Quiz::title() const {
+    return mTitle;
+  }
+  bool Quiz::isPublished() const {
+    return mPublished;
+  }
+  String const& Quiz::accessCode() const {
+    return mAccessCode;
+  }
+
+  bool Quiz::take(Session &in_session, AsyncCallback &callback) {
+    in_session.post(url() + "/", [&](bool success, HTTP::Response response) -> void {
     });
 
     return true;
   }
 
-  void quiz::deserialize(string_t const& json) {
+  void Quiz::deserialize(String const& json) {
     Json::Value root;
     Json::Reader reader;
     bool parser_success;
 
     if (!reader.parse( json, root )) {
-      throw json_parser_error(reader.getFormattedErrorMessages());
+      throw JSONParserError(reader.getFormattedErrorMessages());
     }
 
-    id_ = root.get("id", 0).asUInt();
-    title_ = root.get("title", "Unnamed Quiz").asString();
+    mId = root.get("id", 0).asUInt();
+    mTitle = root.get("title", "Unnamed Quiz").asString();
   }
 } // namespace cnvs

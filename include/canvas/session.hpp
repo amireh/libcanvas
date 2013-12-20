@@ -27,68 +27,54 @@
 #include "canvas/canvas.hpp"
 #include "canvas/logger.hpp"
 #include "canvas/http/response.hpp"
+#include "canvas/http/download.hpp"
 #include <curl/curl.h>
 
-namespace cnvs {
+namespace Canvas {
 
   /**
    * @class session
    * @brief
    * API communicator module capable of retrieving and submitting JSON data.
    */
-  class session : public logger {
+  class Session : public Logger {
   public:
-    typedef std::function<void(bool success, http::response const&)> RC_GET;
-    typedef std::function<void(bool success, http::response const&)> RC_POST;
+    typedef std::function<void(bool success, HTTP::Response const&)> RC_GET;
+    typedef std::function<void(bool success, HTTP::Response const&)> RC_POST;
 
-    session();
-    virtual ~session();
+    Session();
+    virtual ~Session();
 
-    virtual void authenticate(string_t const& username, string_t const& password);
-    virtual void authenticate(string_t const& token);
+    virtual void authenticate(String const& username, String const& password);
+    virtual void authenticate(String const& token);
 
-    virtual bool get(uri_t const&, RC_GET);
-    virtual bool post(uri_t const&, RC_POST);
+    virtual bool get(URI const&, RC_GET);
+    virtual bool post(URI const&, RC_POST);
 
   protected:
     /**
      * Update the Authorization headers with the current identity.
      */
-    virtual void stamp_identity();
+    virtual void stampIdentity();
 
     /**
      * Generate the fully-qualified URI for an API endpoint.
      */
-    virtual uri_t api_endpoint(uri_t const&) const;
+    virtual URI apiEndpoint(URI const&) const;
 
-    struct curl_slist* add_json_headers(struct curl_slist* = nullptr);
+    struct curl_slist* addJsonHeaders(struct curl_slist* = nullptr);
     void free_headers();
 
     struct identity_t {
-      string_t username;
-      string_t password;
-      string_t token;
+      String username;
+      String password;
+      String token;
     } identity_;
 
-    CURL *curl_;
-    struct curl_slist *headers_;
+    CURL *mCurl;
+    struct curl_slist *mHeaders;
   };
 
-  /** Used internally by the resource_manager to manage downloads */
-  struct download_t {
-    inline
-    download_t()
-    : status(false),
-      size(0),
-      retry_no(0) {
-    }
-
-    string_t      uri;
-    bool          status;
-    uint64_t      size;
-    int           retry_no;
-    std::ostringstream  stream;
-  };
 
 } // namespace cnvs
 
