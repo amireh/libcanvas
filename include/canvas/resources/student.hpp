@@ -26,13 +26,16 @@
 
 #include "canvas/canvas.hpp"
 #include "canvas/resource.hpp"
+#include "canvas/logger.hpp"
 #include <vector>
+#include <map>
 
 namespace Canvas {
 
   class Course;
   class Session;
   class Quiz;
+  class QuizSubmission;
 
   /**
    * \addtogroup Resources
@@ -40,9 +43,10 @@ namespace Canvas {
    * @class Student
    * A student can be enrolled in many courses and participate in course quizzes.
    */
-  class Student : public Resource {
+  class Student : public Resource, public Logger {
   public:
     typedef std::vector<Course*> Courses;
+    typedef std::map<Quiz const*, QuizSubmission*> QuizSubmissions;
 
     Student();
     Student(ID id);
@@ -59,6 +63,8 @@ namespace Canvas {
      */
     virtual Courses const& courses() const;
 
+    virtual QuizSubmission const* quizSubmission(Quiz const&) const;
+
     /**
      * Fetch the student's id.
      *
@@ -71,6 +77,11 @@ namespace Canvas {
      * Fetch all the courses this student is enrolled in.
      */
     virtual void loadCourses(Session&, AsyncCallback = nullptr);
+
+    /**
+     * Fetch any submissions made for a given Quiz by this student.
+     */
+    virtual void loadQuizSubmission(Session&, Quiz const&, AsyncCallback = nullptr);
 
     /**
      * Populate the Student from a JSON document.
@@ -89,6 +100,7 @@ namespace Canvas {
     String mPassword;
 
     Courses mCourses;
+    QuizSubmissions mQuizSubmissions;
 
     void buildUrl();
 

@@ -75,11 +75,12 @@ namespace Canvas {
      */
     template<typename T>
     std::vector<T*> parseResources(
-      const String& json,
-      std::function<void(T*)> callback = nullptr) const {
+      String const& json,
+      std::function<void(T*)> callback = nullptr,
+      String ns = "") const {
       T* resource;
       std::vector<T*> resources;
-      JSONDocuments documents(jsonDocuments(json));
+      JSONDocuments documents(jsonDocuments(json, ns));
 
       for (auto document : documents) {
         resource = new T();
@@ -104,8 +105,8 @@ namespace Canvas {
   protected:
     typedef std::list<String> JSONDocuments;
 
-    virtual JSONDocuments jsonDocuments(String const& root) const;
-    virtual JSONDocuments jsonDocuments(Json::Value& root) const;
+    virtual JSONDocuments jsonDocuments(String const& root, String const& ns) const;
+    virtual JSONDocuments jsonDocuments(Json::Value& root, String const& ns) const;
   };
 }
 

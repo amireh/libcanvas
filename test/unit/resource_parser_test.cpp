@@ -4,14 +4,14 @@
 
 namespace Canvas {
 
-  class spec_resource : public Resource {
+  class SpecResource : public Resource {
   public:
-    inline spec_resource() : Resource() {}
-    inline spec_resource(int id) : Resource(id) {}
-    inline virtual ~spec_resource() {}
+    inline SpecResource() : Resource() {}
+    inline SpecResource(int id) : Resource(id) {}
+    inline virtual ~SpecResource() {}
 
     inline virtual void deserialize(const String& json) {
-      spec_resource* resource;
+      SpecResource* resource;
       Json::Value root;
       Json::Reader reader;
       bool parsingSuccessful = reader.parse( json, root );
@@ -24,57 +24,70 @@ namespace Canvas {
     }
   };
 
-  class spec_parser : public ResourceParser {
+  class SpecParser : public ResourceParser {
   public:
     typedef JSONDocuments JSONDocuments;
 
-    inline spec_parser() : ResourceParser() {}
-    inline virtual ~spec_parser() {}
+    inline SpecParser() : ResourceParser() {}
+    inline virtual ~SpecParser() {}
 
     /**
      * Expose this to the spec, since it's protected in the base class.
      */
-    virtual JSONDocuments jsonDocuments(String const& root) const {
-      return ResourceParser::jsonDocuments(root);
+    virtual JSONDocuments jsonDocuments(String const& root, String const& ns) const {
+      return ResourceParser::jsonDocuments(root, ns);
     }
   };
 
-  class resource_parser_test : public ::testing::Test {
+  class ResourceParserTest : public ::testing::Test {
   protected:
-    spec_parser parser_;
+    SpecParser parser_;
   };
 
-  TEST_F(resource_parser_test, jsonDocuments) {
+  TEST_F(ResourceParserTest, jsonDocuments) {
     String json("[ {}, {} ]");
-    spec_parser::JSONDocuments jsonDocuments;
+    SpecParser::JSONDocuments jsonDocuments;
 
     ASSERT_NO_THROW({
-      jsonDocuments = parser_.jsonDocuments(json);
+      jsonDocuments = parser_.jsonDocuments(json, "");
     });
 
     ASSERT_EQ(jsonDocuments.size(), 2);
     ASSERT_EQ(jsonDocuments.front(), "{}\n");
   }
 
-  TEST_F(resource_parser_test, parseResource) {
-    String json = load_fixture("random_document.json");
-    spec_resource* resource;
+  TEST_F(ResourceParserTest, jsonDocumentsWithNamespace) {
+    String json("{ \"items\": [ {}, {} ] }");
+    SpecParser::JSONDocuments jsonDocuments;
 
     ASSERT_NO_THROW({
-      resource = parser_.parseResource<spec_resource>(json);
+      jsonDocuments = parser_.jsonDocuments(json, "items");
     });
 
+    ASSERT_EQ(jsonDocuments.size(), 2);
+    ASSERT_EQ(jsonDocuments.front(), "{}\n");
+  }
+
+  TEST_F(ResourceParserTest, parseResource) {
+    String json = load_fixture("random_document.json");
+    SpecResource* resource;
+
+    ASSERT_NO_THROW({
+      resource = parser_.parseResource<SpecResource>(json);
+    });
+
+    ASSERT_TRUE(resource);
     ASSERT_EQ(resource->id(), 5);
 
     delete resource;
   }
 
-  TEST_F(resource_parser_test, parseResources) {
+  TEST_F(ResourceParserTest, parseResources) {
     String json = load_fixture("random_documents.json");
-    std::vector<spec_resource*> resources;
+    std::vector<SpecResource*> resources;
 
     ASSERT_NO_THROW({
-      resources = parser_.parseResources<spec_resource>(json);
+      resources = parser_.parseResources<SpecResource>(json);
     });
 
     ASSERT_EQ(resources.size(), 2);

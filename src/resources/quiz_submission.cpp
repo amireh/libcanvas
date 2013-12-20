@@ -28,17 +28,27 @@
 #include <cstring>
 
 namespace Canvas {
-  QuizSubmission::QuizSubmission(ID id, Quiz* quiz)
+QuizSubmission::QuizSubmission()
+  : Resource(0),
+    mQuiz(nullptr)
+  {
+    reset();
+  }
+
+QuizSubmission::QuizSubmission(ID id, Quiz* quiz)
   : Resource(id),
-    mQuiz(quiz),
-    mSubmissionId(0),
-    mUserId(0),
-    mAttempt(0),
-    mScore(0),
-    mKeptScore(0) {
+    mQuiz(quiz)
+  {
+    reset();
   }
 
   QuizSubmission::~QuizSubmission() {
+  }
+
+  void QuizSubmission::reset() {
+    mSubmissionId = mUserId = 0;
+    mAttempt = 0;
+    mScore = mKeptScore = 0;
   }
 
   void QuizSubmission::deserialize(String const& json) {

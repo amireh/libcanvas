@@ -65,6 +65,8 @@ namespace Canvas {
     String mTitle;
     String mAccessCode;
     bool mPublished;
+
+    void buildUrl();
   };
 }
 

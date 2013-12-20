@@ -17,7 +17,7 @@ namespace Canvas {
 
     virtual void SetUp() {
 
-      Logger::mute();
+//      Logger::mute();
       Settings::setDefaults();
       Settings::enable("-v");
     }

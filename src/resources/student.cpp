@@ -23,17 +23,21 @@
 
 #include "canvas/resources/student.hpp"
 #include "canvas/resources/course.hpp"
+#include "canvas/resources/quiz.hpp"
+#include "canvas/resources/quiz_submission.hpp"
 #include "canvas/utility.hpp"
 #include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 
 namespace Canvas {
   Student::Student()
-  : Resource() {
+  : Resource(),
+    Logger("Student") {
   }
 
   Student::Student(ID id)
-  : Resource(id) {
+  : Resource(id),
+    Logger("Student") {
     buildUrl();
   }
 
@@ -42,6 +46,11 @@ namespace Canvas {
       delete course;
     });
 
+    std::for_each(mQuizSubmissions.begin(), mQuizSubmissions.end(), [](std::pair<Quiz const*, QuizSubmission*> pair) {
+      delete pair.second;
+    });
+
+    mQuizSubmissions.clear();
     mCourses.clear();
   }
 
@@ -62,6 +71,11 @@ namespace Canvas {
     return mCourses;
   }
 
+  const QuizSubmission* Student::quizSubmission(const Quiz &quiz) const
+  {
+    return mQuizSubmissions.find(&quiz)->second;
+  }
+
   void Student::loadIdentity(Session& session, AsyncCallback callback) {
     session.get("/users/self/logins",
       [&](bool success, HTTP::Response const &response) -> void {
@@ -79,6 +93,8 @@ namespace Canvas {
 
         if (login) {
           mId = login->userId();
+          setUuidPrefix(utility::stringify(mId));
+          buildUrl();
         }
 
         std::for_each(logins.begin(), logins.end(), [](Student::Login* login) {
@@ -95,7 +111,7 @@ namespace Canvas {
 
   void Student::loadCourses(Session& session, AsyncCallback callback) {
     session.get(url() + "/courses",
-      [&](bool success, HTTP::Response const &response) -> void {
+      [&](bool success, HTTP::Response const &response) {
         ResourceParser parser;
 
         if (!success) {
@@ -107,7 +123,36 @@ namespace Canvas {
         });
 
         callback(true);
-      });
+    });
+  }
+
+  void Student::loadQuizSubmission(Session & session,
+                                   const Quiz &quiz,
+                                   AsyncCallback callback) {
+    session.get(quiz.url() + "/submissions/self",
+                [&](bool success, HTTP::Response const& response) {
+
+      if (success) {
+        QuizSubmission *qs;
+        ResourceParser parser;
+
+        qs = parser.parseResources<QuizSubmission>(
+          response.body,
+          nullptr,
+          "quiz_submissions")
+        .front();
+
+        if (qs) {
+
+          mQuizSubmissions.insert(std::make_pair(&quiz, qs));
+          callback(true);
+        } else {
+          callback(false);
+        }
+      } else {
+        callback(false);
+      }
+    });
   }
 
   void Student::deserialize(String const&) {

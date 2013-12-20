@@ -37,6 +37,8 @@ namespace Canvas {
   Quiz::Quiz(ID id, Course* course)
   : Resource(id),
     mCourse(course) {
+
+    buildUrl();
   }
 
   Quiz::~Quiz() {
@@ -87,5 +89,16 @@ namespace Canvas {
 
     mId = root.get("id", 0).asUInt();
     mTitle = root.get("title", "Unnamed Quiz").asString();
+
+    buildUrl();
+  }
+
+  void Quiz::buildUrl()
+  {
+    if (!mCourse) {
+      throw "can not get a URL to a Quiz without a Course";
+    }
+
+    mUrl = mCourse->url() + "/quizzes/" + utility::stringify(mId);
   }
 } // namespace cnvs

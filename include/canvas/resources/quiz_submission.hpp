@@ -37,6 +37,7 @@ namespace Canvas {
    */
   class QuizSubmission : public Resource {
   public:
+    QuizSubmission();
     QuizSubmission(ID, Quiz*);
     virtual ~QuizSubmission();
 
@@ -117,6 +118,8 @@ namespace Canvas {
     virtual void deserialize(String const& json);
 
   protected:
+    void reset();
+
     Quiz* mQuiz;
     ID mSubmissionId;
     ID mUserId;

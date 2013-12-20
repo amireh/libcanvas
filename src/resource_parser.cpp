@@ -32,7 +32,7 @@ namespace Canvas {
   }
 
   ResourceParser::JSONDocuments
-  ResourceParser::jsonDocuments(String const& root_json) const {
+  ResourceParser::jsonDocuments(String const& root_json, String const& ns) const {
     Json::Value root;
     Json::Reader reader;
 
@@ -40,12 +40,16 @@ namespace Canvas {
       throw JSONParserError(reader.getFormattedErrorMessages());
     }
 
-    return jsonDocuments(root);
+    return jsonDocuments(root, ns);
   }
 
   ResourceParser::JSONDocuments
-  ResourceParser::jsonDocuments(Json::Value& root) const {
+  ResourceParser::jsonDocuments(Json::Value& root, String const& ns) const {
     JSONDocuments documents;
+
+    if (ns.length() > 0) {
+      root = root[ns];
+    }
 
     if (root.isArray()) {
       for (auto element : root) {
