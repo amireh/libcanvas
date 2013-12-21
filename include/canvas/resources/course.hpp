@@ -41,6 +41,8 @@ namespace Canvas {
    */
   class Course : public Resource {
   public:
+    using Resource::deserialize;
+
     typedef std::vector<Quiz*> Quizzes;
 
     Course();
@@ -63,7 +65,7 @@ namespace Canvas {
     /**
      * Populate the Course from a JSON document.
      */
-    virtual void deserialize(String const&);
+    virtual void deserialize(JSONValue&);
 
   protected:
     String mName;

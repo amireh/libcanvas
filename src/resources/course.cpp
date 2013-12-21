@@ -93,15 +93,11 @@ namespace Canvas {
       });
   }
 
-  void Course::deserialize(String const& json) {
-    Json::Value root;
-    Json::Reader reader;
-    bool parser_success;
+  // void Course::deserialize(String const& document) {
+  //   Resource::deserialize(document);
+  // }
 
-    if (!reader.parse( json, root )) {
-      throw JSONParserError(reader.getFormattedErrorMessages());
-    }
-
+  void Course::deserialize(JSONValue& root) {
     mId = root.get("id", 0).asUInt();
     mName = root.get("name", "Course").asString();
     mCode = root.get("course_code", "course").asString();

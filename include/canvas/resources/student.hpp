@@ -45,6 +45,8 @@ namespace Canvas {
    */
   class Student : public Resource, public Logger {
   public:
+    using Resource::deserialize;
+
     typedef std::vector<Course*> Courses;
     typedef std::map<Quiz const*, QuizSubmission*> QuizSubmissions;
 
@@ -94,7 +96,7 @@ namespace Canvas {
      * This is currently no-op as user records can not be fetched from the
      * Canvas API yet.
      */
-    virtual void deserialize(String const&);
+    virtual void deserialize(JSONValue&);
 
     virtual void setApiToken(String const&);
 
@@ -117,11 +119,14 @@ namespace Canvas {
      */
     class Login : public Resource {
     public:
+      using Resource::deserialize;
+
       Login();
       Login(ID);
       virtual ~Login();
 
-      virtual void deserialize(String const&);
+      virtual void deserialize(JSONValue&);
+
       ID userId() const;
     protected:
       ID mUserId;

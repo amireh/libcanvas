@@ -31,6 +31,11 @@ namespace Canvas {
 
   class Quiz;
   class QuizSubmission;
+  class QuizQuestion;
+
+  namespace QuizQuestions {
+    class MultipleChoice;
+  }
 
   /**
    * @class QuizQuestion
@@ -40,6 +45,8 @@ namespace Canvas {
    */
   class QuizQuestion : public Resource {
   public:
+    using Resource::deserialize;
+
     // typedef std::list<QuizQuestionAnswer*> Answers;
     // typedef std::list<String> Variables;
     // typedef std::list<QuizQuestionFormula*> Formulas;
@@ -105,7 +112,7 @@ namespace Canvas {
     /**
      * Populate QuizQuestion from a JSON document.
      */
-    virtual void deserialize(String const& json);
+    virtual void deserialize(JSONValue&);
 
     virtual void setQuiz(Quiz const*);
 
@@ -114,7 +121,21 @@ namespace Canvas {
      */
     virtual URI answerUrl(QuizSubmission const&) const;
 
+    QuizQuestions::MultipleChoice* asMultipleChoice();
+
+    template<typename T>
+    T* toActualType(String const& type) {
+      if (this->type() != type) {
+        throw std::runtime_error("Invalid target question type: " + type +
+          ", actual is:" + this->type());
+      } else {
+        return reinterpret_cast<T*>(this);
+      }
+    }
+
   protected:
+    friend class Quiz;
+
     void reset();
     virtual void buildUrl();
 

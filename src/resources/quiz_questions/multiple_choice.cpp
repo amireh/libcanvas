@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2013 Algol Labs <ahmad@algollabs.com>
+ *  Copyright (C) 2013 Algol Labs <ahmad@algollabs.com>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a
  *  copy of this software and associated documentation files (the "Software"),
@@ -21,65 +21,44 @@
  *
  */
 
-#ifndef H_CANVAS_RESOURCE_H
-#define H_CANVAS_RESOURCE_H
-
-#include "canvas/canvas.hpp"
-#include <json/json.h>
+#include "canvas/resources/quiz_questions/multiple_choice.hpp"
 
 namespace Canvas {
+namespace QuizQuestions {
 
-  typedef Json::Value JSONValue;
+  MultipleChoice::MultipleChoice()
+  : QuizQuestion()
+  {
+  }
 
-  class ResourceParser;
+  MultipleChoice::MultipleChoice(ID id)
+  : QuizQuestion(id)
+  {
+  }
 
-  /**
-   * @class Resource
-   * @brief
-   * Base resource.
-   */
-  class Resource {
-  public:
-    inline
-    Resource() : mId(0) {
+  MultipleChoice::MultipleChoice(ID id, Quiz const* quiz)
+  : QuizQuestion(id, quiz)
+  {
+  }
+
+  MultipleChoice::~MultipleChoice() {
+  }
+
+  void MultipleChoice::deserialize(JSONValue &root) {
+    QuizQuestion::deserialize(root);
+
+    for (auto answerDocument : root["answers"]) {
+      // QuizQuestionAnswer* answer;
+      ID answerId = answerDocument["id"].asUInt();
+
+      addAnswer(answerId, [&answerDocument](QuizQuestionAnswer *answer) {
+        answer->deserialize(answerDocument);
+      });
+
+      // answer = new QuizQuestionAnswer(answerId, this);
+      // mAnswers.push_back(answer);
     }
+  }
 
-    inline
-    Resource(ID id)
-    : mId(id) {
-    }
-
-    inline
-    virtual ~Resource() {};
-
-    inline
-    virtual ID id() const {
-      return mId;
-    }
-
-    inline
-    virtual String const& url() const {
-      return mUrl;
-    }
-
-    /**
-     * Populate the resource from a JSON document.
-     */
-    virtual void deserialize(String const&);
-    virtual void deserialize(JSONValue&) = 0;
-
-  protected:
-    friend class ResourceParser;
-
-    inline
-    virtual void setDocument(JSONValue& document) {
-      mDocument = document;
-    }
-
-    ID mId;
-    String mUrl;
-    JSONValue mDocument;
-  };
-}
-
-#endif
+} // namespace QuizQuestions
+} // namespace Canvas

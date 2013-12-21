@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include "canvas/resource.hpp"
 #include "canvas/resources/course.hpp"
 #include "canvas/resources/quiz.hpp"
 #include "canvas/resources/quiz_question.hpp"

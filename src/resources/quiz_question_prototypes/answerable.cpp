@@ -21,64 +21,43 @@
  *
  */
 
+#include "canvas/resources/quiz_question_prototypes/answerable.hpp"
 #include "canvas/resources/quiz_question_answer.hpp"
-#include "canvas/resources/quiz_question.hpp"
-#include "canvas/utility.hpp"
 
 namespace Canvas {
-  QuizQuestionAnswer::QuizQuestionAnswer()
-  : Resource(0),
-    mQuestion(nullptr)
-  {
-    reset();
+namespace QuizQuestionPrototypes {
+
+  template<typename T>
+  Answerable<T>::Answerable() {
   }
 
-  QuizQuestionAnswer::QuizQuestionAnswer(ID id)
-  : Resource(id),
-    mQuestion(nullptr)
-  {
-    reset();
+  template<typename T>
+  Answerable<T>::~Answerable() {
+    std::for_each(mAnswers.begin(), mAnswers.end(), [](T* qqa) {
+      delete qqa;
+    });
+
+    mAnswers.clear();
   }
 
-  QuizQuestionAnswer::QuizQuestionAnswer(ID id, QuizQuestion const* question)
-  : Resource(id),
-    mQuestion(question)
-  {
-    reset();
+  template<typename T> typename
+  Answerable<T>::Answers const& Answerable<T>::answers() const {
+    return mAnswers;
   }
 
-  QuizQuestionAnswer::~QuizQuestionAnswer() {
-    mQuestion = nullptr;
+  template<typename T>
+  void Answerable<T>::addAnswer(ID answerId, std::function<void(T*)> callback) {
+    if (answerId > 0) {
+      T* answer = new T();
+      mAnswers.push_back(answer);
+
+      if (callback) {
+        callback(answer);
+      }
+    }
   }
 
-  void QuizQuestionAnswer::reset() {
-    mWeight = 0;
-  }
+  template class Answerable<QuizQuestionAnswer>;
 
-  QuizQuestion const* QuizQuestionAnswer::question() const {
-    return mQuestion;
-  }
-
-  String const& QuizQuestionAnswer::text() const {
-    return mText;
-  }
-
-  String const& QuizQuestionAnswer::comments() const {
-    return mComments;
-  }
-
-  int QuizQuestionAnswer::weight() const {
-    return mWeight;
-  }
-
-  void QuizQuestionAnswer::deserialize(JSONValue& root) {
-    mId = root.get("id", 0).asUInt();
-    mText = root.get("text", "").asString();
-    mComments = root.get("comments", "").asString();
-    mWeight = root.get("weight", 0).asUInt();
-  }
-
-  void QuizQuestionAnswer::setQuestion(QuizQuestion const *question) {
-    mQuestion = question;
-  }
-}
+} // namespace QuizQuestions
+} // namespace Canvas

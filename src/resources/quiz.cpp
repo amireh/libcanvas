@@ -24,6 +24,7 @@
 #include "canvas/resources/quiz.hpp"
 #include "canvas/resources/course.hpp"
 #include "canvas/resources/quiz_question.hpp"
+#include "canvas/resources/quiz_questions/multiple_choice.hpp"
 #include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 #include "canvas/utility.hpp"
@@ -55,12 +56,15 @@ namespace Canvas {
     mCourse = course;
     buildUrl();
   }
+
   void Quiz::setTitle(String const& title) {
     mTitle = title;
   }
+
   void Quiz::setPublished(bool flag) {
     mPublished = flag;
   }
+
   void Quiz::setAccessCode(String const& access_code) {
     mAccessCode = access_code;
   }
@@ -68,25 +72,20 @@ namespace Canvas {
   Course const* Quiz::course() const {
     return mCourse;
   }
+
   String const& Quiz::title() const {
     return mTitle;
   }
+
   bool Quiz::isPublished() const {
     return mPublished;
   }
+
   String const& Quiz::accessCode() const {
     return mAccessCode;
   }
 
-  void Quiz::deserialize(String const& json) {
-    Json::Value root;
-    Json::Reader reader;
-    bool parser_success;
-
-    if (!reader.parse( json, root )) {
-      throw JSONParserError(reader.getFormattedErrorMessages());
-    }
-
+  void Quiz::deserialize(JSONValue& root) {
     mId = root.get("id", 0).asUInt();
     mTitle = root.get("title", "Unnamed Quiz").asString();
 
@@ -105,11 +104,31 @@ namespace Canvas {
   }
 
   void Quiz::loadQuestions(String const& documents) {
-    ResourceParser parser;
-    parser.parseResources<QuizQuestion>(documents, [&](QuizQuestion* qq) {
+    Json::Value qqDocuments;
+    Json::Reader reader;
+
+    if (!reader.parse( documents, qqDocuments )) {
+      throw JSONParserError(reader.getFormattedErrorMessages());
+    }
+
+    for (Json::Value &qqDocument : qqDocuments) {
+      QuizQuestion *qq;
+
+      String qqType = qqDocument["question_type"].asString();
+      ID qqId = qqDocument["id"].asUInt();
+
+      if (qqType == "multiple_choice_question") {
+        qq = new QuizQuestions::MultipleChoice(qqId, this);
+      }
+      else {
+        qq = new QuizQuestion(qqId, this);
+      }
+
+      qq->deserialize(qqDocument);
       qq->setQuiz(this);
+
       mQuestions.push_back(qq);
-    });
+    }
   }
 
   void Quiz::buildUrl()

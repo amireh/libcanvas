@@ -98,7 +98,7 @@ namespace Canvas {
 
         try {
           resource->setDocument(documentRoot);
-          resource->deserialize(document);
+          resource->deserialize(documentRoot);
         } catch(std::exception &e) {
           Logger::defaultLogger().error()
             << "Resource deserialization failed: "

@@ -52,6 +52,8 @@ namespace Canvas {
    */
   class QuizQuestionAnswer : public Resource {
   public:
+    using Resource::deserialize;
+
     QuizQuestionAnswer();
     QuizQuestionAnswer(ID);
     QuizQuestionAnswer(ID, QuizQuestion const*);
@@ -79,12 +81,9 @@ namespace Canvas {
      */
     virtual int weight() const;
 
-    /**
-     * Populate QuizQuestionAnswer from a JSON document.
-     */
-    virtual void deserialize(String const& json);
-
     virtual void setQuestion(QuizQuestion const*);
+
+    virtual void deserialize(JSONValue&);
 
   protected:
     void reset();

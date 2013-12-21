@@ -21,67 +21,32 @@
  *
  */
 
-#ifndef H_CANVAS_QUIZ_H
-#define H_CANVAS_QUIZ_H
+#ifndef H_CANVAS_MULTIPLE_CHOICE_QUIZ_QUESTION_H
+#define H_CANVAS_MULTIPLE_CHOICE_QUIZ_QUESTION_H
 
-#include "canvas/canvas.hpp"
-#include "canvas/resource.hpp"
-#include <list>
+#include "canvas/resources/quiz_question.hpp"
+#include "canvas/resources/quiz_question_answer.hpp"
+#include "canvas/resources/quiz_question_prototypes/answerable.hpp"
 
 namespace Canvas {
+namespace QuizQuestions {
+  using QuizQuestionPrototypes::Answerable;
 
-  class Course;
-  class Session;
-  class QuizQuestion;
-  /**
-   * @class quiz
-   * @brief
-   * A course quiz.
-   */
-  class Quiz : public Resource {
+  class MultipleChoice : public QuizQuestion, public Answerable<QuizQuestionAnswer> {
   public:
     using Resource::deserialize;
-    typedef std::list<QuizQuestion*> Questions;
 
-    Quiz();
-    Quiz(ID id, Course*);
-    Quiz(const Quiz&) = delete;
-    Quiz& operator=(Quiz const&) = delete;
-    virtual ~Quiz();
+    MultipleChoice();
+    MultipleChoice(ID);
+    MultipleChoice(ID, Quiz const*);
+    MultipleChoice(const MultipleChoice&) = delete;
+    MultipleChoice& operator=(const MultipleChoice&) = delete;
+    ~MultipleChoice();
 
-    virtual void setCourse(Course*);
-    virtual void setTitle(String const&);
-    virtual void setAccessCode(String const&);
-    virtual void setPublished(bool);
-
-    virtual Course const* course() const;
-    virtual String const& title() const;
-    virtual String const& accessCode() const;
-
-    virtual bool isPublished() const;
-
-    /**
-     * Populate the Quiz from a JSON document.
-     */
     virtual void deserialize(JSONValue&);
-
-    virtual void loadQuestions(Session&, AsyncCallback);
-    virtual void loadQuestions(String const&);
-
-    /**
-     * This Quiz's questions.
-     */
-    virtual Questions const& questions() const;
-
-  protected:
-    Questions mQuestions;
-    Course* mCourse;
-    String mTitle;
-    String mAccessCode;
-    bool mPublished;
-
-    void buildUrl();
   };
+
+}
 }
 
 #endif

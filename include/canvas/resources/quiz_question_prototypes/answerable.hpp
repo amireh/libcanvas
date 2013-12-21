@@ -21,67 +21,49 @@
  *
  */
 
-#ifndef H_CANVAS_QUIZ_H
-#define H_CANVAS_QUIZ_H
+#ifndef H_CANVAS_ANSWERABLE_QUIZ_QUESTION_PROTOTYPE_H
+#define H_CANVAS_ANSWERABLE_QUIZ_QUESTION_PROTOTYPE_H
 
 #include "canvas/canvas.hpp"
-#include "canvas/resource.hpp"
-#include <list>
+#include <vector>
 
 namespace Canvas {
+namespace QuizQuestionPrototypes {
 
-  class Course;
-  class Session;
-  class QuizQuestion;
   /**
-   * @class quiz
-   * @brief
-   * A course quiz.
+   * @class Answerable
+   * A prototype for quiz questions that provide pre-defined answers.
    */
-  class Quiz : public Resource {
+  template<typename T>
+  class Answerable {
   public:
-    using Resource::deserialize;
-    typedef std::list<QuizQuestion*> Questions;
+    typedef std::vector<T*> Answers;
 
-    Quiz();
-    Quiz(ID id, Course*);
-    Quiz(const Quiz&) = delete;
-    Quiz& operator=(Quiz const&) = delete;
-    virtual ~Quiz();
-
-    virtual void setCourse(Course*);
-    virtual void setTitle(String const&);
-    virtual void setAccessCode(String const&);
-    virtual void setPublished(bool);
-
-    virtual Course const* course() const;
-    virtual String const& title() const;
-    virtual String const& accessCode() const;
-
-    virtual bool isPublished() const;
+    Answerable();
+    virtual ~Answerable();
 
     /**
-     * Populate the Quiz from a JSON document.
+     * Answers provided by this quiz question.
      */
-    virtual void deserialize(JSONValue&);
-
-    virtual void loadQuestions(Session&, AsyncCallback);
-    virtual void loadQuestions(String const&);
-
-    /**
-     * This Quiz's questions.
-     */
-    virtual Questions const& questions() const;
+    Answers const& answers() const;
 
   protected:
-    Questions mQuestions;
-    Course* mCourse;
-    String mTitle;
-    String mAccessCode;
-    bool mPublished;
+    Answers mAnswers;
 
-    void buildUrl();
+    /**
+     * Add a new answer to the list of possible answers this question provides.
+     *
+     * @param[in] answerId
+     *   This must be the unique answer ID, if it is 0, this method will be a
+     *   no-op.
+     *
+     * @param callback
+     *   Post-processor for the newly-added answer. You can use this to customize
+     *   the answer object, or deserialize it from a JSON document, etc.
+     */
+    void addAnswer(ID answerId, std::function<void(T*)> callback = nullptr);
   };
+}
 }
 
 #endif

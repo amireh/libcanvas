@@ -10,16 +10,10 @@ namespace Canvas {
     inline SpecResource(int id) : Resource(id) {}
     inline virtual ~SpecResource() {}
 
-    inline virtual void deserialize(const String& json) {
-      SpecResource* resource;
-      Json::Value root;
-      Json::Reader reader;
-      bool parsingSuccessful = reader.parse( json, root );
-
-      if ( !parsingSuccessful ) {
-        throw reader.getFormattedErrorMessages();
-      }
-
+    virtual void deserialize(const String& document) {
+      Resource::deserialize(document);
+    }
+    inline virtual void deserialize(JSONValue& root) {
       mId = root.get("id", 0).asUInt();
     }
   };

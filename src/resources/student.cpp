@@ -169,7 +169,7 @@ namespace Canvas {
     return quizSubmission(quiz) != nullptr;
   }
 
-  void Student::deserialize(String const&) {
+  void Student::deserialize(JSONValue&) {
   }
 
   void Student::setApiToken(String const& apiToken) {
@@ -184,15 +184,8 @@ namespace Canvas {
 
   Student::Login::~Login() {}
 
-  void Student::Login::deserialize(String const& json) {
-    Json::Value root;
-    Json::Reader reader;
-    bool parser_success;
 
-    if (!reader.parse( json, root )) {
-      throw JSONParserError(reader.getFormattedErrorMessages());
-    }
-
+  void Student::Login::deserialize(JSONValue& root) {
     mUserId = root.get("user_id", 0).asUInt();
   }
 

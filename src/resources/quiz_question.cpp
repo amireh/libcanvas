@@ -100,15 +100,7 @@ namespace Canvas {
     return mPosition;
   }
 
-  void QuizQuestion::deserialize(String const& json) {
-    Json::Value root;
-    Json::Reader reader;
-    bool parser_success;
-
-    if (!reader.parse( json, root )) {
-      throw JSONParserError(reader.getFormattedErrorMessages());
-    }
-
+  void QuizQuestion::deserialize(Json::Value& root) {
     mId = root.get("id", 0).asUInt();
     mName = root.get("question_name", "Question" + utility::stringify(mId)).asString();
     mType = root.get("question_type", "unknown_question").asString();
@@ -140,5 +132,9 @@ namespace Canvas {
       utility::stringify(qs.id()) +
       "/questions/" +
       utility::stringify(id());
+  }
+
+  QuizQuestions::MultipleChoice* QuizQuestion::asMultipleChoice() {
+    return this->toActualType<QuizQuestions::MultipleChoice>("multiple_choice_question");
   }
 }

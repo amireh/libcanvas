@@ -57,15 +57,7 @@ namespace Canvas {
     mScore = mKeptScore = 0;
   }
 
-  void QuizSubmission::deserialize(String const& json) {
-    Json::Value root;
-    Json::Reader reader;
-    bool parser_success;
-
-    if (!reader.parse( json, root )) {
-      throw JSONParserError(reader.getFormattedErrorMessages());
-    }
-
+  void QuizSubmission::deserialize(JSONValue& root) {
     mId = root.get("id", 0).asUInt();
     mSubmissionId = root.get("submission_id", 0).asUInt();
     mUserId = root.get("user_id", 0).asUInt();
