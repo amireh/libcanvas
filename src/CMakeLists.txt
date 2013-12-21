@@ -5,6 +5,7 @@ SET(CANVAS_SRC
   ${CANVAS_INCLUDE_DIR}/resources/quiz.hpp
   ${CANVAS_INCLUDE_DIR}/resources/quiz_submission.hpp
   ${CANVAS_INCLUDE_DIR}/resources/quiz_question.hpp
+  ${CANVAS_INCLUDE_DIR}/resources/quiz_question_answer.hpp
   ${CANVAS_INCLUDE_DIR}/resources/student.hpp
   ${CANVAS_INCLUDE_DIR}/canvas.hpp
   ${CANVAS_INCLUDE_DIR}/exception.hpp
@@ -20,6 +21,7 @@ SET(CANVAS_SRC
   resources/quiz.cpp
   resources/quiz_submission.cpp
   resources/quiz_question.cpp
+  resources/quiz_question_answer.cpp
   resources/student.cpp
   canvas.cpp
   file_manager.cpp

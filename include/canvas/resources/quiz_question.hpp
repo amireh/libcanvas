@@ -31,6 +31,7 @@ namespace Canvas {
 
   class Quiz;
   class QuizSubmission;
+
   /**
    * @class QuizQuestion
    * @brief
