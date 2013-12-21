@@ -23,6 +23,8 @@
 
 #include "canvas/resources/quiz.hpp"
 #include "canvas/resources/course.hpp"
+#include "canvas/resources/quiz_question.hpp"
+#include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 #include "canvas/utility.hpp"
 #include <cstdio>
@@ -42,6 +44,11 @@ namespace Canvas {
   }
 
   Quiz::~Quiz() {
+    std::for_each(mQuestions.begin(), mQuestions.end(), [](QuizQuestion* qq) {
+      delete qq;
+    });
+
+    mQuestions.clear();
   }
 
   void Quiz::setCourse(Course* course) {
@@ -71,13 +78,6 @@ namespace Canvas {
     return mAccessCode;
   }
 
-  bool Quiz::take(Session &in_session, AsyncCallback &callback) {
-    in_session.post(url() + "/", [&](bool success, HTTP::Response response) -> void {
-    });
-
-    return true;
-  }
-
   void Quiz::deserialize(String const& json) {
     Json::Value root;
     Json::Reader reader;
@@ -93,6 +93,25 @@ namespace Canvas {
     buildUrl();
   }
 
+  void Quiz::loadQuestions(Session &session, AsyncCallback callback) {
+    session.get(url() + "/questions",
+      [&](bool success, HTTP::Response response) -> void {
+        if (success) {
+          loadQuestions(response.body);
+        }
+
+        callback(success);
+    });
+  }
+
+  void Quiz::loadQuestions(String const& documents) {
+    ResourceParser parser;
+    parser.parseResources<QuizQuestion>(documents, [&](QuizQuestion* qq) {
+      qq->setQuiz(this);
+      mQuestions.push_back(qq);
+    });
+  }
+
   void Quiz::buildUrl()
   {
     if (!mCourse) {
@@ -100,5 +119,9 @@ namespace Canvas {
     }
 
     mUrl = mCourse->url() + "/quizzes/" + utility::stringify(mId);
+  }
+
+  Quiz::Questions const& Quiz::questions() const {
+    return mQuestions;
   }
 } // namespace cnvs

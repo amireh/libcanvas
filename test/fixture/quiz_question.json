@@ -1,0 +1,48 @@
+{
+    "assessment_question_id": 1,
+    "id": 1,
+    "position": 1,
+    "quiz_group_id": null,
+    "quiz_id": 1,
+    "question_name": "MC Q",
+    "question_type": "multiple_choice_question",
+    "question_text": "<p>A, B, C, or D?</p>",
+    "points_possible": 1,
+    "correct_comments": "Correct",
+    "incorrect_comments": "Incorrect",
+    "neutral_comments": "Donno",
+    "answers": [
+        {
+            "id": 3023,
+            "text": "A",
+            "html": "",
+            "comments": "",
+            "weight": 100
+        },
+        {
+            "id": 8899,
+            "text": "B",
+            "html": "",
+            "comments": "",
+            "weight": 0
+        },
+        {
+            "id": 7907,
+            "text": "C",
+            "html": "",
+            "comments": "",
+            "weight": 0
+        },
+        {
+            "id": 5646,
+            "text": "D",
+            "html": "",
+            "comments": "",
+            "weight": 0
+        }
+    ],
+    "variables": null,
+    "formulas": null,
+    "matches": null,
+    "matching_answer_incorrect_matches": null
+}

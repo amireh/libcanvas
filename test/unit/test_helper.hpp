@@ -15,7 +15,7 @@ namespace Canvas {
     return CANVAS_SPEC_FIXTURE_PATH + "/" + path;
   }
 
-  static String load_fixture(String const& path) {
+  static String loadFixture(String const& path) {
     String out;
     FileManager::singleton().load_file(fixture(path), out);
     return out;

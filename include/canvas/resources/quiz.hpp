@@ -26,11 +26,13 @@
 
 #include "canvas/canvas.hpp"
 #include "canvas/resource.hpp"
+#include <list>
 
 namespace Canvas {
 
   class Course;
   class Session;
+  class QuizQuestion;
   /**
    * @class quiz
    * @brief
@@ -38,6 +40,8 @@ namespace Canvas {
    */
   class Quiz : public Resource {
   public:
+    typedef std::list<QuizQuestion*> Questions;
+
     Quiz();
     Quiz(ID id, Course*);
     Quiz(const Quiz&) = delete;
@@ -55,14 +59,21 @@ namespace Canvas {
 
     virtual bool isPublished() const;
 
-    virtual bool take(Session&, AsyncCallback&);
-
     /**
      * Populate the Quiz from a JSON document.
      */
     virtual void deserialize(String const&);
 
+    virtual void loadQuestions(Session&, AsyncCallback);
+    virtual void loadQuestions(String const&);
+
+    /**
+     * This Quiz's questions.
+     */
+    virtual Questions const& questions() const;
+
   protected:
+    Questions mQuestions;
     Course* mCourse;
     String mTitle;
     String mAccessCode;

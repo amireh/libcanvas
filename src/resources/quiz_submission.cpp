@@ -28,14 +28,20 @@
 #include <cstring>
 
 namespace Canvas {
-QuizSubmission::QuizSubmission()
+  QuizSubmission::QuizSubmission()
   : Resource(0),
     mQuiz(nullptr)
   {
     reset();
   }
 
-QuizSubmission::QuizSubmission(ID id, Quiz const *quiz)
+  QuizSubmission::QuizSubmission(ID id)
+  : Resource(id),
+    mQuiz(nullptr)
+  {
+    reset();
+  }
+  QuizSubmission::QuizSubmission(ID id, Quiz const *quiz)
   : Resource(id),
     mQuiz(quiz)
   {

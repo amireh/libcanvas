@@ -15,7 +15,7 @@ namespace Canvas {
   };
 
   TEST_F(course_test, loadQuizzes) {
-    mCourse = parser_.parseResource<Course>(load_fixture("course.json"));
+    mCourse = parser_.parseResource<Course>(loadFixture("course.json"));
     mSession.authenticate(CANVAS_SPEC_API_TOKEN);
 
     ASSERT_NO_THROW(
@@ -29,7 +29,7 @@ namespace Canvas {
   }
 
   TEST_F(course_test, deserialize) {
-    String json = load_fixture("course.json");
+    String json = loadFixture("course.json");
 
     ASSERT_NO_THROW(mCourse = parser_.parseResource<Course>(json););
     ASSERT_TRUE(mCourse);
@@ -42,7 +42,7 @@ namespace Canvas {
   }
 
   TEST_F(course_test, bulk_parsing) {
-    String json = load_fixture("courses.json");
+    String json = loadFixture("courses.json");
     std::vector<Course*> courses = parser_.parseResources<Course>(json);
 
     ASSERT_EQ(courses.size(), 2);

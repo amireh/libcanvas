@@ -86,11 +86,18 @@ namespace Canvas {
       T* resource;
       std::vector<T*> resources;
       JSONDocuments documents(jsonDocuments(json, ns));
+      Json::Reader reader;
+      Json::Value documentRoot;
 
       for (auto document : documents) {
         resource = new T();
 
+        if (!reader.parse( document, documentRoot )) {
+          throw JSONParserError(reader.getFormattedErrorMessages());
+        }
+
         try {
+          resource->setDocument(documentRoot);
           resource->deserialize(document);
         } catch(std::exception &e) {
           Logger::defaultLogger().error()

@@ -38,6 +38,7 @@ namespace Canvas {
   class QuizSubmission : public Resource {
   public:
     QuizSubmission();
+    QuizSubmission(ID);
     QuizSubmission(ID, Quiz const*);
     QuizSubmission(const QuizSubmission&) = delete;
     QuizSubmission& operator=(QuizSubmission const&) = delete;

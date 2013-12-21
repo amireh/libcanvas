@@ -69,7 +69,7 @@ namespace Canvas {
   }
 
   TEST_F(ResourceParserTest, parseResource) {
-    String json = load_fixture("random_document.json");
+    String json = loadFixture("random_document.json");
     SpecResource* resource;
 
     ASSERT_NO_THROW({
@@ -83,7 +83,7 @@ namespace Canvas {
   }
 
   TEST_F(ResourceParserTest, parseResources) {
-    String json = load_fixture("random_documents.json");
+    String json = loadFixture("random_documents.json");
     std::vector<SpecResource*> resources;
 
     ASSERT_NO_THROW({
@@ -102,7 +102,7 @@ namespace Canvas {
   }
 
   TEST_F(ResourceParserTest, parseResourcesWithCallback) {
-    String json = load_fixture("random_documents.json");
+    String json = loadFixture("random_documents.json");
     std::vector<SpecResource*> resources;
     int nrCalls = 0;
 

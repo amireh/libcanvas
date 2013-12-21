@@ -29,6 +29,8 @@
 
 namespace Canvas {
 
+  class ResourceParser;
+
   /**
    * @class Resource
    * @brief
@@ -64,8 +66,16 @@ namespace Canvas {
     virtual void deserialize(String const&) = 0;
 
   protected:
+    friend class ResourceParser;
+
+    inline
+    virtual void setDocument(Json::Value& document) {
+      mDocument = document;
+    }
+
     ID mId;
     String mUrl;
+    Json::Value mDocument;
   };
 }
 

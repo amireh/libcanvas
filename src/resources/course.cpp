@@ -38,8 +38,8 @@ namespace Canvas {
   }
 
   Course::~Course() {
-    std::for_each(mQuizzes.begin(), mQuizzes.end(), [](Quiz* Quiz) {
-      delete Quiz;
+    std::for_each(mQuizzes.begin(), mQuizzes.end(), [](Quiz* quiz) {
+      delete quiz;
     });
 
     mQuizzes.clear();
