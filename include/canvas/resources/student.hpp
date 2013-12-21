@@ -49,6 +49,7 @@ namespace Canvas {
 
     typedef std::vector<Course*> Courses;
     typedef std::map<Quiz const*, QuizSubmission*> QuizSubmissions;
+    typedef std::function<void(QuizSubmission const*)> TakeQuizCallback;
 
     Student();
     Student(ID id);
@@ -89,6 +90,8 @@ namespace Canvas {
 
     virtual bool canTakeQuiz(Quiz const&) const;
     virtual bool hasTakenQuiz(Quiz const&) const;
+    virtual void takeQuiz(Session&, Quiz const&, TakeQuizCallback);
+
     /**
      * Populate the Student from a JSON document.
      *

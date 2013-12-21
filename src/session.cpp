@@ -96,15 +96,37 @@ namespace Canvas {
   }
 
   bool Session::get(URI const& endpoint, Session::RC_GET callback) {
+    curl_easy_setopt(mCurl, CURLOPT_HTTPGET, 1);
+
+    return performRequest(endpoint, callback);
+  }
+
+  bool Session::post(URI const& endpoint, String const& data, RC_GET callback) {
+    curl_easy_setopt(mCurl, CURLOPT_POST, 1);
+    curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, (void*)data.c_str());
+
+    return performRequest(endpoint, callback);
+  }
+
+  bool Session::put(Resource const& resource, Session::RC_POST callback) {
+    throw std::runtime_error("PUT requests are not implemented yet");
+  }
+
+  URI Session::apiEndpoint(URI const& endpoint) const {
+    return String(Settings::get("canvas_host")
+      + ":"
+      + Settings::get("canvas_port")
+      + Settings::get("canvas_api_prefix")
+      + endpoint);
+  }
+
+  bool Session::performRequest(String const& endpoint, RC_GET &callback) {
+    HTTP::Response response;
+    HTTP::Download dl;
     CURLcode curlrc;
     char curlerr[CURL_ERROR_SIZE];
-    HTTP::Response response;
-    uint8_t http_rc = 0;
-    Download dl;
 
     dl.uri = apiEndpoint(endpoint);
-
-    info() << "Downloading " << dl.uri;
 
     curl_easy_setopt(mCurl, CURLOPT_ERRORBUFFER, curlerr);
     curl_easy_setopt(mCurl, CURLOPT_URL, dl.uri.c_str());
@@ -114,15 +136,20 @@ namespace Canvas {
 
     if (curlrc != 0) {
       error() << "a CURL error was encountered; " << curlrc << " => " << curlerr;
+      response.body = curlerr;
       callback(false, response);
 
       return false;
     }
 
-    curl_easy_getinfo(mCurl, CURLINFO_RESPONSE_CODE, &http_rc);
+    curl_easy_getinfo(mCurl, CURLINFO_RESPONSE_CODE, &response.status);
 
-    if (http_rc != 200) {
-      error() << "remote server error, HTTP code: " << http_rc << ", download failed";
+    if (response.status != 200) {
+      error()
+        << "API error: "
+        << "[" << response.status << "]"
+        << " " << response.body;
+
       callback(false, response);
 
       return false;
@@ -133,22 +160,6 @@ namespace Canvas {
     callback(true, response);
 
     return true;
-  }
-
-  bool Session::post(URI const& endpoint, Session::RC_POST callback) {
-    throw "not implemented yet";
-  }
-
-  bool Session::put(Resource const& resource, Session::RC_POST callback) {
-    throw "not implemented yet";
-  }
-
-  URI Session::apiEndpoint(URI const& endpoint) const {
-    return String(Settings::get("canvas_host")
-      + ":"
-      + Settings::get("canvas_port")
-      + Settings::get("canvas_api_prefix")
-      + endpoint);
   }
 
 } // namespace cnvs

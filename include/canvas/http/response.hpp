@@ -35,7 +35,9 @@ namespace HTTP {
    * HTTP response.
    */
   struct Response {
-    uint8_t status;
+    inline Response() : status(0) {}
+
+    long status;
     String  body;
   };
 

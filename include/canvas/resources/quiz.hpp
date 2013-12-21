@@ -33,6 +33,7 @@ namespace Canvas {
   class Course;
   class Session;
   class QuizQuestion;
+  class QuizSubmission;
   /**
    * @class quiz
    * @brief

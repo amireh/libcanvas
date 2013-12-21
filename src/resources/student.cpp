@@ -152,12 +152,11 @@ namespace Canvas {
           qs->setQuiz(&quiz);
           mQuizSubmissions.insert(std::make_pair(&quiz, qs));
           callback(true);
-        } else {
-          callback(false);
+          return;
         }
-      } else {
-        callback(false);
       }
+
+      callback(false);
     });
   }
 
@@ -191,5 +190,24 @@ namespace Canvas {
 
   ID Student::Login::userId() const {
     return mUserId;
+  }
+
+  void Student::takeQuiz(Session& session, Quiz const& quiz, TakeQuizCallback callback) {
+    session.post(quiz.url() + "/submissions", "{}",
+    [&](bool success, HTTP::Response const &response) {
+      Logger::defaultLogger().debug() << "POSTing to QS yielded status code: "
+        << response.status
+        << " and body: " << response.body;
+
+      if (!success && response.status != 409) {
+        callback(nullptr);
+        return;
+      }
+
+      loadQuizSubmission(session, quiz, [&](bool success) {
+        callback(success ? quizSubmission(quiz) : nullptr);
+      });
+    });
+
   }
 } // namespace cnvs

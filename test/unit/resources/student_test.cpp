@@ -62,6 +62,17 @@ namespace Canvas {
         ASSERT_TRUE(student.hasTakenQuiz(quiz));
       });
     );
-
   }
+
+  TEST_F(StudentTest, takeQuiz) {
+    Course course(1);
+    Quiz quiz(1, &course);
+
+    ASSERT_TRUE(student.canTakeQuiz(quiz));
+
+    student.takeQuiz(session, quiz, [&](QuizSubmission const* qs) {
+      ASSERT_NE(qs, nullptr);
+    });
+  }
+
 } // namespace cnvs

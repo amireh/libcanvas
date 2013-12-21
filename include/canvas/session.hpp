@@ -69,7 +69,7 @@ namespace Canvas {
     /**
      * Perform a POST API call to create resources, or upload data.
      */
-    virtual bool post(URI const&, RC_POST);
+    virtual bool post(URI const&, String const& data, RC_GET);
 
     /**
      * Perform a PUT API call to update a resource.
@@ -84,6 +84,7 @@ namespace Canvas {
 
     struct curl_slist* addJsonHeaders(struct curl_slist* = nullptr);
     void free_headers();
+    bool performRequest(String const&, RC_GET&);
 
     CURL *mCurl;
     struct curl_slist *mHeaders;
