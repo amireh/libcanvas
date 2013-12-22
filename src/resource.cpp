@@ -2,6 +2,10 @@
 
 namespace Canvas {
 
+  Resource::~Resource() {
+    mUserData.clear();
+  }
+
   void Resource::deserialize(const String& json) {
     Json::Value root;
     Json::Reader reader;

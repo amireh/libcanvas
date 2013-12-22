@@ -26,6 +26,7 @@
 
 #include "canvas/canvas.hpp"
 #include <json/json.h>
+#include <map>
 
 namespace Canvas {
 
@@ -49,8 +50,7 @@ namespace Canvas {
     : mId(id) {
     }
 
-    inline
-    virtual ~Resource() {};
+    virtual ~Resource();
 
     inline
     virtual ID id() const {
@@ -68,6 +68,27 @@ namespace Canvas {
     virtual void deserialize(String const&);
     virtual void deserialize(JSONValue&) = 0;
 
+    template <typename T>
+    inline
+    void setUserData(String const& key, T* data) {
+      if (mUserData[key]) {
+        throw std::runtime_error("UserData " + key + " is already set.");
+      }
+
+      mUserData[key] = (void*)data;
+    }
+
+    template <typename T>
+    inline
+    T* userData(String const& key) {
+      return (T*)mUserData[key];
+    }
+
+    inline
+    void clearUserData(String const& key) {
+      mUserData[key] = nullptr;
+    }
+
   protected:
     friend class ResourceParser;
 
@@ -79,6 +100,7 @@ namespace Canvas {
     ID mId;
     String mUrl;
     JSONValue mDocument;
+    std::map<String, void*> mUserData;
   };
 }
 
