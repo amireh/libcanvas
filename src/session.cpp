@@ -97,19 +97,24 @@ namespace Canvas {
 
   bool Session::get(URI const& endpoint, Session::RC_GET callback) {
     curl_easy_setopt(mCurl, CURLOPT_HTTPGET, 1);
+    curl_easy_setopt(mCurl, CURLOPT_CUSTOMREQUEST, "GET");
+    curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, NULL);
 
     return performRequest(endpoint, callback);
   }
 
   bool Session::post(URI const& endpoint, String const& data, RC_GET callback) {
-    curl_easy_setopt(mCurl, CURLOPT_POST, 1);
+    curl_easy_setopt(mCurl, CURLOPT_CUSTOMREQUEST, "POST");
     curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, (void*)data.c_str());
 
     return performRequest(endpoint, callback);
   }
 
-  bool Session::put(Resource const& resource, Session::RC_POST callback) {
-    throw std::runtime_error("PUT requests are not implemented yet");
+  bool Session::put(URI const& endpoint, String const& data, RC_GET callback) {
+    curl_easy_setopt(mCurl, CURLOPT_CUSTOMREQUEST, "PUT");
+    curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, (void*)data.c_str());
+
+    return performRequest(endpoint, callback);
   }
 
   URI Session::apiEndpoint(URI const& endpoint) const {

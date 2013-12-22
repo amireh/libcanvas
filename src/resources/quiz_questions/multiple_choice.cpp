@@ -48,16 +48,19 @@ namespace QuizQuestions {
     QuizQuestion::deserialize(root);
 
     for (auto answerDocument : root["answers"]) {
-      // QuizQuestionAnswer* answer;
       ID answerId = answerDocument["id"].asUInt();
 
       addAnswer(answerId, [&answerDocument](QuizQuestionAnswer *answer) {
         answer->deserialize(answerDocument);
       });
-
-      // answer = new QuizQuestionAnswer(answerId, this);
-      // mAnswers.push_back(answer);
     }
+  }
+
+  JSONValue MultipleChoice::answer(ID answerId) {
+    // todo: validate answer
+    Json::Value root;
+    root["answer"] = answerId;
+    return root;
   }
 
 } // namespace QuizQuestions

@@ -74,7 +74,7 @@ namespace Canvas {
     /**
      * Perform a PUT API call to update a resource.
      */
-    virtual bool put(Resource const&, RC_POST);
+    virtual bool put(URI const&, String const& data, RC_GET);
 
   protected:
     /**

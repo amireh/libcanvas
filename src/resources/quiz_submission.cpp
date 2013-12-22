@@ -22,6 +22,8 @@
  */
 
 #include "canvas/resources/quiz_submission.hpp"
+#include "canvas/resources/quiz_question.hpp"
+#include "canvas/resources/quiz.hpp"
 #include "canvas/session.hpp"
 #include "canvas/utility.hpp"
 #include <cstdio>
@@ -46,6 +48,7 @@ namespace Canvas {
     mQuiz(quiz)
   {
     reset();
+    buildUrl();
   }
 
   QuizSubmission::~QuizSubmission() {
@@ -69,11 +72,20 @@ namespace Canvas {
     mWorkflowState = root.get("workflow_state", "").asString();
     mScore = root.get("score", "").asDouble();
     mKeptScore = root.get("kept_score", "").asDouble();
+
+    buildUrl();
   }
 
   void QuizSubmission::setQuiz(Quiz const *quiz)
   {
     mQuiz = quiz;
+    buildUrl();
+  }
+
+  void QuizSubmission::buildUrl() {
+    if (mQuiz && mId) {
+      mUrl = mQuiz->url() + "/submissions/" + utility::stringify(mId);
+    }
   }
 
   Quiz const* QuizSubmission::quiz() const {
@@ -116,6 +128,42 @@ namespace Canvas {
     return mWorkflowState == "pending_review";
   }
 
+  void QuizSubmission::saveAnswer(QuizQuestion const* qq,
+                                  JSONValue &document,
+                                  Session &session,
+                                  AsyncCallback callback) const {
+    String jsonDocument;
 
+    document["validation_token"] = validationToken();
+    document["attempt"] = attempt();
+    document["access_code"] = mQuiz->accessCode();
+
+    jsonDocument = document.toStyledString();
+
+    session.put(qq->answerUrl(*this), jsonDocument,
+      [&](bool success, HTTP::Response response) {
+        if (!success) {
+          callback(false);
+          return;
+        }
+
+        callback(true);
+      });
+  }
+
+  void QuizSubmission::complete(Session& session, AsyncCallback callback) {
+    JSONValue document;
+
+    document["validation_token"] = validationToken();
+    document["attempt"] = attempt();
+    document["access_code"] = mQuiz->accessCode();
+
+    session.post(
+      url() + "/complete",
+      document.toStyledString(),
+      [&](bool success, HTTP::Response response) {
+        callback(success);
+      });
+  }
 
 } // namespace cnvs

@@ -44,6 +44,17 @@ namespace QuizQuestions {
     ~MultipleChoice();
 
     virtual void deserialize(JSONValue&);
+
+    /**
+     * Generate a JSON document representing the given answer, ready for
+     * handling by QuizSubmission::saveAnswer().
+     *
+     * @param[in] answerId
+     *   ID of the answer you'd like to select.
+     *
+     * @return The JSON answer document.
+     */
+    virtual JSONValue answer(ID answerId);
   };
 
 }
