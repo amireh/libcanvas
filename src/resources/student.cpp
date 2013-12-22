@@ -82,6 +82,17 @@ namespace Canvas {
     return locator->second;
   }
 
+  void Student::trackQuizSubmission(Quiz const* quiz, QuizSubmission *qs) {
+    QuizSubmissions::const_iterator locator = mQuizSubmissions.find(quiz);
+
+    if (locator != mQuizSubmissions.end()) {
+      delete locator->second;
+      mQuizSubmissions.erase(quiz);
+    }
+
+    mQuizSubmissions.insert(std::make_pair(quiz, qs));
+  }
+
   void Student::loadIdentity(Session& session, AsyncCallback callback) {
     session.get("/users/self/logins",
       [&](bool success, HTTP::Response const &response) -> void {
@@ -150,7 +161,7 @@ namespace Canvas {
 
         if (qs) {
           qs->setQuiz(&quiz);
-          mQuizSubmissions.insert(std::make_pair(&quiz, qs));
+          trackQuizSubmission(&quiz, qs);
           callback(true);
           return;
         }
@@ -161,7 +172,24 @@ namespace Canvas {
   }
 
   bool Student::canTakeQuiz(Quiz const& quiz) const {
-    return quiz.isPublished();
+    QuizSubmission const *qs = quizSubmission(quiz);
+
+    if (!quiz.isPublished() || quiz.locked()) {
+      return false;
+    }
+
+    if (quiz.allowedAttempts() == -1) {
+      return true;
+    }
+
+    if (qs &&
+      hasTakenQuiz(quiz) &&
+      quiz.allowedAttempts() > -1 &&
+      quiz.allowedAttempts() <= qs->attempt()) {
+      return false;
+    }
+
+    return true;
   }
 
   bool Student::hasTakenQuiz(const Quiz &quiz) const {

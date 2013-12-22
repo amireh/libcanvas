@@ -112,6 +112,7 @@ namespace Canvas {
     QuizSubmissions mQuizSubmissions;
 
     void buildUrl();
+    void trackQuizSubmission(Quiz const*, QuizSubmission*);
 
     /**
      * @class Login
