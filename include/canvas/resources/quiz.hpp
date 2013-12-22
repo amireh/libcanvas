@@ -51,15 +51,80 @@ namespace Canvas {
     virtual ~Quiz();
 
     virtual void setCourse(Course*);
-    virtual void setTitle(String const&);
-    virtual void setAccessCode(String const&);
-    virtual void setPublished(bool);
 
+    /**
+     * The Course this Quiz is for.
+     */
     virtual Course const* course() const;
+
+    /**
+     * A not necessarily unique, but usually descriptive, title for the quiz.
+     */
     virtual String const& title() const;
+
+    /**
+     * Free-form description of the Quiz to guide students.
+     *
+     * @note
+     * This may contain HTML.
+     */
+    virtual String const& description() const;
+
+    /**
+     * An access code that must be provided by the student to participate in this
+     * quiz.
+     *
+     * @note
+     * Keep it secret!
+     */
     virtual String const& accessCode() const;
 
+    /**
+     * The maximum number of points a student can score for this Quiz.
+     */
+    virtual uint pointsPossible() const;
+
+    /**
+     * How many times the student gets to take this quiz.
+     *
+     * A value of -1 denotes unlimited attempts.
+     */
+    virtual int allowedAttempts() const;
+
+    /**
+     * The number of questions this Quiz has, as recorded by Canvas.
+     */
+    virtual uint questionCount() const;
+
+    /**
+     * Number of minutes after which the student's quiz submission should be
+     * automatically turned-in by the system.
+     *
+     * @warning
+     * Answers recorded beyond this limit will be discarded by Canvas.
+     */
+    virtual int timeLimit() const;
+
+    /**
+     * Published quizzes are open for participation by students.
+     */
     virtual bool isPublished() const;
+
+    /**
+     * Is it a One-Question-At-A-Time quiz?
+     */
+    virtual bool isOQAAT() const;
+
+    /**
+     * Whether correct answers should be displayed to students once they submit
+     * the quiz.
+     */
+    virtual bool showCorrectAnswers() const;
+
+    /**
+     * Whether this Quiz has been explicitly locked for *this* student.
+     */
+    virtual bool locked() const;
 
     /**
      * Populate the Quiz from a JSON document.
@@ -79,7 +144,15 @@ namespace Canvas {
     Course* mCourse;
     String mTitle;
     String mAccessCode;
+    String mDescription;
     bool mPublished;
+    uint mPointsPossible;
+    int mAllowedAttempts;
+    uint mQuestionCount;
+    int mTimeLimit;
+    bool mOQAAT;
+    bool mLocked;
+    bool mShowCorrectAnswers;
 
     void buildUrl();
   };

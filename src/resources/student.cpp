@@ -116,7 +116,7 @@ namespace Canvas {
   }
 
   void Student::loadCourses(Session& session, AsyncCallback callback) {
-    session.get(url() + "/courses",
+    session.get("/courses",
       [&](bool success, HTTP::Response const &response) {
         ResourceParser parser;
 

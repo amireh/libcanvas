@@ -57,18 +57,6 @@ namespace Canvas {
     buildUrl();
   }
 
-  void Quiz::setTitle(String const& title) {
-    mTitle = title;
-  }
-
-  void Quiz::setPublished(bool flag) {
-    mPublished = flag;
-  }
-
-  void Quiz::setAccessCode(String const& access_code) {
-    mAccessCode = access_code;
-  }
-
   Course const* Quiz::course() const {
     return mCourse;
   }
@@ -77,17 +65,58 @@ namespace Canvas {
     return mTitle;
   }
 
+  const String &Quiz::description() const {
+    return mDescription;
+  }
+
   bool Quiz::isPublished() const {
     return mPublished;
+  }
+
+  bool Quiz::isOQAAT() const {
+    return mOQAAT;
+  }
+
+  bool Quiz::showCorrectAnswers() const {
+    return mShowCorrectAnswers;
+  }
+
+  bool Quiz::locked() const {
+    return mLocked;
   }
 
   String const& Quiz::accessCode() const {
     return mAccessCode;
   }
 
+  uint Quiz::pointsPossible() const {
+    return mPointsPossible;
+  }
+
+  int Quiz::allowedAttempts() const {
+    return mAllowedAttempts;
+  }
+
+  uint Quiz::questionCount() const {
+    return mQuestionCount;
+  }
+
+  int Quiz::timeLimit() const {
+    return mTimeLimit;
+  }
+
   void Quiz::deserialize(JSONValue& root) {
     mId = root.get("id", 0).asUInt();
     mTitle = root.get("title", "Unnamed Quiz").asString();
+    mDescription = root.get("description", "").asString();
+    mPublished = root.get("published", "true").asBool();
+    mPointsPossible = root.get("points_possible", "0").asUInt();
+    mAllowedAttempts = root.get("allowed_attempts", "-1").asInt();
+    mQuestionCount = root.get("question_count", "0").asUInt();
+    mTimeLimit = root.get("time_limit", "-1").asInt();
+    mOQAAT = root.get("one_question_at_a_time", "false").asBool();
+    mLocked = root.get("locked_for_user", "false").asBool();
+    mShowCorrectAnswers = root.get("show_correct_answers", "true").asBool();
 
     buildUrl();
   }
