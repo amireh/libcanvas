@@ -186,12 +186,21 @@ namespace Canvas {
   QuizQuestions::Essay const* QuizQuestion::asEssay() const {
     return this->toActualType<QuizQuestions::Essay>("essay_question");
   }
+
   QuizQuestions::Calculated* QuizQuestion::asCalculated() {
     return this->toActualType<QuizQuestions::Calculated>("calculated_question");
   }
 
   QuizQuestions::Calculated const* QuizQuestion::asCalculated() const {
     return this->toActualType<QuizQuestions::Calculated>("calculated_question");
+  }
+
+  QuizQuestions::Numerical* QuizQuestion::asNumerical() {
+    return this->toActualType<QuizQuestions::Numerical>("numerical_question");
+  }
+
+  QuizQuestions::Numerical const* QuizQuestion::asNumerical() const {
+    return this->toActualType<QuizQuestions::Numerical>("numerical_question");
   }
 
   bool QuizQuestion::isMarked() const {

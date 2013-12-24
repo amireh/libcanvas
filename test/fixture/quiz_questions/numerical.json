@@ -1,0 +1,47 @@
+{
+    "assessment_question_id": 10,
+    "id": 10,
+    "position": 10,
+    "quiz_group_id": null,
+    "quiz_id": 1,
+    "question_name": "Numerical Q",
+    "question_type": "numerical_question",
+    "question_text": "<p>What's 9 plus 3, or 4 minus zero?</p>",
+    "points_possible": 1,
+    "correct_comments": "",
+    "incorrect_comments": "",
+    "neutral_comments": "",
+    "answers": [
+        {
+            "id": 766,
+            "text": "",
+            "comments": "",
+            "weight": 100,
+            "numerical_answer_type": "exact_answer",
+            "exact": 12,
+            "margin": 0.25
+        },
+        {
+            "id": 7554,
+            "text": "",
+            "comments": "",
+            "weight": 100,
+            "numerical_answer_type": "exact_answer",
+            "exact": 4,
+            "margin": 0
+        },
+        {
+            "id": 8155,
+            "text": "",
+            "comments": "",
+            "weight": 100,
+            "numerical_answer_type": "exact_answer",
+            "exact": 0,
+            "margin": 0
+        }
+    ],
+    "variables": null,
+    "formulas": null,
+    "matches": null,
+    "matching_answer_incorrect_matches": null
+}

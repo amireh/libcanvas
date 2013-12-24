@@ -40,6 +40,7 @@ namespace Canvas {
     class FillInMultipleBlanks;
     class Essay;
     class Calculated;
+    class Numerical;
   }
 
   /**
@@ -153,6 +154,8 @@ namespace Canvas {
     QuizQuestions::Essay const* asEssay() const;
     QuizQuestions::Calculated* asCalculated();
     QuizQuestions::Calculated const* asCalculated() const;
+    QuizQuestions::Numerical* asNumerical();
+    QuizQuestions::Numerical const* asNumerical() const;
 
     template<typename T>
     T* toActualType(String const& type) {
