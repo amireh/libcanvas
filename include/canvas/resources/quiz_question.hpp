@@ -38,6 +38,7 @@ namespace Canvas {
     class TrueFalse;
     class FillInTheBlank;
     class FillInMultipleBlanks;
+    class Essay;
   }
 
   /**
@@ -147,6 +148,8 @@ namespace Canvas {
     QuizQuestions::FillInTheBlank const* asFillInTheBlank() const;
     QuizQuestions::FillInMultipleBlanks* asFillInMultipleBlanks();
     QuizQuestions::FillInMultipleBlanks const* asFillInMultipleBlanks() const;
+    QuizQuestions::Essay* asEssay();
+    QuizQuestions::Essay const* asEssay() const;
 
     template<typename T>
     T* toActualType(String const& type) {

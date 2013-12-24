@@ -179,6 +179,14 @@ namespace Canvas {
     return this->toActualType<QuizQuestions::FillInMultipleBlanks>("fill_in_multiple_blanks_question");
   }
 
+  QuizQuestions::Essay* QuizQuestion::asEssay() {
+    return this->toActualType<QuizQuestions::Essay>("essay_question");
+  }
+
+  QuizQuestions::Essay const* QuizQuestion::asEssay() const {
+    return this->toActualType<QuizQuestions::Essay>("essay_question");
+  }
+
   bool QuizQuestion::isMarked() const {
     return mMarked;
   }
