@@ -8,6 +8,7 @@ SET(CANVAS_SRC
   ${CANVAS_INCLUDE_DIR}/resources/quiz_question_prototypes/answerable.hpp
   ${CANVAS_INCLUDE_DIR}/resources/quiz_questions/multiple_choice.hpp
   ${CANVAS_INCLUDE_DIR}/resources/quiz_questions/true_false.hpp
+  ${CANVAS_INCLUDE_DIR}/resources/quiz_questions/fill_in_the_blank.hpp
   ${CANVAS_INCLUDE_DIR}/resources/quiz_question_answer.hpp
   ${CANVAS_INCLUDE_DIR}/resources/student.hpp
   ${CANVAS_INCLUDE_DIR}/canvas.hpp
@@ -27,6 +28,7 @@ SET(CANVAS_SRC
   resources/quiz_question_prototypes/answerable.cpp
   resources/quiz_questions/multiple_choice.cpp
   resources/quiz_questions/true_false.cpp
+  resources/quiz_questions/fill_in_the_blank.cpp
   resources/quiz_question_answer.cpp
   resources/student.cpp
   canvas.cpp

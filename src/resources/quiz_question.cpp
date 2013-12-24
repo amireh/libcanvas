@@ -163,6 +163,14 @@ namespace Canvas {
     return this->toActualType<QuizQuestions::TrueFalse>("true_false_question");
   }
 
+  QuizQuestions::FillInTheBlank* QuizQuestion::asFillInTheBlank() {
+    return this->toActualType<QuizQuestions::FillInTheBlank>("short_answer_question");
+  }
+
+  QuizQuestions::FillInTheBlank const* QuizQuestion::asFillInTheBlank() const {
+    return this->toActualType<QuizQuestions::FillInTheBlank>("short_answer_question");
+  }
+
   bool QuizQuestion::isMarked() const {
     return mMarked;
   }

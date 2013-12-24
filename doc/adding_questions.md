@@ -20,7 +20,8 @@ namespace QuizQuestions {
 
 - Header goes in `include/canvas/resources/quiz_questions`
 - Source goes in `src/resources/quiz_questions`
-- Write a generator in Quiz::loadQuestions()
+- Write a generator in the Quiz::loadQuestions() factory
 - Define the custom type converters in QuizQuestion:
   - `MyType* QuizQuestion::asMyType();`
   - `MyType const* QuizQuestion::asMyType() const;`
+- Add header and source to `src/CMakeLists.txt`

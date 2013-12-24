@@ -1,0 +1,32 @@
+{
+    "assessment_question_id": 4,
+    "id": 4,
+    "position": 4,
+    "quiz_group_id": null,
+    "quiz_id": 1,
+    "question_name": "FITB Q",
+    "question_type": "short_answer_question",
+    "question_text": "<p>Type something</p>",
+    "points_possible": 1,
+    "correct_comments": "",
+    "incorrect_comments": "",
+    "neutral_comments": "",
+    "answers": [
+        {
+            "id": "4684",
+            "text": "Something",
+            "comments": "",
+            "weight": 100
+        },
+        {
+            "id": "1797",
+            "text": "False",
+            "comments": "",
+            "weight": 100
+        }
+    ],
+    "variables": null,
+    "formulas": null,
+    "matches": null,
+    "matching_answer_incorrect_matches": null
+}

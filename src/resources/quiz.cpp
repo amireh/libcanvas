@@ -26,6 +26,7 @@
 #include "canvas/resources/quiz_question.hpp"
 #include "canvas/resources/quiz_questions/multiple_choice.hpp"
 #include "canvas/resources/quiz_questions/true_false.hpp"
+#include "canvas/resources/quiz_questions/fill_in_the_blank.hpp"
 #include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 #include "canvas/utility.hpp"
@@ -152,6 +153,9 @@ namespace Canvas {
       }
       else if (qqType == "true_false_question") {
         qq = new QuizQuestions::TrueFalse(qqId, this);
+      }
+      else if (qqType == "short_answer_question") {
+        qq = new QuizQuestions::FillInTheBlank(qqId, this);
       }
       else {
         // qq = new QuizQuestion(qqId, this);
