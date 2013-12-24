@@ -2,7 +2,9 @@
 /test/unit/bin
 /build
 /deps/*/build
+/deps/hippomocks
 /lib
+/tmp
 /doc/api
 /include/canvas/canvas_config.hpp
 /libcanvas.sublime-workspace

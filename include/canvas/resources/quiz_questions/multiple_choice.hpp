@@ -35,6 +35,7 @@ namespace QuizQuestions {
   class MultipleChoice : public QuizQuestion, public Answerable<QuizQuestionAnswer> {
   public:
     using Resource::deserialize;
+    using QuizQuestion::deserializeAnswer;
 
     MultipleChoice();
     MultipleChoice(ID);
@@ -44,17 +45,34 @@ namespace QuizQuestions {
     ~MultipleChoice();
 
     virtual void deserialize(JSONValue&);
+    virtual void deserializeAnswer(JSONValue&);
 
     /**
-     * Generate a JSON document representing the given answer, ready for
-     * handling by QuizSubmission::saveAnswer().
+     * Save the selection of a single multiple-choice answer.
      *
-     * @param[in] answerId
-     *   ID of the answer you'd like to select.
+     * @param[in] answer
+     *   The multiple-choice answer to choose.
      *
-     * @return The JSON answer document.
+     * @throw runtime_error if the answer does not belong to the question this
+     * submission entry answer represents
      */
-    virtual JSONValue answer(ID answerId);
+    virtual void choose(QuizQuestionAnswer const*);
+    virtual void choose(ID);
+
+    /**
+     * The chosen answer. May be nullptr.
+     */
+    virtual QuizQuestionAnswer const* chosenAnswer() const;
+
+    /**
+     * Output looks like this:
+     *
+     *   { "answer": answer_id }
+     */
+    virtual JSONValue serializeAnswer() const;
+
+  protected:
+    QuizQuestionAnswer const *mAnswer;
   };
 
 }

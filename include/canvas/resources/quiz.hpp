@@ -26,7 +26,7 @@
 
 #include "canvas/canvas.hpp"
 #include "canvas/resource.hpp"
-#include <list>
+#include <vector>
 
 namespace Canvas {
 
@@ -42,7 +42,7 @@ namespace Canvas {
   class Quiz : public Resource {
   public:
     using Resource::deserialize;
-    typedef std::list<QuizQuestion*> Questions;
+    typedef std::vector<QuizQuestion*> Questions;
 
     Quiz();
     Quiz(ID id, Course*);

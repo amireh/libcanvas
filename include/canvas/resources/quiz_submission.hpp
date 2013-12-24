@@ -32,6 +32,7 @@ namespace Canvas {
   class Session;
   class Quiz;
   class QuizQuestion;
+
   /**
    * @class quiz_submission
    * @brief
@@ -126,12 +127,16 @@ namespace Canvas {
 
     virtual void setQuiz(Quiz const*);
 
-    virtual void saveAnswer(QuizQuestion const*, JSONValue&, Session&, AsyncCallback = nullptr) const;
+    /**
+     * Store an answer to a question.
+     */
+    virtual void save(QuizQuestion const*, Session&, AsyncCallback = nullptr) const;
+
+    /**
+     * Turn in the quiz.
+     */
     virtual void complete(Session&, AsyncCallback = nullptr);
   protected:
-    void reset();
-    void buildUrl();
-
     Quiz const* mQuiz;
     ID mSubmissionId;
     ID mUserId;
@@ -143,6 +148,10 @@ namespace Canvas {
     uint8_t mAttempt;
     double mScore;
     double mKeptScore;
+
+    void reset();
+    void buildUrl();
+    void save(QuizQuestion const*, JSONValue&, Session&, AsyncCallback = nullptr) const;
   };
 }
 

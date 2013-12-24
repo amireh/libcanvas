@@ -8,11 +8,11 @@ namespace Canvas {
   class unit_test_env : public ::testing::Environment {
   public:
     unit_test_env(int argc, char** argv) {
-      init(argc, argv);
+      Canvas::init(argc, argv);
     }
 
     virtual ~unit_test_env() {
-      free();
+      Canvas::free();
     }
 
     virtual void SetUp() {

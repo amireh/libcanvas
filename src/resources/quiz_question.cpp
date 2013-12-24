@@ -114,6 +114,19 @@ namespace Canvas {
     buildUrl();
   }
 
+  void QuizQuestion::deserializeAnswer(const String& json) {
+    Json::Value root;
+    Json::Reader reader;
+
+    if (!reader.parse( json, root )) {
+      throw JSONParserError(reader.getFormattedErrorMessages());
+    }
+
+    mMarked = root.get("marked", "false").asBool();
+
+    deserializeAnswer(root);
+  }
+
   void QuizQuestion::buildUrl() {
     if (!mQuiz) {
       return;
@@ -136,5 +149,13 @@ namespace Canvas {
 
   QuizQuestions::MultipleChoice* QuizQuestion::asMultipleChoice() {
     return this->toActualType<QuizQuestions::MultipleChoice>("multiple_choice_question");
+  }
+
+  bool QuizQuestion::isMarked() const {
+    return mMarked;
+  }
+
+  void QuizQuestion::mark(bool marked) {
+    mMarked = marked;
   }
 }

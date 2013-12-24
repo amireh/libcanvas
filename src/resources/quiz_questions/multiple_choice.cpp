@@ -22,26 +22,29 @@
  */
 
 #include "canvas/resources/quiz_questions/multiple_choice.hpp"
+#include "canvas/resources/quiz_question_answer.hpp"
+#include <sstream>
 
 namespace Canvas {
 namespace QuizQuestions {
 
   MultipleChoice::MultipleChoice()
-  : QuizQuestion()
+  : QuizQuestion(), mAnswer(nullptr)
   {
   }
 
   MultipleChoice::MultipleChoice(ID id)
-  : QuizQuestion(id)
+  : QuizQuestion(id), mAnswer(nullptr)
   {
   }
 
   MultipleChoice::MultipleChoice(ID id, Quiz const* quiz)
-  : QuizQuestion(id, quiz)
+  : QuizQuestion(id, quiz), mAnswer(nullptr)
   {
   }
 
   MultipleChoice::~MultipleChoice() {
+    mAnswer = nullptr;
   }
 
   void MultipleChoice::deserialize(JSONValue &root) {
@@ -56,11 +59,46 @@ namespace QuizQuestions {
     }
   }
 
-  JSONValue MultipleChoice::answer(ID answerId) {
-    // todo: validate answer
-    Json::Value root;
-    root["answer"] = answerId;
-    return root;
+  // JSONValue MultipleChoice::answer(ID answerId) {
+  //   // todo: validate answer
+  //   Json::Value root;
+  //   root["answer"] = answerId;
+  //   return root;
+  // }
+
+  void MultipleChoice::choose(QuizQuestionAnswer const *answer) {
+    if (!answer) {
+      throw std::invalid_argument("Answer must not be null!");
+    }
+
+    if (answer->question() != this) {
+      std::ostringstream msg;
+
+      msg
+        << "Answer#" << answer->id() << " does not belong to Question#" << id();
+
+      throw std::invalid_argument(msg.str());
+    }
+
+    mAnswer = answer;
+  }
+
+  void MultipleChoice::choose(ID answerId) {
+    return choose( findAnswer(answerId) );
+  }
+
+  QuizQuestionAnswer const* MultipleChoice::chosenAnswer() const {
+    return mAnswer;
+  }
+
+  void MultipleChoice::deserializeAnswer(JSONValue &document) {
+    mAnswer = findAnswer(document["answer"].asUInt());
+  }
+
+  JSONValue MultipleChoice::serializeAnswer() const {
+    Json::Value document;
+    document["answer"] = mAnswer ? mAnswer->id() : 0;
+    return document;
   }
 
 } // namespace QuizQuestions

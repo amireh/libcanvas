@@ -10,6 +10,14 @@
 
 namespace Canvas {
 
+  class SpecQuestion : public QuizQuestion {
+  public:
+    virtual void deserializeAnswer(JSONValue &) {
+    }
+
+    virtual JSONValue serializeAnswer() const {}
+  };
+
   class QuizQuestionTest : public ::testing::Test {
   public:
     QuizQuestionTest() {
@@ -20,7 +28,7 @@ namespace Canvas {
   };
 
   TEST_F(QuizQuestionTest, deserialize) {
-    QuizQuestion* qq = mParser.parseResource<QuizQuestion>(loadFixture("quiz_question.json"));
+    QuizQuestion* qq = mParser.parseResource<SpecQuestion>(loadFixture("quiz_question.json"));
 
     ASSERT_EQ(qq->id(), 1);
     ASSERT_EQ(qq->name(), "MC Q");
@@ -36,7 +44,7 @@ namespace Canvas {
   }
 
   TEST_F(QuizQuestionTest, buildsUrlWhenQuizIsSet) {
-    QuizQuestion qq;
+    SpecQuestion qq;
     Course course(1);
     Quiz quiz(1, &course);
 
@@ -50,7 +58,7 @@ namespace Canvas {
   }
 
   TEST_F(QuizQuestionTest, answerUrl) {
-    QuizQuestion qq;
+    SpecQuestion qq;
     QuizSubmission qs(1);
 
     qq.deserialize(loadFixture("quiz_question.json"));

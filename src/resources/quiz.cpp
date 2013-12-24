@@ -122,7 +122,7 @@ namespace Canvas {
   }
 
   void Quiz::loadQuestions(Session &session, AsyncCallback callback) {
-    session.get(url() + "/questions",
+    session.get(url() + "/questions?per_page=50",
       [&](bool success, HTTP::Response response) -> void {
         if (success) {
           loadQuestions(response.body);
@@ -141,7 +141,7 @@ namespace Canvas {
     }
 
     for (Json::Value &qqDocument : qqDocuments) {
-      QuizQuestion *qq;
+      QuizQuestion *qq = nullptr;
 
       String qqType = qqDocument["question_type"].asString();
       ID qqId = qqDocument["id"].asUInt();
@@ -150,13 +150,16 @@ namespace Canvas {
         qq = new QuizQuestions::MultipleChoice(qqId, this);
       }
       else {
-        qq = new QuizQuestion(qqId, this);
+        // qq = new QuizQuestion(qqId, this);
       }
 
-      qq->deserialize(qqDocument);
-      qq->setQuiz(this);
+      if (qq) {
+        qq->deserialize(qqDocument);
+        qq->setQuiz(this);
 
-      mQuestions.push_back(qq);
+        mQuestions.push_back(qq);
+
+      }
     }
   }
 

@@ -128,29 +128,6 @@ namespace Canvas {
     return mWorkflowState == "pending_review";
   }
 
-  void QuizSubmission::saveAnswer(QuizQuestion const* qq,
-                                  JSONValue &document,
-                                  Session &session,
-                                  AsyncCallback callback) const {
-    String jsonDocument;
-
-    document["validation_token"] = validationToken();
-    document["attempt"] = attempt();
-    document["access_code"] = mQuiz->accessCode();
-
-    jsonDocument = document.toStyledString();
-
-    session.put(qq->answerUrl(*this), jsonDocument,
-      [&](bool success, HTTP::Response response) {
-        if (!success) {
-          callback(false);
-          return;
-        }
-
-        callback(true);
-      });
-  }
-
   void QuizSubmission::complete(Session& session, AsyncCallback callback) {
     JSONValue document;
 
@@ -163,6 +140,40 @@ namespace Canvas {
       document.toStyledString(),
       [&](bool success, HTTP::Response response) {
         callback(success);
+      });
+  }
+
+  void QuizSubmission::save(QuizQuestion const* qq,
+                            Session &session,
+                            AsyncCallback callback) const {
+    JSONValue document;
+    document["marked"] = qq->isMarked();
+    document["answer"] = qq->serializeAnswer();
+
+    if (document["answer"].isObject() && document["answer"].isMember("answer")) {
+      document["answer"] = document["answer"]["answer"];
+    }
+
+    save(qq, document, session, callback);
+  }
+
+  void QuizSubmission::save(QuizQuestion const* qq,
+                            JSONValue &document,
+                            Session &session,
+                            AsyncCallback callback) const {
+    document["validation_token"] = validationToken();
+    document["attempt"] = attempt();
+    document["access_code"] = mQuiz->accessCode();
+
+    session.put(qq->answerUrl(*this),
+      document.toStyledString(),
+      [&](bool success, HTTP::Response response) {
+        if (!success) {
+          callback(false);
+          return;
+        }
+
+        callback(true);
       });
   }
 

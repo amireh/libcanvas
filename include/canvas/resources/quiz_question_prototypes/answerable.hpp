@@ -47,6 +47,7 @@ namespace QuizQuestionPrototypes {
      */
     Answers const& answers() const;
 
+    T const* findAnswer(ID) const;
   protected:
     Answers mAnswers;
 

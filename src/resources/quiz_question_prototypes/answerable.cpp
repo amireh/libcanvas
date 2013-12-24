@@ -23,6 +23,7 @@
 
 #include "canvas/resources/quiz_question_prototypes/answerable.hpp"
 #include "canvas/resources/quiz_question_answer.hpp"
+#include "canvas/resources/quiz_question.hpp"
 
 namespace Canvas {
 namespace QuizQuestionPrototypes {
@@ -46,9 +47,21 @@ namespace QuizQuestionPrototypes {
   }
 
   template<typename T>
+  T const* Answerable<T>::findAnswer(ID answerId) const {
+    for (auto answer : answers()) {
+      if (answer->id() == answerId) {
+        return answer;
+      }
+    }
+
+    return nullptr;
+  }
+
+  template<typename T>
   void Answerable<T>::addAnswer(ID answerId, std::function<void(T*)> callback) {
     if (answerId > 0) {
       T* answer = new T();
+      answer->setQuestion(dynamic_cast<QuizQuestion const*>(this));
       mAnswers.push_back(answer);
 
       if (callback) {

@@ -47,10 +47,6 @@ namespace Canvas {
   public:
     using Resource::deserialize;
 
-    // typedef std::list<QuizQuestionAnswer*> Answers;
-    // typedef std::list<String> Variables;
-    // typedef std::list<QuizQuestionFormula*> Formulas;
-
     QuizQuestion();
     QuizQuestion(ID);
     QuizQuestion(ID, Quiz const*);
@@ -110,9 +106,26 @@ namespace Canvas {
     virtual int position() const;
 
     /**
+     * Whether the question is marked.
+     */
+    virtual bool isMarked() const;
+
+    /**
      * Populate QuizQuestion from a JSON document.
      */
     virtual void deserialize(JSONValue&);
+
+    /**
+     * Load the student's answer for this question from a JSON document.
+     */
+    virtual void deserializeAnswer(String const&);
+    virtual void deserializeAnswer(JSONValue&) = 0;
+
+    /**
+     * Generate a JSON document representing the student's answer for this
+     * question.
+     */
+    virtual JSONValue serializeAnswer() const = 0;
 
     virtual void setQuiz(Quiz const*);
 
@@ -133,6 +146,8 @@ namespace Canvas {
       }
     }
 
+    virtual void mark(bool marked);
+
   protected:
     friend class Quiz;
 
@@ -149,10 +164,7 @@ namespace Canvas {
     String mCorrectComments;
     String mIncorrectComments;
     String mNeutralComments;
-    // Answers mAnswers;
-    // Variables mVariables;
-    // Formulas mFormulas;
-    // Matches mMatches;
+    bool mMarked;
   };
 }
 

@@ -1,0 +1,48 @@
+{
+    "assessment_question_id": 2,
+    "id": 2,
+    "position": 2,
+    "quiz_group_id": null,
+    "quiz_id": 1,
+    "question_name": "Question 2",
+    "question_type": "multiple_choice_question",
+    "question_text": "<p>D, A, B, or C?</p>",
+    "points_possible": 1,
+    "correct_comments": "",
+    "incorrect_comments": "",
+    "neutral_comments": "",
+    "answers": [
+        {
+            "id": 3964,
+            "text": "A",
+            "html": "",
+            "comments": "",
+            "weight": 0
+        },
+        {
+            "id": 6628,
+            "text": "B",
+            "html": "",
+            "comments": "",
+            "weight": 0
+        },
+        {
+            "id": 2839,
+            "text": "C",
+            "html": "",
+            "comments": "",
+            "weight": 0
+        },
+        {
+            "id": 6102,
+            "text": "D",
+            "html": "",
+            "comments": "",
+            "weight": 100
+        }
+    ],
+    "variables": null,
+    "formulas": null,
+    "matches": null,
+    "matching_answer_incorrect_matches": null
+}
