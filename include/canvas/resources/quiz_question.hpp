@@ -38,6 +38,8 @@ namespace Canvas {
   }
 
   /**
+   * \addtogroup Resources
+   * @{
    * @class QuizQuestion
    * @brief
    * A base question interface for Quiz questions. Must be cast to one of the
@@ -166,6 +168,7 @@ namespace Canvas {
     String mNeutralComments;
     bool mMarked;
   };
+  /** @} */
 }
 
 #endif

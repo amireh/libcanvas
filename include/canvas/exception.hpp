@@ -31,6 +31,11 @@
 namespace Canvas {
 
   /**
+   * \addtogroup Errors
+   * @{
+   */
+
+  /**
    * Thrown when an argument passed to utility::convertTo<> is not a number
    * and thus can not be converted.
    */
@@ -41,21 +46,14 @@ namespace Canvas {
     { }
   };
 
-  class InternalError : public std::runtime_error {
-  public:
-    inline InternalError(const std::string& s)
-    : std::runtime_error(s)
-    { }
-
-    inline bool is_internal() { return true; }
-  };
-
   class JSONParserError : public std::runtime_error {
   public:
     inline JSONParserError(const std::string& s)
     : std::runtime_error(s)
     { }
   };
+
+  /** @} */
 
 } // end of namespace cnvs
 

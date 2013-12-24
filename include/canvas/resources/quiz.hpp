@@ -34,10 +34,13 @@ namespace Canvas {
   class Session;
   class QuizQuestion;
   class QuizSubmission;
+
   /**
-   * @class quiz
+   * \addtogroup Resources
+   * @{
+   * @class Quiz
    * @brief
-   * A course quiz.
+   * A quiz with questions that students can take.
    */
   class Quiz : public Resource {
   public:
@@ -156,6 +159,7 @@ namespace Canvas {
 
     void buildUrl();
   };
+  /** @} */
 }
 
 #endif

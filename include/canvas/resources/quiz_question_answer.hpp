@@ -32,6 +32,8 @@ namespace Canvas {
   class QuizQuestion;
 
   /**
+   * \addtogroup Resources
+   * @{
    * @class QuizQuestionAnswer
    * @brief
    * A base answer type for quiz questions.
@@ -93,6 +95,7 @@ namespace Canvas {
     String mText;
     String mComments;
   };
+  /** @} */
 }
 
 #endif

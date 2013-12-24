@@ -36,7 +36,8 @@ namespace Canvas {
   /**
    * \addtogroup Resources
    * @{
-   * @class course
+   * @class Course
+   * @brief
    * Courses have student enrollments and quizzes.
    */
   class Course : public Resource {

@@ -32,6 +32,13 @@ namespace Canvas {
 namespace QuizQuestions {
   using QuizQuestionPrototypes::Answerable;
 
+  /**
+   * \addtogroup Resources
+   * @{
+   * @class MultipleChoice
+   * @brief
+   * A multiple-choice type of question.
+   */
   class MultipleChoice : public QuizQuestion, public Answerable<QuizQuestionAnswer> {
   public:
     using Resource::deserialize;
@@ -74,7 +81,7 @@ namespace QuizQuestions {
   protected:
     QuizQuestionAnswer const *mAnswer;
   };
-
+  /** @} */
 }
 }
 

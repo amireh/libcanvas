@@ -34,9 +34,13 @@ namespace Canvas {
   class QuizQuestion;
 
   /**
-   * @class quiz_submission
+   * \addtogroup Resources
+   * @{
+   * @class QuizSubmission
    * @brief
-   * A course quiz_submission.
+   * A quiz submission represents a student's take, or attempt, of a Quiz. It
+   * acts like a quiz-taking session by providing an interface to answer and
+   * mark questions.
    */
   class QuizSubmission : public Resource {
   public:
@@ -153,6 +157,7 @@ namespace Canvas {
     void buildUrl();
     void save(QuizQuestion const*, JSONValue&, Session&, AsyncCallback = nullptr) const;
   };
+  /** @} */
 }
 
 #endif
