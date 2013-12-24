@@ -147,11 +147,14 @@ namespace Canvas {
                             Session &session,
                             AsyncCallback callback) const {
     JSONValue document;
-    document["marked"] = qq->isMarked();
-    document["answer"] = qq->serializeAnswer();
+    JSONValue answerDocument;
 
-    if (document["answer"].isObject() && document["answer"].isMember("answer")) {
-      document["answer"] = document["answer"]["answer"];
+    document["marked"] = qq->isMarked();
+
+    answerDocument = qq->serializeAnswer();
+
+    if (answerDocument.isMember("answer")) {
+      document["answer"] = answerDocument["answer"];
     }
 
     save(qq, document, session, callback);
@@ -169,11 +172,15 @@ namespace Canvas {
       document.toStyledString(),
       [&](bool success, HTTP::Response response) {
         if (!success) {
-          callback(false);
+          if (callback) {
+            callback(false);
+          }
           return;
         }
 
-        callback(true);
+        if (callback) {
+          callback(true);
+        }
       });
   }
 

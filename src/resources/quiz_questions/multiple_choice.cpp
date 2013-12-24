@@ -97,7 +97,9 @@ namespace QuizQuestions {
 
   JSONValue MultipleChoice::serializeAnswer() const {
     Json::Value document;
-    document["answer"] = mAnswer ? mAnswer->id() : 0;
+    if (mAnswer) {
+      document["answer"] = mAnswer->id();
+    }
     return document;
   }
 
