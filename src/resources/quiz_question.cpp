@@ -151,6 +151,18 @@ namespace Canvas {
     return this->toActualType<QuizQuestions::MultipleChoice>("multiple_choice_question");
   }
 
+  QuizQuestions::MultipleChoice const* QuizQuestion::asMultipleChoice() const {
+    return this->toActualType<QuizQuestions::MultipleChoice>("multiple_choice_question");
+  }
+
+  QuizQuestions::TrueFalse* QuizQuestion::asTrueFalse() {
+    return this->toActualType<QuizQuestions::TrueFalse>("true_false_question");
+  }
+
+  QuizQuestions::TrueFalse const* QuizQuestion::asTrueFalse() const {
+    return this->toActualType<QuizQuestions::TrueFalse>("true_false_question");
+  }
+
   bool QuizQuestion::isMarked() const {
     return mMarked;
   }

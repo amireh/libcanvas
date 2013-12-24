@@ -35,6 +35,7 @@ namespace Canvas {
 
   namespace QuizQuestions {
     class MultipleChoice;
+    class TrueFalse;
   }
 
   /**
@@ -137,6 +138,9 @@ namespace Canvas {
     virtual URI answerUrl(QuizSubmission const&) const;
 
     QuizQuestions::MultipleChoice* asMultipleChoice();
+    QuizQuestions::MultipleChoice const* asMultipleChoice() const;
+    QuizQuestions::TrueFalse* asTrueFalse();
+    QuizQuestions::TrueFalse const* asTrueFalse() const;
 
     template<typename T>
     T* toActualType(String const& type) {
@@ -145,6 +149,16 @@ namespace Canvas {
           ", actual is:" + this->type());
       } else {
         return reinterpret_cast<T*>(this);
+      }
+    }
+
+    template<typename T>
+    T const* toActualType(String const& type) const {
+      if (this->type() != type) {
+        throw std::runtime_error("Invalid target question type: " + type +
+          ", actual is:" + this->type());
+      } else {
+        return reinterpret_cast<T const*>(this);
       }
     }
 

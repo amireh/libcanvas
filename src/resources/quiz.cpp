@@ -25,6 +25,7 @@
 #include "canvas/resources/course.hpp"
 #include "canvas/resources/quiz_question.hpp"
 #include "canvas/resources/quiz_questions/multiple_choice.hpp"
+#include "canvas/resources/quiz_questions/true_false.hpp"
 #include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 #include "canvas/utility.hpp"
@@ -148,6 +149,9 @@ namespace Canvas {
 
       if (qqType == "multiple_choice_question") {
         qq = new QuizQuestions::MultipleChoice(qqId, this);
+      }
+      else if (qqType == "true_false_question") {
+        qq = new QuizQuestions::TrueFalse(qqId, this);
       }
       else {
         // qq = new QuizQuestion(qqId, this);

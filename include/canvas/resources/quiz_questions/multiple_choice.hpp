@@ -49,7 +49,7 @@ namespace QuizQuestions {
     MultipleChoice(ID, Quiz const*);
     MultipleChoice(const MultipleChoice&) = delete;
     MultipleChoice& operator=(const MultipleChoice&) = delete;
-    ~MultipleChoice();
+    virtual ~MultipleChoice();
 
     virtual void deserialize(JSONValue&);
     virtual void deserializeAnswer(JSONValue&);
