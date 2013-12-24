@@ -54,4 +54,13 @@ namespace Canvas {
     ASSERT_NO_THROW(qs.save(qq, *session););
   }
 
+  TEST_F(QuizSubmissionTest, loadAnswers) {
+    QuizSubmission qs(1, &quiz);
+
+    ASSERT_NO_THROW(
+      qs.deserialize(loadFixture("quiz_submission.json"));
+      qs.loadAnswers(loadFixture("quiz_submission_questions.json"));
+    );
+  }
+
 } // namespace Canvas

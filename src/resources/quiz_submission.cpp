@@ -184,4 +184,58 @@ namespace Canvas {
       });
   }
 
+
+  void QuizSubmission::loadAnswers(Session &session, AsyncCallback callback) {
+    Json::Value qqDocuments;
+    Json::Reader reader;
+
+    session.get("/quiz_submissions/" + utility::stringify(id()) + "/questions",
+      [&](bool success, HTTP::Response const& response) {
+        if (success) {
+          loadAnswers(response.body);
+
+          if (callback) {
+            callback(true);
+          }
+        }
+        else {
+          if (callback) {
+            callback(false);
+          }
+        }
+      });
+  }
+
+  void QuizSubmission::loadAnswers(String const& documents) {
+    Json::Value answerDocuments;
+    Json::Reader reader;
+
+    const String key("quiz_submission_questions");
+
+    if (!reader.parse( documents, answerDocuments )) {
+      throw JSONParserError(reader.getFormattedErrorMessages());
+    }
+
+    if (!answerDocuments.isMember(key)) {
+      throw JSONParserError("Bad JSON collection, expected key " + key);
+    }
+
+    for (Json::Value &answerDocument : answerDocuments[key]) {
+      QuizQuestion *qq = nullptr;
+      ID qqId = answerDocument["quiz_question_id"].asUInt();
+
+      for (auto question : mQuiz->questions()) {
+        if (question->id() == qqId) {
+          qq = question;
+          break;
+        }
+      }
+
+      if (qq) {
+        qq->deserializeAnswer(answerDocument);
+      }
+    }
+  }
+
+
 } // namespace cnvs

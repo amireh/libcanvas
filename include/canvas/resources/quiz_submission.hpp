@@ -140,6 +140,12 @@ namespace Canvas {
      * Turn in the quiz.
      */
     virtual void complete(Session&, AsyncCallback = nullptr);
+
+    /**
+     * Load any previously-supplied answers for this quiz attempt.
+     */
+    virtual void loadAnswers(Session&, AsyncCallback = nullptr);
+    virtual void loadAnswers(String const&);
   protected:
     Quiz const* mQuiz;
     ID mSubmissionId;
