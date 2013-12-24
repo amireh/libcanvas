@@ -29,6 +29,7 @@
 #include "canvas/resources/quiz_questions/fill_in_the_blank.hpp"
 #include "canvas/resources/quiz_questions/fill_in_multiple_blanks.hpp"
 #include "canvas/resources/quiz_questions/essay.hpp"
+#include "canvas/resources/quiz_questions/calculated.hpp"
 #include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 #include "canvas/utility.hpp"
@@ -164,6 +165,9 @@ namespace Canvas {
       }
       else if (qqType == "essay_question") {
         qq = new QuizQuestions::Essay(qqId, this);
+      }
+      else if (qqType == "calculated_question") {
+        qq = new QuizQuestions::Calculated(qqId, this);
       }
       else {
         // qq = new QuizQuestion(qqId, this);
