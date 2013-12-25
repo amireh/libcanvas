@@ -22,6 +22,7 @@
  */
 
 #include "canvas/resource_parser.hpp"
+#include "canvas/utility.hpp"
 #include <iostream>
 
 namespace Canvas {
@@ -58,5 +59,29 @@ namespace Canvas {
     }
 
     return documents;
+  }
+
+  ID ResourceParser::parseId(JSONValue const& document, String const& key) {
+    if (!document.isMember(key)) {
+      throw JSONError("Expected document to contain an ID field called '" + key + "'",
+        document);
+    }
+    else if (!document[key].isInt()) {
+      // try to convert it
+      try {
+        const String value = document.get(key, "0").asString();
+
+        if (value.size() == 0) {
+          return 0;
+        }
+
+        return utility::convertTo<int>(value);
+      } catch(BadConversion &e) {
+        throw JSONError("Expected field '" + key + "' to be numeric.", document);
+      }
+    }
+    else {
+      return document[key].asInt();
+    }
   }
 } // namespace cnvs

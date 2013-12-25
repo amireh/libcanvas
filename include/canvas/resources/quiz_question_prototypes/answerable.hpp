@@ -27,6 +27,14 @@
 #include "canvas/canvas.hpp"
 #include <vector>
 
+namespace Json {
+  class Value;
+}
+
+namespace Canvas {
+  typedef Json::Value JSONValue;
+}
+
 namespace Canvas {
 namespace QuizQuestionPrototypes {
 
@@ -62,7 +70,15 @@ namespace QuizQuestionPrototypes {
      *   Post-processor for the newly-added answer. You can use this to customize
      *   the answer object, or deserialize it from a JSON document, etc.
      */
-    void addAnswer(ID answerId, std::function<void(T*)> callback = nullptr);
+    T* addAnswer(ID answerId, std::function<void(T*)> callback = nullptr);
+
+    /**
+     * Add an answer to the list of possible answers from the given JSON document.
+     * The answer ID is expected to reside in an "id" field.
+     *
+     * See QuizQuestionAnswer::deserialize()
+     */
+    T* addAnswer(JSONValue const&);
   };
 }
 }

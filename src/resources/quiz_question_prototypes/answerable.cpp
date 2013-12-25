@@ -26,6 +26,7 @@
 #include "canvas/resources/calculated_answer.hpp"
 #include "canvas/resources/matching_answer.hpp"
 #include "canvas/resources/quiz_question.hpp"
+#include "canvas/resource_parser.hpp"
 
 namespace Canvas {
 namespace QuizQuestionPrototypes {
@@ -60,7 +61,7 @@ namespace QuizQuestionPrototypes {
   }
 
   template<typename T>
-  void Answerable<T>::addAnswer(ID answerId, std::function<void(T*)> callback) {
+  T* Answerable<T>::addAnswer(ID answerId, std::function<void(T*)> callback) {
     if (answerId > 0) {
       T* answer = new T();
       answer->setQuestion(dynamic_cast<QuizQuestion const*>(this));
@@ -69,7 +70,29 @@ namespace QuizQuestionPrototypes {
       if (callback) {
         callback(answer);
       }
+
+      return answer;
     }
+
+    return nullptr;
+  }
+
+  template<typename T>
+  T* Answerable<T>::addAnswer(JSONValue const& document) {
+    const ID answerId = ResourceParser::parseId(document);
+
+    if (answerId > 0) {
+      T* answer = new T();
+
+      answer->setQuestion(dynamic_cast<QuizQuestion const*>(this));
+      answer->deserialize((JSONValue&)document);
+
+      mAnswers.push_back(answer);
+
+      return answer;
+    }
+
+    return nullptr;
   }
 
   template class Answerable<QuizQuestionAnswer>;

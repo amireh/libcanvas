@@ -32,6 +32,7 @@
 #include "canvas/resources/quiz_questions/calculated.hpp"
 #include "canvas/resources/quiz_questions/numerical.hpp"
 #include "canvas/resources/quiz_questions/matching.hpp"
+#include "canvas/resources/quiz_questions/multiple_dropdowns.hpp"
 #include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 #include "canvas/utility.hpp"
@@ -176,6 +177,9 @@ namespace Canvas {
       }
       else if (qqType == "matching_question") {
         qq = new QuizQuestions::Matching(qqId, this);
+      }
+      else if (qqType == "multiple_dropdowns_question") {
+        qq = new QuizQuestions::MultipleDropdowns(qqId, this);
       }
       else {
         // qq = new QuizQuestion(qqId, this);

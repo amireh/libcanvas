@@ -23,6 +23,7 @@
 
 #include "canvas/resources/quiz_question_answer.hpp"
 #include "canvas/resources/quiz_question.hpp"
+#include "canvas/resource_parser.hpp"
 #include "canvas/utility.hpp"
 
 namespace Canvas {
@@ -72,7 +73,7 @@ namespace Canvas {
   }
 
   void QuizQuestionAnswer::deserialize(JSONValue& root) {
-    mId = root.get("id", 0).asUInt();
+    mId = ResourceParser::parseId(root);
     mText = root.get("text", "").asString();
     mComments = root.get("comments", "").asString();
     mWeight = root.get("weight", 0).asUInt();

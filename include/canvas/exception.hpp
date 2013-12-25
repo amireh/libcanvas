@@ -27,6 +27,7 @@
 #include <exception>
 #include <string>
 #include <stdexcept>
+#include <json/json.h>
 
 namespace Canvas {
 
@@ -51,6 +52,14 @@ namespace Canvas {
     inline JSONParserError(const std::string& s)
     : std::runtime_error(s)
     { }
+  };
+
+  class JSONError : public std::runtime_error {
+  public:
+    inline JSONError(const std::string& s, Json::Value const &d)
+    : std::runtime_error(s + "\nErratic JSON document: " + d.toStyledString())
+    {
+    }
   };
 
   /**

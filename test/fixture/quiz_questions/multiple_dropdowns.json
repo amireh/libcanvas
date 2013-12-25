@@ -1,0 +1,48 @@
+{
+    "assessment_question_id": 8,
+    "id": 8,
+    "position": 8,
+    "quiz_group_id": null,
+    "quiz_id": 1,
+    "question_name": "MDropdowns Q",
+    "question_type": "multiple_dropdowns_question",
+    "question_text": "<p>Alligators are [color], zombies eat [organ].</p>",
+    "points_possible": 1,
+    "correct_comments": "",
+    "incorrect_comments": "",
+    "neutral_comments": "",
+    "answers": [
+        {
+            "id": "3208",
+            "text": "brainz",
+            "comments": "",
+            "weight": 100,
+            "blank_id": "organ"
+        },
+        {
+            "id": "8331",
+            "text": "",
+            "comments": "",
+            "weight": 0,
+            "blank_id": "organ"
+        },
+        {
+            "id": "1381",
+            "text": "green",
+            "comments": "",
+            "weight": 100,
+            "blank_id": "color"
+        },
+        {
+            "id": "1638",
+            "text": "cool",
+            "comments": "",
+            "weight": 0,
+            "blank_id": "color"
+        }
+    ],
+    "variables": null,
+    "formulas": null,
+    "matches": null,
+    "matching_answer_incorrect_matches": null
+}

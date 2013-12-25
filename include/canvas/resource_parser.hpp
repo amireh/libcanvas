@@ -126,6 +126,17 @@ namespace Canvas {
       return resources;
     }
 
+    /**
+     * Attempt to parse a numeric field, particularly useful for ID fields.
+     *
+     * Can handle the following formats:
+     *
+     *  - 123   => 123 [Integer]
+     *  - "123" => 123 [String]
+     *  - ""    => 0   [String]
+     */
+    static ID parseId(JSONValue const&, String const& key = "id");
+
   protected:
     typedef std::list<String> JSONDocuments;
 

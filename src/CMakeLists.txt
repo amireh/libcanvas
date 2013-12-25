@@ -14,6 +14,7 @@ SET(CANVAS_SRC
   ${CANVAS_INCLUDE_DIR}/resources/quiz_questions/calculated.hpp
   ${CANVAS_INCLUDE_DIR}/resources/quiz_questions/numerical.hpp
   ${CANVAS_INCLUDE_DIR}/resources/quiz_questions/matching.hpp
+  ${CANVAS_INCLUDE_DIR}/resources/quiz_questions/multiple_dropdowns.hpp
   ${CANVAS_INCLUDE_DIR}/resources/quiz_question_answer.hpp
   ${CANVAS_INCLUDE_DIR}/resources/calculated_answer.hpp
   ${CANVAS_INCLUDE_DIR}/resources/matching_answer.hpp
@@ -41,6 +42,7 @@ SET(CANVAS_SRC
   resources/quiz_questions/calculated.cpp
   resources/quiz_questions/numerical.cpp
   resources/quiz_questions/matching.cpp
+  resources/quiz_questions/multiple_dropdowns.cpp
   resources/quiz_question_answer.cpp
   resources/calculated_answer.cpp
   resources/matching_answer.cpp
