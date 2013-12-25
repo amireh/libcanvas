@@ -1,0 +1,19 @@
+{
+    "assessment_question_id": 7,
+    "id": 7,
+    "position": 7,
+    "quiz_group_id": null,
+    "quiz_id": 1,
+    "question_name": "Essay Q",
+    "question_type": "essay_question",
+    "question_text": "<p>Summarize your feelings towards life, the universe, and everything in decimal numbers.</p>",
+    "points_possible": 1,
+    "correct_comments": "",
+    "incorrect_comments": "",
+    "neutral_comments": "",
+    "answers": [],
+    "variables": null,
+    "formulas": null,
+    "matches": null,
+    "matching_answer_incorrect_matches": null
+}
