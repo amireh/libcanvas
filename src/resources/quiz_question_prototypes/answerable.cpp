@@ -24,6 +24,7 @@
 #include "canvas/resources/quiz_question_prototypes/answerable.hpp"
 #include "canvas/resources/quiz_question_answer.hpp"
 #include "canvas/resources/calculated_answer.hpp"
+#include "canvas/resources/matching_answer.hpp"
 #include "canvas/resources/quiz_question.hpp"
 
 namespace Canvas {
@@ -73,6 +74,7 @@ namespace QuizQuestionPrototypes {
 
   template class Answerable<QuizQuestionAnswer>;
   template class Answerable<CalculatedAnswer>;
+  template class Answerable<MatchingAnswer>;
 
 } // namespace QuizQuestions
 } // namespace Canvas

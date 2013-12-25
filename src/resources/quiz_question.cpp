@@ -203,6 +203,14 @@ namespace Canvas {
     return this->toActualType<QuizQuestions::Numerical>("numerical_question");
   }
 
+  QuizQuestions::Matching* QuizQuestion::asMatching() {
+    return this->toActualType<QuizQuestions::Matching>("matching_question");
+  }
+
+  QuizQuestions::Matching const* QuizQuestion::asMatching() const {
+    return this->toActualType<QuizQuestions::Matching>("matching_question");
+  }
+
   bool QuizQuestion::isMarked() const {
     return mMarked;
   }

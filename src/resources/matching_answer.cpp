@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2013 Algol Labs <ahmad@algollabs.com>
+ *  Copyright (C) 2013 Algol Labs <ahmad@algollabs.com>
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a
  *  copy of this software and associated documentation files (the "Software"),
@@ -21,50 +21,45 @@
  *
  */
 
-#ifndef H_CANVAS_EXCEPTION_H
-#define H_CANVAS_EXCEPTION_H
-
-#include <exception>
-#include <string>
-#include <stdexcept>
+#include "canvas/resources/matching_answer.hpp"
+#include "canvas/resources/quiz_questions/matching.hpp"
 
 namespace Canvas {
+  MatchingAnswer::MatchingAnswer()
+  : QuizQuestionAnswer(), mMatchId(0)
+  {
+  }
 
-  /**
-   * \addtogroup Errors
-   * @{
-   */
+  MatchingAnswer::MatchingAnswer(ID id)
+  : QuizQuestionAnswer(id), mMatchId(0)
+  {
+  }
 
-  /**
-   * Thrown when an argument passed to utility::convertTo<> is not a number
-   * and thus can not be converted.
-   */
-  class BadConversion : public std::runtime_error {
-  public:
-    inline BadConversion(const std::string& s)
-    : std::runtime_error(s)
-    { }
-  };
+  MatchingAnswer::MatchingAnswer(ID id, QuizQuestion const* question)
+  : QuizQuestionAnswer(id, question), mMatchId(0)
+  {
+  }
 
-  class JSONParserError : public std::runtime_error {
-  public:
-    inline JSONParserError(const std::string& s)
-    : std::runtime_error(s)
-    { }
-  };
+  MatchingAnswer::~MatchingAnswer() {
+  }
 
-  /**
-   * Indicates a resource was being accessed before being fully loaded.
-   */
-  class UninitializedError : public std::runtime_error {
-  public:
-    inline UninitializedError(const std::string& s)
-    : std::runtime_error(s)
-    { }
-  };
+  void MatchingAnswer::deserialize(JSONValue& document) {
+    QuizQuestionAnswer::deserialize(document);
 
-  /** @} */
+    mText = mLeft = document.get("left", "").asString();
+    mRight = document.get("right", "").asString();
+    mMatchId = document.get("match_id", 0).asUInt();
+  }
 
-} // end of namespace cnvs
+  String const& MatchingAnswer::left() const {
+    return mLeft;
+  }
 
-#endif
+  String const& MatchingAnswer::right() const {
+    return mRight;
+  }
+
+  ID MatchingAnswer::matchId() const {
+    return mMatchId;
+  }
+}

@@ -21,50 +21,46 @@
  *
  */
 
-#ifndef H_CANVAS_EXCEPTION_H
-#define H_CANVAS_EXCEPTION_H
+#ifndef H_CANVAS_MATCHING_ANSWER_H
+#define H_CANVAS_MATCHING_ANSWER_H
 
-#include <exception>
-#include <string>
-#include <stdexcept>
+#include "canvas/canvas.hpp"
+#include "canvas/resources/quiz_question_answer.hpp"
 
 namespace Canvas {
 
   /**
-   * \addtogroup Errors
+   * \addtogroup Resources
    * @{
+   * @class Matching
+   * @brief
+   * A single answer for a Matching quiz question. Matching answers contain
+   * a pair of text, to the "left" and "right", which should be matched by the
+   * student.
    */
-
-  /**
-   * Thrown when an argument passed to utility::convertTo<> is not a number
-   * and thus can not be converted.
-   */
-  class BadConversion : public std::runtime_error {
+  class MatchingAnswer : public QuizQuestionAnswer {
   public:
-    inline BadConversion(const std::string& s)
-    : std::runtime_error(s)
-    { }
-  };
+    using QuizQuestionAnswer::deserialize;
 
-  class JSONParserError : public std::runtime_error {
-  public:
-    inline JSONParserError(const std::string& s)
-    : std::runtime_error(s)
-    { }
-  };
+    MatchingAnswer();
+    MatchingAnswer(ID);
+    MatchingAnswer(ID, QuizQuestion const*);
+    MatchingAnswer(const MatchingAnswer&) = delete;
+    MatchingAnswer& operator=(MatchingAnswer const&) = delete;
+    virtual ~MatchingAnswer();
 
-  /**
-   * Indicates a resource was being accessed before being fully loaded.
-   */
-  class UninitializedError : public std::runtime_error {
-  public:
-    inline UninitializedError(const std::string& s)
-    : std::runtime_error(s)
-    { }
-  };
+    String const& left() const;
+    String const& right() const;
+    ID matchId() const;
 
+    virtual void deserialize(JSONValue&);
+
+  protected:
+    String mLeft;
+    String mRight;
+    ID mMatchId;
+  };
   /** @} */
-
-} // end of namespace cnvs
+}
 
 #endif
