@@ -104,4 +104,18 @@ namespace Canvas {
       return value.asInt();
     }
   }
+
+  bool ResourceParser::parseBool(JSONValue const& value) {
+    if (value.isBool()) {
+      return value.asBool();
+    }
+    else if (value.isString()) {
+      return value.asString() == "true";
+    }
+    else {
+      throw JSONError("Expected value to be a boolean.", value);
+    }
+
+    return false;
+  }
 } // namespace cnvs

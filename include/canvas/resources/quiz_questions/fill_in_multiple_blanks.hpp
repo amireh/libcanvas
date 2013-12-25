@@ -54,7 +54,7 @@ namespace QuizQuestions {
     virtual ~FillInMultipleBlanks();
 
     virtual void deserialize(JSONValue&);
-    virtual void deserializeAnswer(JSONValue&);
+    virtual void deserializeAnswer(JSONValue const&);
 
     /**
      * Save the selection of a single multiple-choice answer.

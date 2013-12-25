@@ -134,9 +134,22 @@ namespace Canvas {
      *  - 123   => 123 [Integer]
      *  - "123" => 123 [String]
      *  - ""    => 0   [String]
+     *
+     * @throw JSONError if the value could not be parsed
      */
     static ID parseId(JSONValue const&, String const& key = "id");
     static ID parseIdElement(JSONValue const&);
+
+    /**
+     * Attempt to parse a boolean field in one of the following formats:
+     *
+     * @throw JSONError if the value could not be parsed
+     *
+     * @return true if the value is a boolean and is true
+     * @return false if the value is a boolean and is false
+     * @return true if the value is the string "true"
+     */
+    static bool parseBool(JSONValue const&);
 
   protected:
     typedef std::list<String> JSONDocuments;

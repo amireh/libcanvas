@@ -58,7 +58,8 @@ namespace QuizQuestions {
     return mAnswer;
   }
 
-  void FillInTheBlank::deserializeAnswer(JSONValue &document) {
+  void FillInTheBlank::deserializeAnswer(JSONValue const &document) {
+    QuizQuestion::deserializeAnswer(document);
     mAnswer = document["answer"].asString();
   }
 

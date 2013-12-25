@@ -56,7 +56,9 @@ namespace QuizQuestions {
     }
   }
 
-  void MultipleAnswers::deserializeAnswer(JSONValue &document) {
+  void MultipleAnswers::deserializeAnswer(JSONValue const &document) {
+    QuizQuestion::deserializeAnswer(document);
+
     if (document.isMember("answer") && document["answer"].isArray()) {
       for (auto rawAnswerId : document["answer"]) {
         ID answerId;

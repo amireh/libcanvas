@@ -84,7 +84,9 @@ namespace QuizQuestions {
     return mAnswers.find(blank)->second;
   }
 
-  void FillInMultipleBlanks::deserializeAnswer(JSONValue &document) {
+  void FillInMultipleBlanks::deserializeAnswer(JSONValue const &document) {
+    QuizQuestion::deserializeAnswer(document);
+
     for (auto blankId : document["answer"].getMemberNames()) {
       fill(blankId, document["answer"][blankId].asString());
     }

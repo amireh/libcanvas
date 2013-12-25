@@ -63,7 +63,7 @@ namespace QuizQuestions {
     virtual ~Matching();
 
     virtual void deserialize(JSONValue&);
-    virtual void deserializeAnswer(JSONValue&);
+    virtual void deserializeAnswer(JSONValue const&);
 
     /**
      * Supply a student's answer of a pairing between an answer and a match ID.

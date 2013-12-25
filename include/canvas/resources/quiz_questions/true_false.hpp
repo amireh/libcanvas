@@ -43,8 +43,8 @@ namespace QuizQuestions {
     TrueFalse(const TrueFalse&) = delete;
     TrueFalse& operator=(const TrueFalse&) = delete;
     ~TrueFalse();
-
   };
+
   /** @} */
 }
 }

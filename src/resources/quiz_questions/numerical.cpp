@@ -56,7 +56,9 @@ namespace QuizQuestions {
     return mAnswer;
   }
 
-  void Numerical::deserializeAnswer(JSONValue &document) {
+  void Numerical::deserializeAnswer(JSONValue const &document) {
+    QuizQuestion::deserializeAnswer(document);
+
     mAnswer = document["answer"].asDouble();
   }
 

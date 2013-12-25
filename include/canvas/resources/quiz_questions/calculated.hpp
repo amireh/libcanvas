@@ -67,7 +67,7 @@ namespace QuizQuestions {
     virtual ~Calculated();
 
     virtual void deserialize(JSONValue&);
-    virtual void deserializeAnswer(JSONValue&);
+    virtual void deserializeAnswer(JSONValue const&);
 
     /**
      * Supply a number as the answer.

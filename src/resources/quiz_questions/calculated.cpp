@@ -79,7 +79,8 @@ namespace QuizQuestions {
     return mAnswer;
   }
 
-  void Calculated::deserializeAnswer(JSONValue &document) {
+  void Calculated::deserializeAnswer(JSONValue const &document) {
+    QuizQuestion::deserializeAnswer(document);
     mAnswer = document["answer"].asDouble();
   }
 

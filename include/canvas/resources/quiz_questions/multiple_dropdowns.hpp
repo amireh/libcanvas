@@ -58,7 +58,7 @@ namespace QuizQuestions {
     virtual ~MultipleDropdowns();
 
     virtual void deserialize(JSONValue&);
-    virtual void deserializeAnswer(JSONValue&);
+    virtual void deserializeAnswer(JSONValue const&);
 
     /**
      * Choose an answer for a single blank.

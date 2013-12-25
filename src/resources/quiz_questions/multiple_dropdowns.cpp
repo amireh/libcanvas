@@ -95,7 +95,9 @@ namespace QuizQuestions {
     return locator->second;
   }
 
-  void MultipleDropdowns::deserializeAnswer(JSONValue &document) {
+  void MultipleDropdowns::deserializeAnswer(JSONValue const &document) {
+    QuizQuestion::deserializeAnswer(document);
+
     for (auto blankId : document["answer"].getMemberNames()) {
       const ID answerId = ResourceParser::parseId(document["answer"], blankId);
 

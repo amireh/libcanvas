@@ -24,6 +24,7 @@
 #include "canvas/resources/quiz_question.hpp"
 #include "canvas/resources/quiz_submission.hpp"
 #include "canvas/resources/quiz.hpp"
+#include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 #include "canvas/utility.hpp"
 
@@ -58,6 +59,7 @@ namespace Canvas {
     mPointsPossible = 0;
     mPosition = 0;
     mGroupId = 0;
+    mMarked = false;
   }
 
   Quiz const* QuizQuestion::quiz() const {
@@ -122,9 +124,16 @@ namespace Canvas {
       throw JSONParserError(reader.getFormattedErrorMessages());
     }
 
-    mMarked = root.get("marked", "false").asBool();
+    mMarked = root.get("marked", false).asBool();
 
     deserializeAnswer(root);
+  }
+
+  void QuizQuestion::deserializeAnswer(const JSONValue& document) {
+    if (document.isMember("marked")) {
+      mMarked = ResourceParser::parseBool(document["marked"]);
+      // mMarked = document.get("marked", "false").asBool();
+    }
   }
 
   void QuizQuestion::buildUrl() {

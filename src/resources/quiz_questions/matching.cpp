@@ -146,7 +146,8 @@ namespace QuizQuestions {
     return mMatchedPairs;
   }
 
-  void Matching::deserializeAnswer(JSONValue &document) {
+  void Matching::deserializeAnswer(JSONValue const &document) {
+    QuizQuestion::deserializeAnswer(document);
 
     if (document.isMember("answer") && document["answer"].isArray()) {
       for (auto pairDocument : document["answer"]) {

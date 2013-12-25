@@ -49,7 +49,7 @@ namespace QuizQuestions {
     virtual ~Numerical();
 
     virtual void deserialize(JSONValue&);
-    virtual void deserializeAnswer(JSONValue&);
+    virtual void deserializeAnswer(JSONValue const&);
 
     /**
      * Save the selection of a single multiple-choice answer.

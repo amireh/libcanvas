@@ -59,13 +59,6 @@ namespace QuizQuestions {
     }
   }
 
-  // JSONValue MultipleChoice::answer(ID answerId) {
-  //   // todo: validate answer
-  //   Json::Value root;
-  //   root["answer"] = answerId;
-  //   return root;
-  // }
-
   void MultipleChoice::choose(QuizQuestionAnswer const *answer) {
     if (!answer) {
       throw std::invalid_argument("Answer must not be null!");
@@ -91,7 +84,9 @@ namespace QuizQuestions {
     return mAnswer;
   }
 
-  void MultipleChoice::deserializeAnswer(JSONValue &document) {
+  void MultipleChoice::deserializeAnswer(JSONValue const &document) {
+    QuizQuestion::deserializeAnswer(document);
+
     mAnswer = findAnswer(document["answer"].asUInt());
   }
 

@@ -130,7 +130,7 @@ namespace Canvas {
      * Load the student's answer for this question from a JSON document.
      */
     virtual void deserializeAnswer(String const&);
-    virtual void deserializeAnswer(JSONValue&) = 0;
+    virtual void deserializeAnswer(JSONValue const&);
 
     /**
      * Generate a JSON document representing the student's answer for this
