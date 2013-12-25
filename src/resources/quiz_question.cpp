@@ -210,12 +210,21 @@ namespace Canvas {
   QuizQuestions::Matching const* QuizQuestion::asMatching() const {
     return this->toActualType<QuizQuestions::Matching>("matching_question");
   }
+
   QuizQuestions::MultipleDropdowns* QuizQuestion::asMultipleDropdowns() {
     return this->toActualType<QuizQuestions::MultipleDropdowns>("multiple_dropdowns_question");
   }
 
   QuizQuestions::MultipleDropdowns const* QuizQuestion::asMultipleDropdowns() const {
     return this->toActualType<QuizQuestions::MultipleDropdowns>("multiple_dropdowns_question");
+  }
+
+  QuizQuestions::MultipleAnswers* QuizQuestion::asMultipleAnswers() {
+    return this->toActualType<QuizQuestions::MultipleAnswers>("multiple_answers_question");
+  }
+
+  QuizQuestions::MultipleAnswers const* QuizQuestion::asMultipleAnswers() const {
+    return this->toActualType<QuizQuestions::MultipleAnswers>("multiple_answers_question");
   }
 
   bool QuizQuestion::isMarked() const {

@@ -136,6 +136,7 @@ namespace Canvas {
      *  - ""    => 0   [String]
      */
     static ID parseId(JSONValue const&, String const& key = "id");
+    static ID parseIdElement(JSONValue const&);
 
   protected:
     typedef std::list<String> JSONDocuments;

@@ -43,6 +43,7 @@ namespace Canvas {
     class Numerical;
     class Matching;
     class MultipleDropdowns;
+    class MultipleAnswers;
   }
 
   /**
@@ -162,6 +163,8 @@ namespace Canvas {
     QuizQuestions::Matching const* asMatching() const;
     QuizQuestions::MultipleDropdowns* asMultipleDropdowns();
     QuizQuestions::MultipleDropdowns const* asMultipleDropdowns() const;
+    QuizQuestions::MultipleAnswers* asMultipleAnswers();
+    QuizQuestions::MultipleAnswers const* asMultipleAnswers() const;
 
     template<typename T>
     T* toActualType(String const& type) {

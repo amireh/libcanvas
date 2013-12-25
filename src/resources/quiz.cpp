@@ -33,6 +33,7 @@
 #include "canvas/resources/quiz_questions/numerical.hpp"
 #include "canvas/resources/quiz_questions/matching.hpp"
 #include "canvas/resources/quiz_questions/multiple_dropdowns.hpp"
+#include "canvas/resources/quiz_questions/multiple_answers.hpp"
 #include "canvas/resource_parser.hpp"
 #include "canvas/session.hpp"
 #include "canvas/utility.hpp"
@@ -181,8 +182,11 @@ namespace Canvas {
       else if (qqType == "multiple_dropdowns_question") {
         qq = new QuizQuestions::MultipleDropdowns(qqId, this);
       }
+      else if (qqType == "multiple_answers_question") {
+        qq = new QuizQuestions::MultipleAnswers(qqId, this);
+      }
       else {
-        // qq = new QuizQuestion(qqId, this);
+        // TODO: throw something here?
       }
 
       if (qq) {

@@ -84,4 +84,24 @@ namespace Canvas {
       return document[key].asInt();
     }
   }
+
+  ID ResourceParser::parseIdElement(JSONValue const& value) {
+    if (!value.isInt()) {
+      // try to convert it
+      try {
+        const String stringValue = value.asString();
+
+        if (value.size() == 0) {
+          return 0;
+        }
+
+        return utility::convertTo<int>(stringValue);
+      } catch(BadConversion &e) {
+        throw JSONError("Expected value to be a numeric ID.", value);
+      }
+    }
+    else {
+      return value.asInt();
+    }
+  }
 } // namespace cnvs
