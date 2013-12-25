@@ -30,6 +30,7 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 namespace Canvas {
 namespace utility {

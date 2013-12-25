@@ -35,6 +35,7 @@ namespace Canvas {
   typedef String URI;
   typedef id_t ID;
   typedef unsigned long uint64_t;
+  typedef unsigned int uint;
   typedef std::function<void(bool)> AsyncCallback;
 
   int  init(int argc, char** argv);
