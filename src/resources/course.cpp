@@ -46,7 +46,7 @@ namespace Canvas {
   }
 
   void Course::buildUrl() {
-    mUrl = "/courses/" + utility::stringify(mId);
+    mUrl = "/courses/" + Utility::stringify(mId);
   }
 
   void Course::setName(String const& name) {

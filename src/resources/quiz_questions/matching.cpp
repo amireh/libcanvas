@@ -73,7 +73,7 @@ namespace QuizQuestions {
     if (document.isMember("matching_answer_incorrect_matches") &&
         document["matching_answer_incorrect_matches"].isString()) {
       String distractors = document["matching_answer_incorrect_matches"].asString();
-      for (auto distractor : utility::split(distractors, '\n')) {
+      for (auto distractor : Utility::split(distractors, '\n')) {
         Match match;
         match.text = distractor;
         match.id = 0;

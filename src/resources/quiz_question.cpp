@@ -104,7 +104,7 @@ namespace Canvas {
 
   void QuizQuestion::deserialize(Json::Value& root) {
     mId = root.get("id", 0).asUInt();
-    mName = root.get("question_name", "Question" + utility::stringify(mId)).asString();
+    mName = root.get("question_name", "Question" + Utility::stringify(mId)).asString();
     mType = root.get("question_type", "unknown_question").asString();
     mText = root.get("question_text", "").asString();
     mGroupId = root.get("quiz_group_id", 0).asUInt();
@@ -141,7 +141,7 @@ namespace Canvas {
       return;
     }
 
-    mUrl = mQuiz->url() + "/questions/" + utility::stringify(id());
+    mUrl = mQuiz->url() + "/questions/" + Utility::stringify(id());
   }
 
   void QuizQuestion::setQuiz(Quiz const *quiz) {
@@ -151,9 +151,9 @@ namespace Canvas {
 
   URI QuizQuestion::answerUrl(QuizSubmission const &qs) const {
     return "/quiz_submissions/" +
-      utility::stringify(qs.id()) +
+      Utility::stringify(qs.id()) +
       "/questions/" +
-      utility::stringify(id());
+      Utility::stringify(id());
   }
 
   QuizQuestions::MultipleChoice* QuizQuestion::asMultipleChoice() {

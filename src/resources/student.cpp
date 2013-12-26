@@ -55,7 +55,7 @@ namespace Canvas {
   }
 
   void Student::buildUrl() {
-    mUrl = "/users/" + utility::stringify(mId);
+    mUrl = "/users/" + Utility::stringify(mId);
   }
 
   String const& Student::apiToken() const {
@@ -110,7 +110,7 @@ namespace Canvas {
 
         if (login) {
           mId = login->userId();
-          setUuidPrefix(utility::stringify(mId));
+          setUuidPrefix(Utility::stringify(mId));
           buildUrl();
         }
 

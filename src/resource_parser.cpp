@@ -75,7 +75,7 @@ namespace Canvas {
           return 0;
         }
 
-        return utility::convertTo<int>(value);
+        return Utility::convertTo<int>(value);
       } catch(BadConversion &e) {
         throw JSONError("Expected field '" + key + "' to be numeric.", document);
       }
@@ -95,7 +95,7 @@ namespace Canvas {
           return 0;
         }
 
-        return utility::convertTo<int>(stringValue);
+        return Utility::convertTo<int>(stringValue);
       } catch(BadConversion &e) {
         throw JSONError("Expected value to be a numeric ID.", value);
       }

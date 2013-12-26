@@ -71,7 +71,7 @@ namespace QuizQuestions {
     Answer const* answer = findAnswer(answerId);
 
     if (!answer) {
-      throw std::invalid_argument("Unknown answer: " + utility::stringify(answerId));
+      throw std::invalid_argument("Unknown answer: " + Utility::stringify(answerId));
     }
 
     ChosenAnswers::iterator locator = mChosenAnswers.find(blank);

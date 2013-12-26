@@ -33,7 +33,7 @@
 #include <vector>
 
 namespace Canvas {
-namespace utility {
+namespace Utility {
 
   inline static String stringify(bool x)
   {
@@ -111,7 +111,7 @@ namespace utility {
     ijoin(tokens, out, delim);
     return out;
   }
-} // namespace utility
+} // namespace Utility
 } // namespace cnvs
 
 #endif

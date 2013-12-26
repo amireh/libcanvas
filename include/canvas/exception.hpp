@@ -37,7 +37,7 @@ namespace Canvas {
    */
 
   /**
-   * Thrown when an argument passed to utility::convertTo<> is not a number
+   * Thrown when an argument passed to Utility::convertTo<> is not a number
    * and thus can not be converted.
    */
   class BadConversion : public std::runtime_error {

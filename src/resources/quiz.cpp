@@ -116,18 +116,48 @@ namespace Canvas {
     return mTimeLimit;
   }
 
-  void Quiz::deserialize(JSONValue& root) {
-    mId = root.get("id", 0).asUInt();
-    mTitle = root.get("title", "Unnamed Quiz").asString();
-    mDescription = root.get("description", "").asString();
-    mPublished = root.get("published", "true").asBool();
-    mPointsPossible = root.get("points_possible", "0").asUInt();
-    mAllowedAttempts = root.get("allowed_attempts", "-1").asInt();
-    mQuestionCount = root.get("question_count", "0").asUInt();
-    mTimeLimit = root.get("time_limit", "-1").asInt();
-    mOQAAT = root.get("one_question_at_a_time", "false").asBool();
-    mLocked = root.get("locked_for_user", "false").asBool();
-    mShowCorrectAnswers = root.get("show_correct_answers", "true").asBool();
+  void Quiz::deserialize(JSONValue& document) {
+    mId = ResourceParser::parseId(document, "id");
+
+    if (document["title"].isString()) {
+      mTitle = document.get("title", "Unnamed Quiz").asString();
+    }
+
+    if (document["description"].isString()) {
+      mDescription = document.get("description", "").asString();
+    }
+
+    if (document["points_possible"].isInt()) {
+      mPointsPossible = document.get("points_possible", "0").asUInt();
+    }
+
+    if (document["allowed_attempts"].isInt()) {
+      mAllowedAttempts = document.get("allowed_attempts", "-1").asInt();
+    }
+
+    if (document["question_count"].isInt()) {
+      mQuestionCount = document.get("question_count", "0").asUInt();
+    }
+
+    if (document["time_limit"].isInt()) {
+      mTimeLimit = document.get("time_limit", "-1").asInt();
+    }
+
+    if (document.isMember("one_question_at_a_time")) {
+      mOQAAT = ResourceParser::parseBool(document["one_question_at_a_time"]);
+    }
+
+    if (document.isMember("locked_for_user")) {
+      mLocked = ResourceParser::parseBool(document["locked_for_user"]);
+    }
+
+    if (document.isMember("show_correct_answers")) {
+      mShowCorrectAnswers = ResourceParser::parseBool(document["show_correct_answers"]);
+    }
+
+    if (document.isMember("published")) {
+      mPublished = ResourceParser::parseBool(document["published"]);
+    }
 
     buildUrl();
   }
@@ -207,7 +237,7 @@ namespace Canvas {
       return;
     }
 
-    mUrl = mCourse->url() + "/quizzes/" + utility::stringify(mId);
+    mUrl = mCourse->url() + "/quizzes/" + Utility::stringify(mId);
   }
 
   void Quiz::reset() {

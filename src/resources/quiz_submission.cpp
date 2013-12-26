@@ -84,7 +84,7 @@ namespace Canvas {
 
   void QuizSubmission::buildUrl() {
     if (mQuiz && mId) {
-      mUrl = mQuiz->url() + "/submissions/" + utility::stringify(mId);
+      mUrl = mQuiz->url() + "/submissions/" + Utility::stringify(mId);
     }
   }
 
@@ -189,7 +189,7 @@ namespace Canvas {
     Json::Value qqDocuments;
     Json::Reader reader;
 
-    session.get("/quiz_submissions/" + utility::stringify(id()) + "/questions",
+    session.get("/quiz_submissions/" + Utility::stringify(id()) + "/questions",
       [&](bool success, HTTP::Response const& response) {
         if (success) {
           loadAnswers(response.body);

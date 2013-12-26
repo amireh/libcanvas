@@ -68,6 +68,12 @@ namespace Canvas {
     Course course(1);
     Quiz quiz(1, &course);
 
+    JSONValue quizDocument;
+    quizDocument["id"] = 1;
+    quizDocument["published"] = true;
+
+    quiz.deserialize(quizDocument);
+
     ASSERT_TRUE(student.canTakeQuiz(quiz));
 
     student.takeQuiz(session, quiz, [&](QuizSubmission const* qs) {

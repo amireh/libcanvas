@@ -50,7 +50,7 @@ namespace Canvas {
     return out;
   }
 
-  namespace utility {
+  namespace Utility {
     inline static
     std::string keywords(std::string const& s) {
       String out;
@@ -75,7 +75,7 @@ namespace Canvas {
     } \
     catch (expected_exception const& e) { \
       using namespace ::testing::internal; \
-      using cnvs::utility::keywords; \
+      using Canvas::Utility::keywords; \
       std::string errmsg = e.what(); \
       std::transform(errmsg.begin(), errmsg.end(), errmsg.begin(), ::tolower); \
       std::string expmsg(expected_msg); \
