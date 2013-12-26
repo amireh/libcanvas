@@ -23,12 +23,14 @@ namespace Canvas {
 
   class SpecQuestion : public QuizQuestion {
   public:
+    using QuizQuestion::deserialize;
+    using QuizQuestion::deserializeAnswer;
+
     virtual JSONValue serializeAnswer() const {}
   };
 
   TEST(QuizQuestionTest, deserialize) {
     SpecQuestion qq;
-
     qq.deserialize(loadFixture("quiz_question.json"));
 
     ASSERT_EQ(qq.id(), 1);
@@ -41,6 +43,7 @@ namespace Canvas {
     ASSERT_EQ(qq.neutralComments(), "Donno");
     ASSERT_EQ(qq.groupId(), 0);
     ASSERT_EQ(qq.isMarked(), false);
+    ASSERT_EQ(qq.position(), 1);
   }
 
   TEST(QuizQuestionTest, buildsUrlWhenQuizIsSet) {

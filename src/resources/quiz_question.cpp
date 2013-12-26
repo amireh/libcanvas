@@ -102,16 +102,44 @@ namespace Canvas {
     return mPosition;
   }
 
-  void QuizQuestion::deserialize(Json::Value& root) {
-    mId = root.get("id", 0).asUInt();
-    mName = root.get("question_name", "Question" + Utility::stringify(mId)).asString();
-    mType = root.get("question_type", "unknown_question").asString();
-    mText = root.get("question_text", "").asString();
-    mGroupId = root.get("quiz_group_id", 0).asUInt();
-    mPointsPossible = root.get("points_possible", 0).asUInt();
-    mCorrectComments = root.get("correct_comments", "").asString();
-    mIncorrectComments = root.get("incorrect_comments", "").asString();
-    mNeutralComments = root.get("neutral_comments", "").asString();
+  void QuizQuestion::deserialize(Json::Value& document) {
+    mId = ResourceParser::parseId(document, "id");
+
+    if (document["question_name"].isString()) {
+      mName = document.get("question_name", "Question" + Utility::stringify(mId)).asString();
+    }
+
+    if (document["question_type"].isString()) {
+      mType = document.get("question_type", "unknown_question").asString();
+    }
+
+    if (document["question_text"].isString()) {
+      mText = document.get("question_text", "").asString();
+    }
+
+    if (document["correct_comments"].isString()) {
+      mCorrectComments = document.get("correct_comments", "").asString();
+    }
+
+    if (document["incorrect_comments"].isString()) {
+      mIncorrectComments = document.get("incorrect_comments", "").asString();
+    }
+
+    if (document["neutral_comments"].isString()) {
+      mNeutralComments = document.get("neutral_comments", "").asString();
+    }
+
+    if (document["quiz_group_id"].isInt()) {
+      mGroupId = document.get("quiz_group_id", 0).asUInt();
+    }
+
+    if (document["position"].isInt()) {
+      mPosition = document.get("position", 0).asInt();
+    }
+
+    if (document["points_possible"].isInt()) {
+      mPointsPossible = document.get("points_possible", 0).asUInt();
+    }
 
     buildUrl();
   }

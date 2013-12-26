@@ -17,7 +17,4 @@ namespace Canvas {
     setDocument(root);
     deserialize(root);
   }
-
-  void Resource::deserialize(JSONValue&) {
-  }
 }
