@@ -1,11 +1,10 @@
 #include "canvas/canvas.hpp"
-#include "canvas/file_manager.hpp"
 #include "canvas/settings.hpp"
 #include "canvas/logger.hpp"
+#include <curl/curl.h>
 
 namespace Canvas {
   int init(int argc, char** argv) {
-    FileManager::singleton();
     Settings::setDefaults();
 
     for (int i = 0; i < argc; ++i) {
@@ -24,6 +23,6 @@ namespace Canvas {
   }
 
   void free() {
-    delete &FileManager::singleton();
+    curl_global_cleanup();
   }
 }
