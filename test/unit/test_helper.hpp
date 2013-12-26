@@ -3,13 +3,42 @@
 
 #include "canvas/canvas.hpp"
 #include "canvas/utility.hpp"
-#include "canvas/file_manager.hpp"
 #include <regex.h>
 #include <gtest/internal/gtest-internal.h>
+#include <fstream>
 
 namespace Canvas {
   static const String CANVAS_SPEC_FIXTURE_PATH("../test/fixture");
   static const String CANVAS_SPEC_API_TOKEN("Ko4dCE6sX9CaYSknvpAHbmSVulsNx9TUtSK1EbT34fOBur8lNAm7L8AG2OjMNfPQ");
+
+  inline static
+  bool loadFile(std::ifstream &fs, String& out_buf)
+  {
+    if (!fs.is_open() || !fs.good()) {
+      return false;
+    }
+
+    while (fs.good()) {
+      out_buf.push_back(fs.get());
+    }
+
+    out_buf.erase(out_buf.size()-1,1);
+
+    return true;
+  }
+
+  inline static
+  bool loadFile(String const& path, String& out_buf)
+  {
+    bool rc;
+    std::ifstream stream(path);
+
+    rc = loadFile(stream, out_buf);
+
+    stream.close();
+
+    return rc;
+  }
 
   static String fixture(String const& path) {
     return CANVAS_SPEC_FIXTURE_PATH + "/" + path;
@@ -17,7 +46,7 @@ namespace Canvas {
 
   static String loadFixture(String const& path) {
     String out;
-    FileManager::singleton().load_file(fixture(path), out);
+    loadFile(fixture(path), out);
     return out;
   }
 

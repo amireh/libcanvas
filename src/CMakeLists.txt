@@ -22,7 +22,6 @@ SET(CANVAS_SRC
   ${CANVAS_INCLUDE_DIR}/resources/student.hpp
   ${CANVAS_INCLUDE_DIR}/canvas.hpp
   ${CANVAS_INCLUDE_DIR}/exception.hpp
-  ${CANVAS_INCLUDE_DIR}/file_manager.hpp
   ${CANVAS_INCLUDE_DIR}/logger.hpp
   ${CANVAS_INCLUDE_DIR}/resource_parser.hpp
   ${CANVAS_INCLUDE_DIR}/resource.hpp
@@ -50,7 +49,6 @@ SET(CANVAS_SRC
   resources/matching_answer.cpp
   resources/student.cpp
   canvas.cpp
-  file_manager.cpp
   logger.cpp
   resource.cpp
   resource_parser.cpp

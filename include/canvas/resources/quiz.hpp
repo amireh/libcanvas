@@ -158,6 +158,7 @@ namespace Canvas {
     bool mShowCorrectAnswers;
 
     void buildUrl();
+    void reset();
   };
   /** @} */
 }
