@@ -44,12 +44,14 @@ namespace Canvas {
   Quiz::Quiz()
   : Resource(),
     mCourse(nullptr) {
+      reset();
   }
 
   Quiz::Quiz(ID id, Course* course)
   : Resource(id),
     mCourse(course) {
 
+    reset();
     buildUrl();
   }
 
@@ -206,6 +208,17 @@ namespace Canvas {
     }
 
     mUrl = mCourse->url() + "/quizzes/" + utility::stringify(mId);
+  }
+
+  void Quiz::reset() {
+    mPublished = false;
+    mPointsPossible = 0;
+    mAllowedAttempts = 0;
+    mQuestionCount = 0;
+    mTimeLimit = 0;
+    mOQAAT = false;
+    mLocked = false;
+    mShowCorrectAnswers = false;
   }
 
   Quiz::Questions const& Quiz::questions() const {
