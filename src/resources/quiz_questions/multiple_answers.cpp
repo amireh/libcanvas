@@ -49,7 +49,7 @@ namespace QuizQuestions {
   void MultipleAnswers::deserialize(JSONValue &document) {
     QuizQuestion::deserialize(document);
 
-    if (document.isMember("answers") && document["answers"].isArray()) {
+    if (document["answers"].isArray()) {
       for (auto answerDocument : document["answers"]) {
         addAnswer(answerDocument);
       }
@@ -59,13 +59,15 @@ namespace QuizQuestions {
   void MultipleAnswers::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
 
-    if (document.isMember("answer") && document["answer"].isArray()) {
+    if (document["answer"].isArray()) {
       for (auto rawAnswerId : document["answer"]) {
         ID answerId;
 
         try {
           answerId = ResourceParser::parseIdElement(rawAnswerId);
         } catch (JSONError &e) {
+          // TODO: we need to be more consistent about handling bad inbound
+          // answer documents; gracefully discard or throw something?
           continue;
         }
 

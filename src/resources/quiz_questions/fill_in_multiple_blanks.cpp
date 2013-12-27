@@ -46,10 +46,15 @@ namespace QuizQuestions {
   FillInMultipleBlanks::~FillInMultipleBlanks() {
   }
 
-  void FillInMultipleBlanks::deserialize(JSONValue &root) {
-    QuizQuestion::deserialize(root);
+  void FillInMultipleBlanks::deserialize(JSONValue &document) {
+    QuizQuestion::deserialize(document);
 
-    for (auto answerDocument : root["answers"]) {
+    for (auto answerDocument : document["answers"]) {
+      if (!answerDocument["blank_id"].isString()) {
+        throw JSONError("Expected answer document to contain a blank_id string.",
+          answerDocument);
+      }
+
       const String blankId = answerDocument.get("blank_id", "").asString();
 
       if (!hasBlank(blankId)) {
@@ -62,13 +67,14 @@ namespace QuizQuestions {
   }
 
   void FillInMultipleBlanks::fill(String const& blank, String const& answer) {
-    if (!hasBlank(blank)) {
-      throw std::invalid_argument("No such blank with ID: " + blank);
-    }
+    Answers::iterator locator;
+    bool allAnswersEmpty;
 
-    Answers::iterator locator = mAnswers.find(blank);
+    assertHasBlank(blank);
 
-    if (mAnswers.find(blank) != mAnswers.end()) {
+    locator = mAnswers.find(blank);
+
+    if (locator != mAnswers.end()) {
       locator->second = answer;
     }
     else {
@@ -80,7 +86,7 @@ namespace QuizQuestions {
     }
     else {
       // Check if all answers are empty, and flag accordingly
-      bool allAnswersEmpty = true;
+      allAnswersEmpty = true;
 
       for (auto pair : mAnswers) {
         if (!pair.second.empty()) {
@@ -96,9 +102,7 @@ namespace QuizQuestions {
   }
 
   String const& FillInMultipleBlanks::filledAnswer(String const& blank) const {
-    if (!hasBlank(blank)) {
-      throw std::invalid_argument("No such blank with ID: " + blank);
-    }
+    assertHasBlank(blank);
 
     return mAnswers.find(blank)->second;
   }
@@ -106,7 +110,7 @@ namespace QuizQuestions {
   void FillInMultipleBlanks::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
 
-    if (document.isMember("answer")) {
+    if (document["answer"].isObject()) {
       for (auto blankId : document["answer"].getMemberNames()) {
         fill(blankId, document["answer"][blankId].asString());
       }
@@ -133,6 +137,12 @@ namespace QuizQuestions {
     }
 
     return false;
+  }
+
+  void FillInMultipleBlanks::assertHasBlank(String const& blankId) const {
+    if (!hasBlank(blankId)) {
+      throw std::invalid_argument("No such blank with ID: " + blankId);
+    }
   }
 
   FillInMultipleBlanks::Blanks const& FillInMultipleBlanks::blanks() const {

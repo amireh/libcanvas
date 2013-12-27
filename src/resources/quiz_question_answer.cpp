@@ -72,11 +72,20 @@ namespace Canvas {
     return mWeight;
   }
 
-  void QuizQuestionAnswer::deserialize(JSONValue& root) {
-    mId = ResourceParser::parseId(root);
-    mText = root.get("text", "").asString();
-    mComments = root.get("comments", "").asString();
-    mWeight = root.get("weight", 0).asUInt();
+  void QuizQuestionAnswer::deserialize(JSONValue& document) {
+    mId = ResourceParser::parseId(document);
+
+    if (document["text"].isString()) {
+      mText = document.get("text", "").asString();
+    }
+
+    if (document["comments"].isString()) {
+      mComments = document.get("comments", "").asString();
+    }
+
+    if (document["weight"].isNumeric()) {
+      mWeight = document.get("weight", 0).asUInt();
+    }
   }
 
   void QuizQuestionAnswer::setQuestion(QuizQuestion const *question) {

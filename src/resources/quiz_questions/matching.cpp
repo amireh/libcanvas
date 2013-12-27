@@ -24,6 +24,7 @@
 #include "canvas/resources/quiz_questions/matching.hpp"
 #include "canvas/resources/quiz_submission.hpp"
 #include "canvas/logger.hpp"
+#include "canvas/resource_parser.hpp"
 #include "canvas/utility.hpp"
 
 namespace Canvas {
@@ -51,17 +52,13 @@ namespace QuizQuestions {
   void Matching::deserialize(JSONValue &document) {
     QuizQuestion::deserialize(document);
 
-    if (document.isMember("answers") && document["answers"].isArray()) {
+    if (document["answers"].isArray()) {
       for (auto answerDocument : document["answers"]) {
-        ID answerId = answerDocument["id"].asUInt();
-
-        addAnswer(answerId, [&answerDocument](MatchingAnswer *answer) {
-          answer->deserialize(answerDocument);
-        });
+        addAnswer(answerDocument);
       }
     }
 
-    if (document.isMember("matches") && document["matches"].isArray()) {
+    if (document["matches"].isArray()) {
       for (auto mDocument : document["matches"]) {
         Match match;
         match.text = mDocument["text"].asString();
@@ -70,9 +67,9 @@ namespace QuizQuestions {
         mMatches.push_back(match);
       }
     }
-    if (document.isMember("matching_answer_incorrect_matches") &&
-        document["matching_answer_incorrect_matches"].isString()) {
+    if (document["matching_answer_incorrect_matches"].isString()) {
       String distractors = document["matching_answer_incorrect_matches"].asString();
+
       for (auto distractor : Utility::split(distractors, '\n')) {
         Match match;
         match.text = distractor;
@@ -150,14 +147,14 @@ namespace QuizQuestions {
   void Matching::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
 
-    if (document.isMember("answer") && document["answer"].isArray()) {
+    if (document["answer"].isArray()) {
       for (auto pairDocument : document["answer"]) {
-        if (!pairDocument["match_id"].isInt()) {
+        if (!pairDocument["match_id"].isNumeric()) {
           Logger::defaultLogger().error()
             << "bad match_id in document: " << pairDocument.toStyledString();
           continue;
         }
-        else if (!pairDocument["answer_id"].isInt()) {
+        else if (!pairDocument["answer_id"].isNumeric()) {
           Logger::defaultLogger().error()
             << "bad answer_id in document: " << pairDocument.toStyledString();
 

@@ -61,7 +61,7 @@ namespace QuizQuestions {
     QuizQuestion::deserializeAnswer(document);
 
     if (document.isMember("answer")) {
-      if (document["answer"].isDouble()) {
+      if (document["answer"].isNumeric()) {
         setAnswer(document["answer"].asDouble());
       }
       else {

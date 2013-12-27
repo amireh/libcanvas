@@ -17,4 +17,8 @@ namespace Canvas {
     setDocument(root);
     deserialize(root);
   }
+
+  JSONValue const& Resource::document() const {
+    return mDocument;
+  }
 }

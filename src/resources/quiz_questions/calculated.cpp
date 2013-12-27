@@ -48,7 +48,7 @@ namespace QuizQuestions {
   void Calculated::deserialize(JSONValue &document) {
     QuizQuestion::deserialize(document);
 
-    if (document.isMember("answers") && document["answers"].isArray()) {
+    if (document["answers"].isArray()) {
       for (auto answerDocument : document["answers"]) {
         ID answerId = answerDocument["id"].asUInt();
 
@@ -58,7 +58,7 @@ namespace QuizQuestions {
       }
     }
 
-    if (document.isMember("variables") && document["variables"].isArray()) {
+    if (document["variables"].isArray()) {
       for (auto vDocument : document["variables"]) {
         Variable variable;
         variable.name = vDocument["name"].asString();
@@ -83,9 +83,8 @@ namespace QuizQuestions {
   void Calculated::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
 
-    if (document.isMember("answer") && document["answer"].isDouble()) {
-      mAnswer = document["answer"].asDouble();
-      flagAnswered();
+    if (document["answer"].isNumeric()) {
+      setAnswer(document["answer"].asDouble());
     }
   }
 

@@ -130,15 +130,15 @@ namespace Canvas {
       mNeutralComments = document.get("neutral_comments", "").asString();
     }
 
-    if (document["quiz_group_id"].isInt()) {
+    if (document["quiz_group_id"].isNumeric()) {
       mGroupId = document.get("quiz_group_id", 0).asUInt();
     }
 
-    if (document["position"].isInt()) {
+    if (document["position"].isNumeric()) {
       mPosition = document.get("position", 0).asInt();
     }
 
-    if (document["points_possible"].isInt()) {
+    if (document["points_possible"].isNumeric()) {
       mPointsPossible = document.get("points_possible", 0).asUInt();
     }
 

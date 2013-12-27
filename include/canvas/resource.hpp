@@ -1,3 +1,4 @@
+
 /*
  *  Copyright (c) 2013 Algol Labs <ahmad@algollabs.com>
  *
@@ -94,6 +95,8 @@ namespace Canvas {
     void clearUserData(String const& key) {
       mUserData[key] = nullptr;
     }
+
+    JSONValue const& document() const;
 
   protected:
     typedef std::map<String, void*> UserData;

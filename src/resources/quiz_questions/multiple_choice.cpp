@@ -47,15 +47,17 @@ namespace QuizQuestions {
     mAnswer = nullptr;
   }
 
-  void MultipleChoice::deserialize(JSONValue &root) {
-    QuizQuestion::deserialize(root);
+  void MultipleChoice::deserialize(JSONValue &document) {
+    QuizQuestion::deserialize(document);
 
-    for (auto answerDocument : root["answers"]) {
-      ID answerId = answerDocument["id"].asUInt();
+    if (document["answers"].isArray()) {
+      for (auto answerDocument : document["answers"]) {
+        ID answerId = answerDocument["id"].asUInt();
 
-      addAnswer(answerId, [&answerDocument](QuizQuestionAnswer *answer) {
-        answer->deserialize(answerDocument);
-      });
+        addAnswer(answerId, [&answerDocument](QuizQuestionAnswer *answer) {
+          answer->deserialize(answerDocument);
+        });
+      }
     }
   }
 

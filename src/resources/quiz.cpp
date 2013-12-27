@@ -127,19 +127,19 @@ namespace Canvas {
       mDescription = document.get("description", "").asString();
     }
 
-    if (document["points_possible"].isInt()) {
+    if (document["points_possible"].isNumeric()) {
       mPointsPossible = document.get("points_possible", "0").asUInt();
     }
 
-    if (document["allowed_attempts"].isInt()) {
+    if (document["allowed_attempts"].isNumeric()) {
       mAllowedAttempts = document.get("allowed_attempts", "-1").asInt();
     }
 
-    if (document["question_count"].isInt()) {
+    if (document["question_count"].isNumeric()) {
       mQuestionCount = document.get("question_count", "0").asUInt();
     }
 
-    if (document["time_limit"].isInt()) {
+    if (document["time_limit"].isNumeric()) {
       mTimeLimit = document.get("time_limit", "-1").asInt();
     }
 
@@ -226,7 +226,6 @@ namespace Canvas {
         qq->setQuiz(this);
 
         mQuestions.push_back(qq);
-
       }
     }
   }

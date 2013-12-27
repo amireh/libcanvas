@@ -50,7 +50,7 @@ namespace QuizQuestions {
   void MultipleDropdowns::deserialize(JSONValue &document) {
     QuizQuestion::deserialize(document);
 
-    if (document.isMember("answers") && document["answers"].isArray()) {
+    if (document["answers"].isArray()) {
       for (auto answerDocument : document["answers"]) {
         const String blankId = answerDocument.get("blank_id", "").asString();
 
@@ -99,11 +99,13 @@ namespace QuizQuestions {
   void MultipleDropdowns::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
 
-    for (auto blankId : document["answer"].getMemberNames()) {
-      const ID answerId = ResourceParser::parseId(document["answer"], blankId);
+    if (document["answer"].isObject()) {
+      for (auto blankId : document["answer"].getMemberNames()) {
+        const ID answerId = ResourceParser::parseId(document["answer"], blankId);
 
-      if (answerId) {
-        choose(blankId, answerId);
+        if (answerId) {
+          choose(blankId, answerId);
+        }
       }
     }
   }

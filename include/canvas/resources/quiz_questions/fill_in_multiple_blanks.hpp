@@ -53,6 +53,11 @@ namespace QuizQuestions {
     FillInMultipleBlanks& operator=(const FillInMultipleBlanks&) = delete;
     virtual ~FillInMultipleBlanks();
 
+    /**
+     *
+     * @throw JSONError if blank_id is missing, or isn't a string in one of the
+     * answer documents
+     */
     virtual void deserialize(JSONValue&);
     virtual void deserializeAnswer(JSONValue const&);
 
@@ -62,8 +67,7 @@ namespace QuizQuestions {
      * @param[in] answer
      *   The multiple-choice answer to choose.
      *
-     * @throw runtime_error if the answer does not belong to the question this
-     * submission entry answer represents
+     * @throw std::invalid_argument if the given blank is invalid
      */
     virtual void fill(String const& blank, String const&);
 
@@ -88,6 +92,7 @@ namespace QuizQuestions {
     Blanks mBlanks;
 
     bool hasBlank(String const&) const;
+    void assertHasBlank(String const&) const;
   };
   /** @} */
 }

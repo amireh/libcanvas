@@ -66,7 +66,7 @@ namespace Canvas {
       throw JSONError("Expected document to contain an ID field called '" + key + "'",
         document);
     }
-    else if (!document[key].isInt()) {
+    else if (!document[key].isNumeric()) {
       // try to convert it
       try {
         const String value = document.get(key, "0").asString();
@@ -86,7 +86,7 @@ namespace Canvas {
   }
 
   ID ResourceParser::parseIdElement(JSONValue const& value) {
-    if (!value.isInt()) {
+    if (!value.isNumeric()) {
       // try to convert it
       try {
         const String stringValue = value.asString();
