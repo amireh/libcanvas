@@ -63,8 +63,7 @@ namespace Canvas {
 
   ID ResourceParser::parseId(JSONValue const& document, String const& key) {
     if (!document.isMember(key)) {
-      throw JSONError("Expected document to contain an ID field called '" + key + "'",
-        document);
+      throw MissingFieldError(key, document);
     }
     else if (!document[key].isNumeric()) {
       // try to convert it

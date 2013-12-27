@@ -149,20 +149,8 @@ namespace QuizQuestions {
 
     if (document["answer"].isArray()) {
       for (auto pairDocument : document["answer"]) {
-        if (!pairDocument["match_id"].isNumeric()) {
-          Logger::defaultLogger().error()
-            << "bad match_id in document: " << pairDocument.toStyledString();
-          continue;
-        }
-        else if (!pairDocument["answer_id"].isNumeric()) {
-          Logger::defaultLogger().error()
-            << "bad answer_id in document: " << pairDocument.toStyledString();
-
-          continue;
-        }
-
-        ID matchId = pairDocument.get("match_id", "0").asUInt();
-        ID answerId = pairDocument.get("answer_id", "0").asUInt();
+        ID matchId = ResourceParser::parseId(pairDocument, "match_id");
+        ID answerId = ResourceParser::parseId(pairDocument, "answer_id");
 
         if (matchId && answerId) {
           matchPair(findAnswer(answerId), matchId);

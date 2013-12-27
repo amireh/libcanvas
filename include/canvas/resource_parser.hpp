@@ -135,6 +135,7 @@ namespace Canvas {
      *  - "123" => 123 [String]
      *  - ""    => 0   [String]
      *
+     * @throw MissingFieldError if the field is missing in the document
      * @throw JSONError if the value could not be parsed
      */
     static ID parseId(JSONValue const&, String const& key = "id");

@@ -62,6 +62,14 @@ namespace Canvas {
     }
   };
 
+  class MissingFieldError : public JSONError {
+  public:
+    inline MissingFieldError(const std::string &field, Json::Value const &d)
+    : JSONError("Missing field '" + field + "'.", d)
+    {
+    }
+  };
+
   /**
    * Indicates a resource was being accessed before being fully loaded.
    */
