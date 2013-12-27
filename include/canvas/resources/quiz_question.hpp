@@ -218,9 +218,16 @@ namespace Canvas {
      * Use this instead of directly manipulating mAnswered.
      */
     void flagAnswered();
+
+    /**
+     * Mark the question as un-answered.
+     */
+    void flagUnanswered();
+
     virtual void buildUrl();
   };
   /** @} */
 }
 
 #endif
+

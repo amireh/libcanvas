@@ -80,8 +80,14 @@ namespace Canvas {
 
     template <typename T>
     inline
-    T* userData(String const& key) {
-      return (T*)mUserData[key];
+    T* userData(String const& key) const {
+      UserData::const_iterator locator = mUserData.find(key);
+
+      if (locator != mUserData.end()) {
+        return (T*)locator->second;
+      }
+
+      return nullptr;
     }
 
     inline
@@ -90,6 +96,7 @@ namespace Canvas {
     }
 
   protected:
+    typedef std::map<String, void*> UserData;
     friend class ResourceParser;
 
     inline
@@ -100,7 +107,7 @@ namespace Canvas {
     ID mId;
     String mUrl;
     JSONValue mDocument;
-    std::map<String, void*> mUserData;
+    UserData mUserData;
   };
 }
 

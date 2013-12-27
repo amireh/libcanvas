@@ -278,4 +278,8 @@ namespace Canvas {
     mAnswered = true;
     // TODO: maybe we can broadcast this change to interested parties
   }
+
+  void QuizQuestion::flagUnanswered() {
+    mAnswered = false;
+  }
 }

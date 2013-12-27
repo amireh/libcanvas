@@ -78,6 +78,21 @@ namespace QuizQuestions {
     if (!answer.empty()) {
       flagAnswered();
     }
+    else {
+      // Check if all answers are empty, and flag accordingly
+      bool allAnswersEmpty = true;
+
+      for (auto pair : mAnswers) {
+        if (!pair.second.empty()) {
+          allAnswersEmpty = false;
+          break;
+        }
+      }
+
+      if (allAnswersEmpty) {
+        flagUnanswered();
+      }
+    }
   }
 
   String const& FillInMultipleBlanks::filledAnswer(String const& blank) const {

@@ -52,7 +52,13 @@ namespace QuizQuestions {
 
   void FillInTheBlank::fill(String const& answer) {
     mAnswer = answer;
-    flagAnswered();
+
+    if (!mAnswer.empty()) {
+      flagAnswered();
+    }
+    else {
+      flagUnanswered();
+    }
   }
 
   String const& FillInTheBlank::filledAnswer() const {
@@ -63,11 +69,7 @@ namespace QuizQuestions {
     QuizQuestion::deserializeAnswer(document);
 
     if (document["answer"].isString()) {
-      mAnswer = document["answer"].asString();
-
-      if (!mAnswer.empty()) {
-        flagAnswered();
-      }
+      fill(document["answer"].asString());
     }
   }
 
