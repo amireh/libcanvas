@@ -8,13 +8,27 @@ function print_usage {
   echo "Usage: ./bump-version.sh [major|minor|patch|build]"
 }
 
-function bump {
+# Replace version strings in the source CMakeLists.txt
+#
+# @param [Integer] Major version number
+# @param [Integer] Minor version number
+# @param [Integer] Patch version number
+# @param [String] Build version identifier
+# @param [String] /path/to/CMakeLists.txt
+function bump_cmake {
   perl -p -i -e "s/CANVAS_VERSION_MAJOR \w+/CANVAS_VERSION_MAJOR ${1}/" "${5}"
   perl -p -i -e "s/CANVAS_VERSION_MINOR \w+/CANVAS_VERSION_MINOR ${2}/" "${5}"
   perl -p -i -e "s/CANVAS_VERSION_PATCH \w+/CANVAS_VERSION_PATCH ${3}/" "${5}"
   perl -p -i -e "s/CANVAS_VERSION_BUILD \"?\w+\"?/CANVAS_VERSION_BUILD \"${4}\"/" "${5}"
 }
 
+# Replace version string in Doxygen's config file (Doxyfile)
+#
+# @param [String] version string
+# @param [String] /path/to/Doxyfile
+function bump_doxygen {
+  perl -p -i -e "s/PROJECT_NUMBER(\s+)=.*\$/PROJECT_NUMBER\$1= ${1}/" "${2}"
+}
 
 CONFIG_FILE="include/canvas/canvas_config.hpp"
 
@@ -78,4 +92,7 @@ if [ "${confirmation}" == "n" ]; then
   exit 0
 fi
 
-bump $VMAJOR $VMINOR $VPATCH $VBUILD CMakeLists.txt
+bump_cmake $VMAJOR $VMINOR $VPATCH $VBUILD ./CMakeLists.txt
+bump_doxygen "${VERSION}" ./Doxyfile
+
+echo "CMake and Doxygen config files have been updated, you should now re-run cmake."
