@@ -99,6 +99,7 @@ namespace QuizQuestions {
     }
 
     mMatchedPairs.insert(std::make_pair(answer, match));
+    flagAnswered();
   }
 
   void Matching::matchPair(String const& left, String const& right) {
@@ -167,8 +168,6 @@ namespace QuizQuestions {
         ID answerId = pairDocument.get("answer_id", "0").asUInt();
 
         if (matchId && answerId) {
-          Logger::defaultLogger().info() <<
-            "match " << answerId << " <> " << matchId;
           matchPair(findAnswer(answerId), matchId);
         }
       }

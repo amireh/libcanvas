@@ -81,6 +81,7 @@ namespace QuizQuestions {
     }
 
     mChosenAnswers.insert(std::make_pair(blank, answer));
+    flagAnswered();
   }
 
   Answer const* MultipleDropdowns::chosenAnswer(String const& blank) const {

@@ -23,7 +23,7 @@
 
 #include "canvas/resources/quiz_questions/multiple_choice.hpp"
 #include "canvas/resources/quiz_question_answer.hpp"
-#include <sstream>
+#include "canvas/resource_parser.hpp"
 
 namespace Canvas {
 namespace QuizQuestions {
@@ -74,6 +74,7 @@ namespace QuizQuestions {
     }
 
     mAnswer = answer;
+    flagAnswered();
   }
 
   void MultipleChoice::choose(ID answerId) {
@@ -87,14 +88,22 @@ namespace QuizQuestions {
   void MultipleChoice::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
 
-    mAnswer = findAnswer(document["answer"].asUInt());
+    if (document.isMember("answer")) {
+      ID answerId = ResourceParser::parseIdElement(document["answer"]);
+
+      if (answerId) {
+        choose(answerId);
+      }
+    }
   }
 
   JSONValue MultipleChoice::serializeAnswer() const {
     Json::Value document;
+
     if (mAnswer) {
       document["answer"] = mAnswer->id();
     }
+
     return document;
   }
 

@@ -187,12 +187,10 @@ namespace Canvas {
     }
 
     virtual void mark(bool marked);
+    virtual bool isAnswered() const;
 
   protected:
     friend class Quiz;
-
-    void reset();
-    virtual void buildUrl();
 
     Quiz const* mQuiz;
     int mPosition;
@@ -205,6 +203,22 @@ namespace Canvas {
     String mIncorrectComments;
     String mNeutralComments;
     bool mMarked;
+
+    /**
+     * Whether the question has been answered by the student in *this* session,
+     * or previously in an earlier session (an inbound answer from the API).
+     */
+    bool mAnswered;
+
+    void reset();
+
+    /**
+     * Mark the question as answered.
+     *
+     * Use this instead of directly manipulating mAnswered.
+     */
+    void flagAnswered();
+    virtual void buildUrl();
   };
   /** @} */
 }

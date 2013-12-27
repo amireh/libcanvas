@@ -76,5 +76,24 @@ namespace QuizQuestions {
     ASSERT_NO_THROW(document = qq.serializeAnswer(););
     ASSERT_EQ(document["answer"].asUInt(), qq.answers()[1]->id());
   }
+
+  TEST(MultipleChoiceQuizQuestionTest, isAnswered) {
+    MultipleChoice qq;
+
+    qq.deserialize(questionFixture);
+    ASSERT_FALSE(qq.isAnswered());
+
+    qq.choose(qq.answers()[1]);
+    ASSERT_TRUE(qq.isAnswered());
+  }
+
+  TEST(MultipleChoiceQuizQuestionTest, isAnsweredFromDeserializedAnswer) {
+    MultipleChoice qq;
+
+    qq.deserialize(questionFixture);
+    qq.deserializeAnswer(answerFixture);
+
+    ASSERT_TRUE(qq.isAnswered());
+  }
 } // namespace QuizQuestions
 } // namespace Canvas

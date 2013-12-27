@@ -100,5 +100,23 @@ namespace QuizQuestions {
     ASSERT_EQ(values.size(), 10);
   }
 
+  TEST(CalculatedQuizQuestionTest, isAnswered) {
+    Calculated qq;
+
+    qq.deserialize(questionFixture);
+    ASSERT_FALSE(qq.isAnswered());
+    qq.setAnswer(55);
+    ASSERT_TRUE(qq.isAnswered());
+  }
+
+  TEST(CalculatedQuizQuestionTest, isAnsweredFromDeserializedAnswer) {
+    Calculated qq;
+
+    qq.deserialize(questionFixture);
+    qq.deserializeAnswer(answerFixture);
+
+    ASSERT_TRUE(qq.isAnswered());
+  }
+
 } // namespace QuizQuestions
 } // namespace Canvas

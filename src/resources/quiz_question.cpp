@@ -60,6 +60,7 @@ namespace Canvas {
     mPosition = 0;
     mGroupId = 0;
     mMarked = false;
+    mAnswered = false;
   }
 
   Quiz const* QuizQuestion::quiz() const {
@@ -152,15 +153,12 @@ namespace Canvas {
       throw JSONParserError(reader.getFormattedErrorMessages());
     }
 
-    mMarked = root.get("marked", false).asBool();
-
     deserializeAnswer(root);
   }
 
   void QuizQuestion::deserializeAnswer(const JSONValue& document) {
     if (document.isMember("marked")) {
       mMarked = ResourceParser::parseBool(document["marked"]);
-      // mMarked = document.get("marked", "false").asBool();
     }
   }
 
@@ -270,5 +268,14 @@ namespace Canvas {
 
   void QuizQuestion::mark(bool marked) {
     mMarked = marked;
+  }
+
+  bool QuizQuestion::isAnswered() const {
+    return mAnswered;
+  }
+
+  void QuizQuestion::flagAnswered() {
+    mAnswered = true;
+    // TODO: maybe we can broadcast this change to interested parties
   }
 }

@@ -73,6 +73,7 @@ namespace QuizQuestions {
 
   void Calculated::setAnswer(double value) {
     mAnswer = value;
+    flagAnswered();
   }
 
   double Calculated::answer() const {
@@ -81,7 +82,11 @@ namespace QuizQuestions {
 
   void Calculated::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
-    mAnswer = document["answer"].asDouble();
+
+    if (document.isMember("answer") && document["answer"].isDouble()) {
+      mAnswer = document["answer"].asDouble();
+      flagAnswered();
+    }
   }
 
   JSONValue Calculated::serializeAnswer() const {

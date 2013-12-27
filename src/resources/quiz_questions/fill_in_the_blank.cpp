@@ -52,6 +52,7 @@ namespace QuizQuestions {
 
   void FillInTheBlank::fill(String const& answer) {
     mAnswer = answer;
+    flagAnswered();
   }
 
   String const& FillInTheBlank::filledAnswer() const {
@@ -60,13 +61,20 @@ namespace QuizQuestions {
 
   void FillInTheBlank::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
-    mAnswer = document["answer"].asString();
+
+    if (document["answer"].isString()) {
+      mAnswer = document["answer"].asString();
+
+      if (!mAnswer.empty()) {
+        flagAnswered();
+      }
+    }
   }
 
   JSONValue FillInTheBlank::serializeAnswer() const {
     Json::Value document;
 
-    if (mAnswer.size()) {
+    if (!mAnswer.empty()) {
       document["answer"] = mAnswer;
     }
 

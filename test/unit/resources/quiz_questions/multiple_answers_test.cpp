@@ -113,5 +113,23 @@ namespace QuizQuestions {
 
     ASSERT_TRUE(document["answer"].isNull());
   }
+
+  TEST(MultipleAnswersQuizQuestionTest, isAnswered) {
+    MultipleAnswers qq;
+
+    qq.deserialize(questionFixture);
+    ASSERT_FALSE(qq.isAnswered());
+    qq.choose(4261);
+    ASSERT_TRUE(qq.isAnswered());
+  }
+
+  TEST(MultipleAnswersQuizQuestionTest, isAnsweredFromDeserializedAnswer) {
+    MultipleAnswers qq;
+
+    qq.deserialize(questionFixture);
+    qq.deserializeAnswer(answerFixture);
+
+    ASSERT_TRUE(qq.isAnswered());
+  }
 } // namespace QuizQuestions
 } // namespace Canvas

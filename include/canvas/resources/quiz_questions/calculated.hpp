@@ -100,6 +100,7 @@ namespace QuizQuestions {
 
     Variables const& variables() const;
     Variable const& variable(String const&) const;
+
   protected:
     Variables mVariables;
     double mAnswer;

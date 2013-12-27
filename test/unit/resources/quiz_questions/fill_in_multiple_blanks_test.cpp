@@ -70,12 +70,30 @@ namespace QuizQuestions {
 
     qq.deserialize(questionFixture);
 
-    qq.fill("color1", "Hi.");
+    qq.fill("color1", "red");
 
     ASSERT_NO_THROW(document = qq.serializeAnswer(););
     ASSERT_TRUE(document["answer"].isMember("color1"));
-    ASSERT_EQ(document["answer"]["color1"].asString(), "Hi.");
+    ASSERT_EQ(document["answer"]["color1"].asString(), "red");
     ASSERT_EQ(document["answer"]["color2"].asString(), "");
+  }
+
+  TEST(FillInMultipleBlanksQuizQuestionTest, isAnswered) {
+    FillInMultipleBlanks qq;
+
+    qq.deserialize(questionFixture);
+    ASSERT_FALSE(qq.isAnswered());
+    qq.fill("color1", "red");
+    ASSERT_TRUE(qq.isAnswered());
+  }
+
+  TEST(FillInMultipleBlanksQuizQuestionTest, isAnsweredFromDeserializedAnswer) {
+    FillInMultipleBlanks qq;
+
+    qq.deserialize(questionFixture);
+    qq.deserializeAnswer(answerFixture);
+
+    ASSERT_TRUE(qq.isAnswered());
   }
 } // namespace QuizQuestions
 } // namespace Canvas

@@ -102,6 +102,7 @@ namespace QuizQuestions {
 
     if (!isChosen(answer)) {
       mSelection.push_back(answer);
+      flagAnswered();
     }
   }
 

@@ -74,6 +74,10 @@ namespace QuizQuestions {
     else {
       mAnswers.insert(std::make_pair(blank, answer));
     }
+
+    if (!answer.empty()) {
+      flagAnswered();
+    }
   }
 
   String const& FillInMultipleBlanks::filledAnswer(String const& blank) const {
@@ -87,15 +91,17 @@ namespace QuizQuestions {
   void FillInMultipleBlanks::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
 
-    for (auto blankId : document["answer"].getMemberNames()) {
-      fill(blankId, document["answer"][blankId].asString());
+    if (document.isMember("answer")) {
+      for (auto blankId : document["answer"].getMemberNames()) {
+        fill(blankId, document["answer"][blankId].asString());
+      }
     }
   }
 
   JSONValue FillInMultipleBlanks::serializeAnswer() const {
     Json::Value document;
 
-    if (mAnswers.size()) {
+    if (!mAnswers.empty()) {
       for (auto pair : mAnswers) {
         document["answer"][pair.first] = pair.second;
       }

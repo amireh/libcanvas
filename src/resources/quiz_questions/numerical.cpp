@@ -50,6 +50,7 @@ namespace QuizQuestions {
 
   void Numerical::setAnswer(double answer) {
     mAnswer = answer;
+    flagAnswered();
   }
 
   double Numerical::answer() const {
@@ -59,7 +60,14 @@ namespace QuizQuestions {
   void Numerical::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
 
-    mAnswer = document["answer"].asDouble();
+    if (document.isMember("answer")) {
+      if (document["answer"].isDouble()) {
+        setAnswer(document["answer"].asDouble());
+      }
+      else {
+        throw JSONError("Expected answer to be a decimal.", document);
+      }
+    }
   }
 
   JSONValue Numerical::serializeAnswer() const {

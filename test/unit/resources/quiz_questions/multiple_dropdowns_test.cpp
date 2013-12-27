@@ -69,24 +69,43 @@ namespace QuizQuestions {
     }
   }
 
-  // TEST(MultipleDropdownsQuizQuestionTest, fillWithInvalidBlank) {
-  //   MultipleDropdowns qq;
+  TEST(MultipleDropdownsQuizQuestionTest, fillWithInvalidBlank) {
+    MultipleDropdowns qq;
 
-  //   ASSERT_THROW(qq.fill("organ", "adooken"), std::invalid_argument);
-  // }
+    ASSERT_THROW(qq.choose("organ", 8331), std::invalid_argument);
+  }
 
-  // TEST(MultipleDropdownsQuizQuestionTest, serializeAnswer) {
-  //   MultipleDropdowns qq;
-  //   JSONValue document;
+  TEST(MultipleDropdownsQuizQuestionTest, serializeAnswer) {
+    MultipleDropdowns qq;
+    JSONValue document;
 
-  //   qq.deserialize(questionFixture);
+    qq.deserialize(questionFixture);
 
-  //   qq.fill("organ", "Hi.");
+    qq.choose("organ", 8331);
 
-  //   ASSERT_NO_THROW(document = qq.serializeAnswer(););
-  //   ASSERT_TRUE(document["answer"].isMember("organ"));
-  //   ASSERT_EQ(document["answer"]["organ"].asString(), "Hi.");
-  //   ASSERT_EQ(document["answer"]["color"].asString(), "");
-  // }
+    ASSERT_NO_THROW(document = qq.serializeAnswer(););
+    ASSERT_TRUE(document["answer"].isMember("organ"));
+    ASSERT_FALSE(document["answer"].isMember("color"));
+    ASSERT_EQ(document["answer"]["organ"].asInt(), 8331);
+  }
+
+  TEST(MultipleDropdownsQuizQuestionTest, isAnswered) {
+    MultipleDropdowns qq;
+
+    qq.deserialize(questionFixture);
+    ASSERT_FALSE(qq.isAnswered());
+
+    qq.choose("organ", 8331);
+    ASSERT_TRUE(qq.isAnswered());
+  }
+
+  TEST(MultipleDropdownsQuizQuestionTest, isAnsweredFromDeserializedAnswer) {
+    MultipleDropdowns qq;
+
+    qq.deserialize(questionFixture);
+    qq.deserializeAnswer(answerFixture);
+
+    ASSERT_TRUE(qq.isAnswered());
+  }
 } // namespace QuizQuestions
 } // namespace Canvas

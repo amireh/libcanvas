@@ -143,5 +143,22 @@ namespace QuizQuestions {
     ASSERT_EQ(document["answer"][idx2]["match_id"].asUInt(), 6142);
   }
 
+  TEST(MatchingQuizQuestionTest, isAnswered) {
+    Matching qq;
+
+    qq.deserialize(questionFixture);
+    ASSERT_FALSE(qq.isAnswered());
+    qq.matchPair(qq.findAnswer(5750), 6545);
+    ASSERT_TRUE(qq.isAnswered());
+  }
+
+  TEST(MatchingQuizQuestionTest, isAnsweredFromDeserializedAnswer) {
+    Matching qq;
+
+    qq.deserialize(questionFixture);
+    qq.deserializeAnswer(answerFixture);
+
+    ASSERT_TRUE(qq.isAnswered());
+  }
 } // namespace QuizQuestions
 } // namespace Canvas

@@ -53,5 +53,23 @@ namespace QuizQuestions {
     ASSERT_NO_THROW(document = qq.serializeAnswer(););
     ASSERT_EQ(document["answer"].asString(), "Hi.");
   }
+
+  TEST(FillInTheBlankQuizQuestionTest, isAnswered) {
+    FillInTheBlank qq;
+
+    qq.deserialize(questionFixture);
+    ASSERT_FALSE(qq.isAnswered());
+    qq.fill("Hi.");
+    ASSERT_TRUE(qq.isAnswered());
+  }
+
+  TEST(FillInTheBlankQuizQuestionTest, isAnsweredFromDeserializedAnswer) {
+    FillInTheBlank qq;
+
+    qq.deserialize(questionFixture);
+    qq.deserializeAnswer(answerFixture);
+
+    ASSERT_TRUE(qq.isAnswered());
+  }
 } // namespace QuizQuestions
 } // namespace Canvas
