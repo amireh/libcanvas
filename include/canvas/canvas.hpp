@@ -29,6 +29,7 @@
 #include <functional>
 #include <algorithm>
 #include "canvas/exception.hpp"
+#include "canvas/canvas_config.hpp"
 
 namespace Canvas {
   typedef std::string String;
