@@ -3,6 +3,12 @@
 # Helper script for bumping up the version of libcanvas.
 #
 # Usage: ./bin/bump-version.sh [major|minor|patch|build]
+#
+# Alternatively, you can explicitly set a version:
+#
+# ./bin/bump-version.sh 3.2.1-a
+#
+# Format must be %number.%number.%number-%[a-d]
 
 function print_usage {
   echo "Usage: ./bump-version.sh [major|minor|patch|build]"
@@ -77,8 +83,18 @@ case "$1" in
     esac
   ;;
   *)
-    print_usage
-    exit 1
+    echo "${1}" | grep -P '\d+\.\d+\.\d+\-[a-d]' &> /dev/null
+
+    if [ $? -eq 0 ]; then
+      TOKENS=(${1//[\.|-]/ })
+      VMAJOR="${TOKENS[0]}"
+      VMINOR="${TOKENS[1]}"
+      VPATCH="${TOKENS[2]}"
+      VBUILD="${TOKENS[3]}"
+    else
+      print_usage
+      exit 1
+    fi
 esac
 
 VERSION="${VMAJOR}.${VMINOR}.${VPATCH}-${VBUILD}"
