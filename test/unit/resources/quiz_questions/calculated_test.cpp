@@ -23,6 +23,17 @@ namespace QuizQuestions {
     ASSERT_EQ(qq.answers()[0]->id(), 3979);
   }
 
+  TEST(CalculatedQuizQuestionTest, deserializeAnswerNoAnswer) {
+    Calculated qq;
+
+    ASSERT_NO_THROW(
+      qq.deserialize(questionFixture);
+      qq.deserializeAnswer(loadFixture("quiz_submission_questions/no_answer.json"));
+    );
+
+    ASSERT_FALSE(qq.isAnswered());
+  }
+
   TEST(CalculatedQuizQuestionTest, deserializesVariables) {
     Calculated qq;
 

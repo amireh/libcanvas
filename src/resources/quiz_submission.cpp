@@ -138,7 +138,7 @@ namespace Canvas {
     session.post(
       url() + "/complete",
       document.toStyledString(),
-      [&](bool success, HTTP::Response response) {
+      [&, callback](bool success, HTTP::Response response) {
         callback(success);
       });
   }
@@ -170,7 +170,7 @@ namespace Canvas {
 
     session.put(qq->answerUrl(*this),
       document.toStyledString(),
-      [&](bool success, HTTP::Response response) {
+      [&, callback](bool success, HTTP::Response response) {
         if (!success) {
           if (callback) {
             callback(false);
@@ -190,7 +190,7 @@ namespace Canvas {
     Json::Reader reader;
 
     session.get("/quiz_submissions/" + Utility::stringify(id()) + "/questions",
-      [&](bool success, HTTP::Response const& response) {
+      [&, callback](bool success, HTTP::Response const& response) {
         if (success) {
           loadAnswers(response.body);
 

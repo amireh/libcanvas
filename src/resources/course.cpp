@@ -74,7 +74,7 @@ namespace Canvas {
 
   void Course::loadQuizzes(Session& in_session, AsyncCallback callback) {
     in_session.get(url() + "/quizzes",
-      [&](bool success, HTTP::Response const &response) -> void {
+      [&, callback](bool success, HTTP::Response const &response) -> void {
         ResourceParser parser;
 
         if (!success) {

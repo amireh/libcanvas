@@ -17,7 +17,20 @@ namespace QuizQuestions {
       qq.deserializeAnswer(answerFixture);
     );
 
+    ASSERT_TRUE(qq.isAnswered());
     ASSERT_EQ(qq.answer(), 22.1);
+  }
+
+  TEST(NumericalQuizQuestionTest, deserializeAnswerNoAnswer) {
+    Numerical qq;
+
+    ASSERT_NO_THROW(
+      qq.deserialize(questionFixture);
+      qq.deserializeAnswer(loadFixture("quiz_submission_questions/no_answer.json"));
+    );
+
+    ASSERT_FALSE(qq.isAnswered());
+    ASSERT_EQ(qq.answer(), 0);
   }
 
   TEST(NumericalQuizQuestionTest, setAnswer) {

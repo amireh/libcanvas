@@ -171,7 +171,7 @@ namespace Canvas {
 
   void Quiz::loadQuestions(Session &session, AsyncCallback callback) {
     session.get(url() + "/questions?per_page=50",
-      [&](bool success, HTTP::Response response) -> void {
+      [&, callback](bool success, HTTP::Response response) -> void {
         if (success) {
           loadQuestions(response.body);
         }

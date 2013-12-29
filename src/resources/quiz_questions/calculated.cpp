@@ -83,8 +83,13 @@ namespace QuizQuestions {
   void Calculated::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
 
-    if (document["answer"].isNumeric()) {
-      setAnswer(document["answer"].asDouble());
+    if (!document["answer"].isNull()) {
+      if (document["answer"].isNumeric()) {
+        setAnswer(document["answer"].asDouble());
+      }
+      else {
+        throw JSONError("Expected answer to be a decimal.", document);
+      }
     }
   }
 

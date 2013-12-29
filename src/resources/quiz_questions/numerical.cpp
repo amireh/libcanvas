@@ -60,7 +60,7 @@ namespace QuizQuestions {
   void Numerical::deserializeAnswer(JSONValue const &document) {
     QuizQuestion::deserializeAnswer(document);
 
-    if (document.isMember("answer")) {
+    if (!document["answer"].isNull()) {
       if (document["answer"].isNumeric()) {
         setAnswer(document["answer"].asDouble());
       }

@@ -84,7 +84,7 @@ namespace Canvas {
 
     struct curl_slist* addJsonHeaders(struct curl_slist* = nullptr);
     void free_headers();
-    bool performRequest(String const&, RC_GET&);
+    virtual bool performRequest(String const&, RC_GET);
 
     CURL *mCurl;
     struct curl_slist *mHeaders;

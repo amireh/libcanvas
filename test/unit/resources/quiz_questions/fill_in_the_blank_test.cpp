@@ -28,6 +28,17 @@ namespace QuizQuestions {
     ASSERT_EQ(qq.filledAnswer(), "Foobar.");
   }
 
+  TEST(FillInTheBlankQuizQuestionTest, deserializeAnswerNoAnswer) {
+    FillInTheBlank qq;
+
+    ASSERT_NO_THROW(
+      qq.deserialize(questionFixture);
+      qq.deserializeAnswer(loadFixture("quiz_submission_questions/no_answer.json"));
+    );
+
+    ASSERT_FALSE(qq.isAnswered());
+  }
+
   TEST(FillInTheBlankQuizQuestionTest, fill) {
     FillInTheBlank qq;
 

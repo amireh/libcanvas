@@ -125,7 +125,7 @@ namespace Canvas {
       + endpoint);
   }
 
-  bool Session::performRequest(String const& endpoint, RC_GET &callback) {
+  bool Session::performRequest(String const& endpoint, RC_GET callback) {
     HTTP::Response response;
     HTTP::Download dl;
     CURLcode curlrc;

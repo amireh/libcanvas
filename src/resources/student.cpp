@@ -95,7 +95,7 @@ namespace Canvas {
 
   void Student::loadIdentity(Session& session, AsyncCallback callback) {
     session.get("/users/self/logins",
-      [&](bool success, HTTP::Response const &response) -> void {
+      [&, callback](bool success, HTTP::Response const &response) -> void {
         ResourceParser parser;
         std::vector<Student::Login*> logins;
         Student::Login* login;
@@ -128,7 +128,7 @@ namespace Canvas {
 
   void Student::loadCourses(Session& session, AsyncCallback callback) {
     session.get("/courses",
-      [&](bool success, HTTP::Response const &response) {
+      [&, callback](bool success, HTTP::Response const &response) {
         ResourceParser parser;
 
         if (!success) {
@@ -136,8 +136,7 @@ namespace Canvas {
           return;
         }
 
-        mCourses = parser.parseResources<Course>(response.body, [&](Course* course) {
-        });
+        mCourses = parser.parseResources<Course>(response.body);
 
         callback(true);
     });
@@ -147,7 +146,7 @@ namespace Canvas {
                                    const Quiz &quiz,
                                    AsyncCallback callback) {
     session.get(quiz.url() + "/submissions/self",
-                [&](bool success, HTTP::Response const& response) {
+                [&, callback](bool success, HTTP::Response const& response) {
 
       if (success) {
         QuizSubmission *qs;
@@ -222,7 +221,7 @@ namespace Canvas {
 
   void Student::takeQuiz(Session& session, Quiz const& quiz, TakeQuizCallback callback) {
     session.post(quiz.url() + "/submissions", "{}",
-    [&](bool success, HTTP::Response const &response) {
+    [&, callback](bool success, HTTP::Response const &response) {
       Logger::defaultLogger().debug() << "POSTing to QS yielded status code: "
         << response.status
         << " and body: " << response.body;
@@ -232,7 +231,7 @@ namespace Canvas {
         return;
       }
 
-      loadQuizSubmission(session, quiz, [&](bool success) {
+      loadQuizSubmission(session, quiz, [&, callback](bool success) {
         callback(success ? quizSubmission(quiz) : nullptr);
       });
     });
