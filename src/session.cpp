@@ -98,21 +98,25 @@ namespace Canvas {
   bool Session::get(URI const& endpoint, Session::RC_GET callback) {
     curl_easy_setopt(mCurl, CURLOPT_HTTPGET, 1);
     curl_easy_setopt(mCurl, CURLOPT_CUSTOMREQUEST, "GET");
-    curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, NULL);
+    curl_easy_setopt(mCurl, CURLOPT_COPYPOSTFIELDS, NULL);
 
     return performRequest(endpoint, callback);
   }
 
   bool Session::post(URI const& endpoint, String const& data, RC_GET callback) {
     curl_easy_setopt(mCurl, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, (void*)data.c_str());
+    curl_easy_setopt(mCurl, CURLOPT_COPYPOSTFIELDS, (void*)data.c_str());
+
+    debug() << "POST data: " << data;
 
     return performRequest(endpoint, callback);
   }
 
   bool Session::put(URI const& endpoint, String const& data, RC_GET callback) {
     curl_easy_setopt(mCurl, CURLOPT_CUSTOMREQUEST, "PUT");
-    curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, (void*)data.c_str());
+    curl_easy_setopt(mCurl, CURLOPT_COPYPOSTFIELDS, (void*)data.c_str());
+
+    debug() << "PUT data: " << data;
 
     return performRequest(endpoint, callback);
   }
@@ -152,8 +156,9 @@ namespace Canvas {
     if (response.status != 200) {
       error()
         << "API error: "
-        << "[" << response.status << "]"
-        << " " << response.body;
+        << "[" << response.status << "] "
+        << dl.uri
+        << ": " << response.body;
 
       callback(false, response);
 
