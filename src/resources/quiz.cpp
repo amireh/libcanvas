@@ -95,6 +95,9 @@ namespace Canvas {
   bool Quiz::locked() const {
     return mLocked;
   }
+  bool Quiz::cantGoBack() const {
+    return mCantGoBack;
+  }
 
   String const& Quiz::accessCode() const {
     return mAccessCode;
@@ -157,6 +160,10 @@ namespace Canvas {
 
     if (document.isMember("published")) {
       mPublished = ResourceParser::parseBool(document["published"]);
+    }
+
+    if (document.isMember("cant_go_back")) {
+      mCantGoBack = ResourceParser::parseBool(document["cant_go_back"]);
     }
 
     buildUrl();
@@ -248,6 +255,7 @@ namespace Canvas {
     mOQAAT = false;
     mLocked = false;
     mShowCorrectAnswers = false;
+    mCantGoBack = false;
   }
 
   Quiz::Questions const& Quiz::questions() const {

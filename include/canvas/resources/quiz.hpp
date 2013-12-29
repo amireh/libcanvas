@@ -130,6 +130,12 @@ namespace Canvas {
     virtual bool locked() const;
 
     /**
+     * When true, the student is prevented from modifying their answers to quiz
+     * questions; they can only provide an answer once.
+     */
+    virtual bool cantGoBack() const;
+
+    /**
      * Populate the Quiz from a JSON document.
      */
     virtual void deserialize(JSONValue&);
@@ -156,6 +162,7 @@ namespace Canvas {
     bool mOQAAT;
     bool mLocked;
     bool mShowCorrectAnswers;
+    bool mCantGoBack;
 
     void buildUrl();
     void reset();
