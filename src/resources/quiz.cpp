@@ -72,6 +72,10 @@ namespace Canvas {
     return mCourse;
   }
 
+  Course* Quiz::course() {
+    return mCourse;
+  }
+
   String const& Quiz::title() const {
     return mTitle;
   }

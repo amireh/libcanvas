@@ -59,6 +59,7 @@ namespace Canvas {
      * The Course this Quiz is for.
      */
     virtual Course const* course() const;
+    virtual Course* course();
 
     /**
      * A not necessarily unique, but usually descriptive, title for the quiz.

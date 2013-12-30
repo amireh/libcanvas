@@ -82,6 +82,16 @@ namespace Canvas {
     return locator->second;
   }
 
+  QuizSubmission* Student::quizSubmission(const Quiz &quiz) {
+    QuizSubmissions::const_iterator locator = mQuizSubmissions.find(&quiz);
+
+    if (locator == mQuizSubmissions.end()) {
+      return nullptr;
+    }
+
+    return locator->second;
+  }
+
   void Student::trackQuizSubmission(Quiz const* quiz, QuizSubmission *qs) {
     QuizSubmissions::const_iterator locator = mQuizSubmissions.find(quiz);
 

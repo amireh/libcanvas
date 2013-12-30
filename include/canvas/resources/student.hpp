@@ -69,6 +69,7 @@ namespace Canvas {
     virtual Courses const& courses() const;
 
     virtual QuizSubmission const* quizSubmission(Quiz const&) const;
+    virtual QuizSubmission* quizSubmission(Quiz const&);
 
     /**
      * Fetch the student's id.
