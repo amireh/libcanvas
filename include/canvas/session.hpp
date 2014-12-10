@@ -34,10 +34,13 @@ namespace Canvas {
 
   class Student;
   class Resource;
+
   /**
-   * @class session
+   * @class Session
    * @brief
    * API communicator module capable of retrieving and submitting JSON data.
+   *
+   * @see Guide: @ref session-usage
    */
   class Session : public Logger {
   public:

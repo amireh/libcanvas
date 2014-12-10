@@ -187,6 +187,11 @@ namespace Canvas {
     }
 
     virtual void mark(bool marked);
+
+    /**
+     * Whether the question has been answered by the student in *this* session,
+     * or previously in an earlier session (an inbound answer from the API).
+     */
     virtual bool isAnswered() const;
 
   protected:

@@ -1,0 +1,60 @@
+@import url("//fonts.googleapis.com/css?family=Lato:400,700,900,400italic");
+@charset "UTF-8";
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+div.fragment {
+  padding: 10px;
+  margin: 0px;
+  background-color: #FBFCFD;
+  border: 1px solid #ccc;
+  border-left-width: 5px;
+}
+
+dl.note, dl.warning, dl.attention, dl.pre, dl.post, dl.invariant, dl.deprecated, dl.todo, dl.test, dl.bug {
+  margin-left: 0;
+  padding-left: 10px;
+  border-left-width: 5px;
+}
+
+dt {
+  margin-bottom: 10px;
+}
+
+dl.section dd {
+  margin-left: 0;
+  opacity: 0.75;
+}
+
+#titlearea {
+  background: #222;
+  color: white;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+/** tabs **/
+*[class*="tab"] {
+  background-image: none;
+}
+.tabs, .tabs2, .tabs3 {
+  background-color: #ddd;
+  border-top: 1px solid #ccc;
+  box-shadow: 0 0 1px 0 rgba(255,255,255,0.5) inset;
+}
+
+.tablist li {
+  background-image: none;
+  background: rgba(0,0,0,0.025);
+}
+.tablist li, .tablist a, .tablist a:hover {
+  background-image: none;
+}
+.tablist a:hover, .tablist li.current a {
+  background-image: none;
+  background: #aaa;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.25);
+}

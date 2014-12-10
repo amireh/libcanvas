@@ -1,8 +1,12 @@
-## Subclass QuizQuestion
+# Extending libcanvas
 
-For example, adding a TrueFalse quiz question type:
+## Adding support for new question types
 
-```c++
+### Subclass QuizQuestion
+
+For example, adding a `TrueFalse` quiz question type:
+
+~~~{.cpp}
 #ifndef H_CANVAS_TRUE_FALSE_QUIZ_QUESTION_H
 #define H_CANVAS_TRUE_FALSE_QUIZ_QUESTION_H
 
@@ -16,7 +20,7 @@ namespace QuizQuestions {
 }
 
 #endif
-```
+~~~
 
 - Header goes in `include/canvas/resources/quiz_questions`
 - Source goes in `src/resources/quiz_questions`
